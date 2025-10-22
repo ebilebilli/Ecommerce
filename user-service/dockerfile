@@ -1,0 +1,25 @@
+# Base image
+FROM python:3.10-slim
+
+# Working directory
+WORKDIR /app
+
+# Install dependencies
+RUN apt-get update && apt-get install -y build-essential libpq-dev curl && \
+    pip install --upgrade pip && pip install poetry
+
+# Copy lock və pyproject faylları
+COPY uv.lock pyproject.toml ./
+
+# Poetry konfiqurasiya və quraşdırma
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi --no-root
+
+# Bütün faylları konteynerə kopyala
+COPY . .
+
+# Açıq port
+EXPOSE 8000
+
+# Django serveri işə sal
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

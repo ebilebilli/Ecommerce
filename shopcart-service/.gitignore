@@ -1,0 +1,18 @@
+# Virtual environments
+.venv/
+
+
+# Env files
+.env
+.env.prod
+.env.sample
+
+# Python cache
+__pycache__/
+.*__pycache__/
+
+
+# Sensitive files
+handlers.py
+security.py
+github-sa-key.json
