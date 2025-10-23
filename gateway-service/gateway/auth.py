@@ -43,6 +43,8 @@ PUBLIC_PATHS = [
     '/product/api/v1/products/{product_id}/variations/{variation_id}',
     '/product/api/v1/products/{product_id}/variations/{variation_id}/images/',
     '/product/api/v1/products/{product_id}/variations/{variation_id}/comments/',
+    # Cart
+    '/cart/shopcart/'
 ]
 
 

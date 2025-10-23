@@ -20,6 +20,7 @@ from src.app.schemas.v1.product import ProductCreate, Product
 from src.app.schemas.v1.product_variation import ProductVariationCreate, ProductVariation
 from src.app.schemas.v1.product_image import ProductImageCreate, ProductImage
 from src.app.schemas.v1.comment import CommentCreate, Comment
+
 router = APIRouter()
 # Endpoints for Category
 @router.post("/categories/", response_model=Category)
@@ -27,11 +28,13 @@ def create_category(category: CategoryCreate, request: Request, db: Session = De
     repo = CategoryRepository(db)
     result = repo.create(category)
     return result
+
 @router.get("/categories/", response_model=List[Category])
 def read_categories(skip: int = 0, limit: int = 100, request: Request = None, db: Session = Depends(get_db)):
     repo = CategoryRepository(db)
     result = repo.get_all(skip, limit)
     return result
+
 @router.get("/categories/{category_id}", response_model=Category)
 def read_category(category_id: UUID, request: Request, db: Session = Depends(get_db)):
     repo = CategoryRepository(db)
@@ -39,6 +42,7 @@ def read_category(category_id: UUID, request: Request, db: Session = Depends(get
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
     return category
+
 @router.put("/categories/{category_id}", response_model=Category)
 def update_category(category_id: UUID, category: CategoryCreate, request: Request, db: Session = Depends(get_db)):
     repo = CategoryRepository(db)
@@ -46,41 +50,42 @@ def update_category(category_id: UUID, category: CategoryCreate, request: Reques
     if not updated_category:
         raise HTTPException(status_code=404, detail="Category not found")
     return updated_category
+
 @router.delete("/categories/{category_id}")
 def delete_category(category_id: UUID, request: Request, db: Session = Depends(get_db)):
     repo = CategoryRepository(db)
     if not repo.delete(category_id):
         raise HTTPException(status_code=404, detail="Category not found")
     return {"message": "Category deleted"}
+
 # Endpoints for Product
 @router.post("/products/", response_model=Product)
 async def create_product(product: ProductCreate, request: Request, db: Session = Depends(get_db)):
-    # Get user_id from Gateway's X-User-ID header
     user_id = request.headers.get('x-user-id')
     if not user_id:
         raise HTTPException(
             status_code=400, 
             detail="User ID not provided in headers"
         )
-    # Get shop_id from Shop Service
     shop_id = await shop_client.get_shop_by_user_id(user_id)
     if not shop_id:
         raise HTTPException(
             status_code=400, 
             detail="User does not have a shop"
         )
-    # Add shop_id to product data
     product_data = product.dict()
     product_data['shop_id'] = shop_id
     repo = ProductRepository(db)
     result = repo.create(product_data)
     return result
+
 @router.get("/products/", response_model=List[Product])
 def read_products(skip: int = 0, limit: int = 100, request: Request = None, db: Session = Depends(get_db)):
     if request:
     repo = ProductRepository(db)
     result = repo.get_all(skip, limit)
     return result
+
 @router.get("/products/{product_id}", response_model=Product)
 def read_product(product_id: UUID, request: Request, db: Session = Depends(get_db)):
     repo = ProductRepository(db)
@@ -88,6 +93,7 @@ def read_product(product_id: UUID, request: Request, db: Session = Depends(get_d
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
+
 @router.put("/products/{product_id}", response_model=Product)
 def update_product(product_id: UUID, product: ProductCreate, request: Request, db: Session = Depends(get_db)):
     repo = ProductRepository(db)
@@ -95,12 +101,14 @@ def update_product(product_id: UUID, product: ProductCreate, request: Request, d
     if not updated_product:
         raise HTTPException(status_code=404, detail="Product not found")
     return updated_product
+
 @router.delete("/products/{product_id}")
 def delete_product(product_id: UUID, request: Request, db: Session = Depends(get_db)):
     repo = ProductRepository(db)
     if not repo.delete(product_id):
         raise HTTPException(status_code=404, detail="Product not found")
     return {"message": "Product deleted"}
+
 # Endpoints for ProductVariation
 @router.post("/products/{product_id}/variations/", response_model=ProductVariation)
 def create_product_variation(product_id: UUID, variation: ProductVariationCreate, request: Request, db: Session = Depends(get_db)):
@@ -109,6 +117,7 @@ def create_product_variation(product_id: UUID, variation: ProductVariationCreate
     variation_data["product_id"] = product_id
     result = repo.create(variation_data)
     return result
+
 @router.get("/products/{product_id}/variations/", response_model=List[ProductVariation])
 def read_product_variations(product_id: UUID, skip: int = 0, limit: int = 100, request: Request = None, db: Session = Depends(get_db)):
     if request:
@@ -116,6 +125,7 @@ def read_product_variations(product_id: UUID, skip: int = 0, limit: int = 100, r
     variations = repo.get_all(skip, limit)
     filtered_variations = [v for v in variations if v.product_id == product_id]
     return filtered_variations
+
 @router.get("/products/{product_id}/variations/{variation_id}", response_model=ProductVariation)
 def read_product_variation(product_id: UUID, variation_id: UUID, request: Request, db: Session = Depends(get_db)):
     repo = ProductVariationRepository(db)
@@ -123,6 +133,7 @@ def read_product_variation(product_id: UUID, variation_id: UUID, request: Reques
     if not variation or variation.product_id != product_id:
         raise HTTPException(status_code=404, detail="Variation not found")
     return variation
+
 @router.put("/products/{product_id}/variations/{variation_id}", response_model=ProductVariation)
 def update_product_variation(product_id: UUID, variation_id: UUID, variation: ProductVariationCreate, request: Request, db: Session = Depends(get_db)):
     repo = ProductVariationRepository(db)
@@ -130,12 +141,14 @@ def update_product_variation(product_id: UUID, variation_id: UUID, variation: Pr
     if not updated_variation or updated_variation.product_id != product_id:
         raise HTTPException(status_code=404, detail="Variation not found")
     return updated_variation
+
 @router.delete("/products/{product_id}/variations/{variation_id}")
 def delete_product_variation(product_id: UUID, variation_id: UUID, request: Request, db: Session = Depends(get_db)):
     repo = ProductVariationRepository(db)
     if not repo.delete(variation_id) or not repo.get(variation_id) or repo.get(variation_id).product_id != product_id:
         raise HTTPException(status_code=404, detail="Variation not found")
     return {"message": "Variation deleted"}
+
 # Endpoints for ProductImage
 @router.post("/products/{product_id}/variations/{variation_id}/images/", response_model=ProductImage)
 def create_product_image(product_id: UUID, variation_id: UUID, image: ProductImageCreate, request: Request, db: Session = Depends(get_db)):
@@ -144,18 +157,21 @@ def create_product_image(product_id: UUID, variation_id: UUID, image: ProductIma
     image_data["product_variation_id"] = variation_id
     result = repo.create(image_data)
     return result
+
 @router.get("/products/{product_id}/variations/{variation_id}/images/", response_model=List[ProductImage])
 def read_product_images(product_id: UUID, variation_id: UUID, skip: int = 0, limit: int = 100, request: Request = None, db: Session = Depends(get_db)):
     if request:
     repo = ProductImageRepository(db)
     result = repo.get_by_variation(variation_id, skip, limit)
     return result
+
 @router.delete("/products/{product_id}/variations/{variation_id}/images/{image_id}")
 def delete_product_image(product_id: UUID, variation_id: UUID, image_id: UUID, request: Request, db: Session = Depends(get_db)):
     repo = ProductImageRepository(db)
     if not repo.delete(image_id):
         raise HTTPException(status_code=404, detail="Image not found")
     return {"message": "Image deleted"}
+
 # Endpoints for Comment
 @router.post("/products/{product_id}/variations/{variation_id}/comments/", response_model=Comment)
 def create_comment(product_id: UUID, variation_id: UUID, comment: CommentCreate, request: Request, db: Session = Depends(get_db)):
