@@ -12,7 +12,6 @@ from .services import SERVICE_URLS
 from .middleware import (
     log_requests_middleware,
     auth_middleware,
-    add_shop_id_middleware
 )
 
 load_dotenv()
