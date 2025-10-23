@@ -102,5 +102,5 @@ urlpatterns = [
         'media/<int:media_id>/delete/',
         DeleteShopMediaAPIView.as_view(),
         name='shop-media-delete'
-    ),             
+    ),           
 ]
