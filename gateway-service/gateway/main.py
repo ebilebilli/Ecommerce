@@ -7,9 +7,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from .logging import logger
-from .auth import verify_jwt, PUBLIC_PATHS, handle_login
 from .forward import forward_request
 from .services import SERVICE_URLS
+from .middleware import (
+    log_requests_middleware,
+    auth_middleware,
+    add_shop_id_middleware
+)
 
 load_dotenv()
 
@@ -18,6 +22,7 @@ app = FastAPI(
     version="1.0.0",
     swagger_ui_init_oauth=None,
 )
+
 merged_openapi_schema = None
 
 app.add_middleware(
@@ -28,37 +33,8 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-
-@app.middleware('http')
-async def log_requests(request: Request, call_next):
-    logger.info(f'Incoming request: {request.method} {request.url}')
-    try:
-        response = await call_next(request)
-    except Exception as e:
-        logger.error(f'Error handling request: {e}')
-        return JSONResponse({'error': str(e)}, status_code=500)
-    logger.info(f'Response status: {response.status_code} for {request.method} {request.url}')
-    return response
-
-
-@app.middleware("http")
-async def auth_middleware(request: Request, call_next):
-    path = request.url.path
-
-    if path == '/user/api/user/login/' and request.method == 'POST':
-        return await handle_login(request)
-
-    if not any(path == p or path.startswith(p + '/') for p in PUBLIC_PATHS):
-        try:
-            payload = await verify_jwt(request)
-            request.state.user = payload
-            logger.info(f"User set in request.state: {payload}")
-        except HTTPException as e:
-            logger.error(f"JWT verification failed: {e.detail}")
-            return JSONResponse({"detail": e.detail}, status_code=e.status_code)
-
-    response = await call_next(request)
-    return response
+app.middleware('http')(log_requests_middleware)
+app.middleware('http')(auth_middleware)
 
 
 @app.api_route('/{service}/{full_path:path}', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
@@ -102,15 +78,14 @@ async def merge_openapi_schemas():
                 for key, value in schema['components'].items():
                     components.setdefault(key, {}).update(value)
 
-    # Swagger üçün BearerAuth əlavə et
-    merged.setdefault("components", {}).setdefault("securitySchemes", {})["BearerAuth"] = {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+    merged.setdefault('components', {}).setdefault('securitySchemes', {})['BearerAuth'] = {
+        'type': 'http',
+        'scheme': 'bearer',
+        'bearerFormat': 'JWT'
     }
-    for path in merged["paths"].values():
+    for path in merged['paths'].values():
         for method in path.values():
-            method["security"] = [{"BearerAuth": []}]
+            method['security'] = [{'BearerAuth': []}]
 
     return merged
 

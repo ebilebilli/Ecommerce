@@ -20,7 +20,7 @@ PUBLIC_PATHS = [
     '/docs/', 
     '/redoc', 
     '/favicon.ico',
-    '/public/'
+    '/public/',
     # User
     '/user/api/user/login/',
     '/user/api/user/logout/',
@@ -28,9 +28,23 @@ PUBLIC_PATHS = [
     '/user/api/user/password-reset/request/',
     '/user/api/user/password-reset/confirm/',
     '/user/openapi.json',
-    # Shop'
-   '/shop/api/v1/shops/'
+    # Shop
+    '/shop/api/shops/',
+    '/shop/api/{shop_slug}/',
+    '/shop/api/branches/{shop_branch_slug}/',
+    '/shop/api/comments/{shop_slug}/',
+    '/shop/api/media/{shop_slug}/',
+    '/shop/api/social-media/{shop_slug}/',
+    # Product 
+    '/product/api/v1/categories/',
+    '/product/api/v1/categories/{category_id}',
+    '/product/api/v1/products/{product_id}',
+    '/product/api/v1/products/{product_id}/variations/',
+    '/product/api/v1/products/{product_id}/variations/{variation_id}',
+    '/product/api/v1/products/{product_id}/variations/{variation_id}/images/',
+    '/product/api/v1/products/{product_id}/variations/{variation_id}/comments/',
 ]
+
 
 JWT_SECRET = os.getenv('JWT_SECRET')
 JWT_ALGORITHM = os.getenv('JWT_ALGORITHM')

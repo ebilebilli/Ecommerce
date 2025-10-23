@@ -10,28 +10,33 @@ urlpatterns = [
         name='shop-list'
     ),         
     path(
-        'shops/<slug:shop_slug>/', 
+        '<slug:shop_slug>/', 
         ShopDetailAPIView.as_view(), 
         name='shop-detail'
     ),  
     path(
-        'shops/shop/create/',
+        'shop/create/',
         ShopCreateAPIView.as_view(), 
         name='shop-create'
     ),
     path(
-        'shops/<slug:shop_slug>/management/',
+        '<slug:shop_slug>/management/',
         ShopManagementAPIView.as_view(), 
         name='shop-manage'
     ),
+    path(
+        'user/<str:user_id>/',
+        UserShopAPIView.as_view(),
+        name='user-shop'
+    ),
     # ShopComment endpoints
     path(
-        'shops/<slug:shop_slug>/comments/', 
+        'comments/<slug:shop_slug>/', 
         CommentListByShopAPIView.as_view(),
         name='comment-list'
     ),
     path(
-        'shops/<slug:shop_slug>/comment/create/', 
+        'comments/<slug:shop_slug>/create/', 
         CreateShopCommentAPIView.as_view(),
         name='create-shop-comment'
     ),
@@ -42,7 +47,7 @@ urlpatterns = [
     ),
     # ShopBranch endpoints
     path(
-        'shops/<slug:shop_slug>/branches/',
+        'branches/<slug:shop_slug>/',
         ShopBranchListByShopAPIView.as_view(),
         name='branch-list'
     ),         
@@ -52,7 +57,7 @@ urlpatterns = [
         name='branch-detail'
     ),  
     path(
-        'shops/<slug:shop_slug>/branches/create/',
+        'branches/<slug:shop_slug>/create/',
         CreateShopBranchAPIView.as_view(), 
         name='branch-create'
     ),
@@ -63,7 +68,7 @@ urlpatterns = [
     ),
     # ShopSocialMedia endpoints
       path(
-        'shops/<slug:shop_slug>/social-media/',
+        'social-media/<slug:shop_slug>/',
         ShopSocialMediaListByShopAPIView.as_view(),
         name='social-media-list'
     ),
@@ -73,7 +78,7 @@ urlpatterns = [
         name='social-media-detail'
     ),
     path(
-        'shops/<slug:shop_slug>/social-media/create/',
+        'social-media/<slug:shop_slug>/create/',
         CreateShopSocialMediaAPIView.as_view(),
         name='social-media-create'
     ),
@@ -84,12 +89,12 @@ urlpatterns = [
     ),
     # ShopMedia endpoints
      path(
-        'shops/<slug:shop_slug>/media/',
+        'media/<slug:shop_slug>/',
         ShopMediaByShopAPIView.as_view(),
         name='shop-media-list'
     ),
     path(
-        'shops/<slug:shop_slug>/media/create/',
+        'media/<slug:shop_slug>/create/',
         CreateShopMediaAPIView.as_view(),
         name='shop-media-create'
     ),

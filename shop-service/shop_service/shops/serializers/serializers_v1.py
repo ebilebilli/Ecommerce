@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 
 from ..models import *
 
-
 __all__ = [
     'ShopListSerializer',
     'ShopDetailSerializer',
@@ -34,12 +33,12 @@ class ShopDetailSerializer(serializers.ModelSerializer):
         model = Shop
         fields = [
             'id',
-            'user',
             'name',
             'slug',
             'about',
             'profile',
             'is_verified',
+            'is_active',
             'created_at',
             'updated_at',
         ]
@@ -110,7 +109,7 @@ class ShopBranchCreateUpdateSerializer(serializers.ModelSerializer):
 
 
 class ShopCommentSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    user = serializers.UUIDField(write_only=True)
     shop = serializers.PrimaryKeyRelatedField(read_only=True)
     
     class Meta:
@@ -123,9 +122,8 @@ class ShopCommentSerializer(serializers.ModelSerializer):
         return data
     
     def create(self, validated_data):
-        validated_data['user'] = self.context['request'].user
-        validated_data['shop'] = self.context.get('shop')
-        return super().create(validated_data)
+        shop = self.context.get('shop')
+        return ShopComment.objects.create(shop=shop, **validated_data)
 
 
 class ShopMediaSerializer(serializers.ModelSerializer):
@@ -137,7 +135,7 @@ class ShopMediaSerializer(serializers.ModelSerializer):
     
     def validate_shop(self, value):
         request = self.context.get('request')
-        if request and value.user != request.user:
+        if request and str(value.user) != str(request.user.id):
             raise serializers.ValidationError('You do not own this shop.')
         return value
     

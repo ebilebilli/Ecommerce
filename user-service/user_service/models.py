@@ -14,6 +14,7 @@ class User(AbstractUser):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True)
+    is_shop_owner = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

@@ -16,6 +16,7 @@ __all__ = [
     'ShopDetailAPIView',
     'ShopCreateAPIView',
     'ShopManagementAPIView',
+    'UserShopAPIView',
     'ShopBranchListByShopAPIView',
     'ShopBranchDetailAPIView',
     'CreateShopBranchAPIView',
@@ -67,8 +68,8 @@ class ShopCreateAPIView(APIView):
 
     def post(self, request):
         user = request.user
-        data = request.data.copy()  # Create a mutable copy
-        data['user'] = user.id  # Add user ID to the data
+        data = request.data.copy()  
+        data['user'] = str(user.id)  
         serializer = ShopCreateUpdateSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -84,11 +85,13 @@ class ShopManagementAPIView(APIView):
     http_method_names = ['patch', 'delete']
 
     def patch(self, request, shop_slug):
-        data = request.data
+        user = request.user
+        data = request.data.copy()  
+        data['user'] = str(user.id)
         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True)
-        if shop.user != request.user:
+        if str(shop.user) != str(user.id):
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
-        
+
         serializer = ShopCreateUpdateSerializer(shop, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -98,13 +101,38 @@ class ShopManagementAPIView(APIView):
     
     
     def delete(self, request, shop_slug):
+        user = request.user
         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True)
-        if shop.user != request.user:
+        if str(shop.user) != str(user.id):
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
         shop.is_active = False
         shop.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserShopAPIView(APIView):
+    authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get']
+
+    def get(self, request, user_id):
+        try:
+            shop = Shop.objects.filter(user=user_id, is_active=True).first()
+            user = request.user
+            data = request.data.copy()  
+            data['user'] = str(user.id)
+            if str(shop.user) != str(user.id):
+                
+                return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
+            if not shop:
+                return Response({'error': 'User has no active shop'}, status=status.HTTP_404_NOT_FOUND)
+            serializer = ShopDetailSerializer(shop)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {'error': f'Internal server error: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
         
 
 # ShopBranch Views    
@@ -142,8 +170,13 @@ class CreateShopBranchAPIView(APIView):
     http_method_names =['post']
 
     def post(self, request, shop_slug):
-        data = request.data
+        user = request.user
+        data = request.data.copy()  
+        data['user'] = str(user.id)
         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True)
+        if str(shop.user) != str(user.id):
+            return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
+        
         serializer = ShopBranchCreateUpdateSerializer(
             data=data, context={
                 'request': request,
@@ -165,7 +198,7 @@ class ShopBranchManagementAPIView(APIView):
     def patch(self, request, shop_branch_slug):
         data = request.data
         shop_branch = get_object_or_404(ShopBranch, slug=shop_branch_slug, is_active=True)
-        if shop_branch.shop.user != request.user:
+        if str(shop_branch.shop.user) != str(request.user.id):
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
         serializer = ShopBranchCreateUpdateSerializer(shop_branch, data=data, partial=True)
@@ -178,7 +211,7 @@ class ShopBranchManagementAPIView(APIView):
 
     def delete(self, request, shop_branch_slug):
         shop_branch = get_object_or_404(ShopBranch, slug=shop_branch_slug, is_active=True)
-        if shop_branch.shop.user != request.user:
+        if str(shop_branch.shop.user) != str(request.user.id):
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
         shop_branch.is_active = False
@@ -208,12 +241,12 @@ class CreateShopCommentAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, shop_slug):
-        data = request.data
+        user_id = request.user.id 
+        data = request.data.copy()  
+        data['user'] = str(user_id)   
         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True)
-        serializer = ShopCommentSerializer(data=data, context={
-            'request': request,
-            'shop': shop,
-        })
+
+        serializer = ShopCommentSerializer(data=data, context={'shop': shop})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -230,7 +263,7 @@ class CommentManagementAPIView(APIView):
     def patch(self, request, comment_id):
         data = request.data
         comment = get_object_or_404(ShopComment, id=comment_id)
-        if comment.user != request.user:
+        if str(comment.user) != str(request.user.id):
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
         serializer = ShopCommentSerializer(comment, data=data, partial=True)
@@ -243,7 +276,7 @@ class CommentManagementAPIView(APIView):
     
     def delete(self, request, comment_id):
         comment = get_object_or_404(ShopComment, id=comment_id)
-        if comment.user != request.user:
+        if str(comment.user) != str(request.user.id):
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
         comment.is_active = False
@@ -275,8 +308,13 @@ class CreateShopMediaAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, shop_slug):
-        data = request.data
+        user = request.user
+        data = request.data.copy()  
+        data['user'] = str(user.id)
         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True)
+        if str(shop.user) != str(user.id):
+            return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
+        
         serializer = ShopMediaSerializer(
             data=data, context={
             'request': request,
@@ -297,7 +335,7 @@ class DeleteShopMediaAPIView(APIView):
     
     def delete(self, request, media_id):
         shop_media = get_object_or_404(ShopMedia, id=media_id)
-        if shop_media.shop.user != request.user:
+        if str(shop_media.shop.user) != str(request.user.id):
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
         shop_media.delete()
@@ -339,8 +377,13 @@ class CreateShopSocialMediaAPIView(APIView):
     http_method_names = ['post']
 
     def post(self, request, shop_slug):
-        data = request.data
+        user = request.user
+        data = request.data.copy()  
+        data['user'] = str(user.id)
         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True)
+        if str(shop.user) != str(user.id):
+            return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
+        
         serializer = ShopSocialMediaSerializer(
             data=data, context={
                 'request': request,
@@ -362,7 +405,7 @@ class ShopSocialMediaManagementAPIView(APIView):
     def patch(self, request, social_media_id):
         data = request.data
         social_media = get_object_or_404(ShopSocialMedia, id=social_media_id)
-        if social_media.shop.user != request.user:
+        if str(social_media.shop.user) != str(request.user.id):
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
         serializer = ShopSocialMediaSerializer(social_media, data=data, partial=True)
@@ -374,7 +417,7 @@ class ShopSocialMediaManagementAPIView(APIView):
     
     def delete(self, request, social_media_id):
         social_media = get_object_or_404(ShopSocialMedia, id=social_media_id)
-        if social_media.shop.user != request.user:
+        if str(social_media.shop.user) != str(request.user.id):
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
         social_media.delete()

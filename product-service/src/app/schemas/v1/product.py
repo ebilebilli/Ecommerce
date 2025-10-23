@@ -6,7 +6,7 @@ from uuid import UUID
 from sqlalchemy import DateTime
 
 class ProductBase(BaseModel):
-    shop_id: UUID = Field(..., description="ID of the shop, managed by User service")
+    shop_id: Optional[UUID] = Field(None, description="ID of the shop, added by middleware")
     title: str = Field(..., max_length=100)
     about: Optional[str] = Field(None, max_length=1000)
     on_sale: bool = False

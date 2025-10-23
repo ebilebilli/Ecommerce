@@ -8,7 +8,7 @@ from rest_framework.renderers import JSONRenderer
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('shops.urls_v1')),
+    path('api/', include('shops.urls_v1')),
 ]
 
 urlpatterns += (
