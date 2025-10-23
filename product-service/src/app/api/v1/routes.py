@@ -47,7 +47,7 @@ def update_category(category_id: UUID, category: CategoryCreate, db: Session = D
     if not updated_category:
         raise HTTPException(status_code=404, detail="Category not found")
     return updated_category
-
++
 @router.delete("/categories/{category_id}")
 def delete_category(category_id: UUID, db: Session = Depends(get_db)):
     repo = CategoryRepository(db)
