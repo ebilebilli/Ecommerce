@@ -36,6 +36,7 @@ PUBLIC_PATHS = [
     '/shop/api/media/{shop_slug}/',
     '/shop/api/social-media/{shop_slug}/',
     # Product 
+    '/product/api/v1/categories/',
     '/product/api/v1/categories/{category_id}',
     '/product/api/v1/products/{product_id}',
     '/product/api/v1/products/{product_id}/variations/',

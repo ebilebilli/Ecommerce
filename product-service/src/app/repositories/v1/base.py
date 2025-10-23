@@ -11,7 +11,10 @@ class BaseRepository(Generic[T]):
         self.db_session = db_session
 
     def create(self, obj_in) -> T:
-        db_obj = self.model(**obj_in.dict())
+        if isinstance(obj_in, dict):
+            db_obj = self.model(**obj_in)
+        else:
+            db_obj = self.model(**obj_in.dict())
         self.db_session.add(db_obj)
         self.db_session.commit()
         self.db_session.refresh(db_obj)
@@ -27,8 +30,12 @@ class BaseRepository(Generic[T]):
         db_obj = self.get(id)
         if not db_obj:
             return None
-        for key, value in obj_in.dict(exclude_unset=True).items():
-            setattr(db_obj, key, value)
+        if isinstance(obj_in, dict):
+            for key, value in obj_in.items():
+                setattr(db_obj, key, value)
+        else:
+            for key, value in obj_in.dict(exclude_unset=True).items():
+                setattr(db_obj, key, value)
         self.db_session.commit()
         self.db_session.refresh(db_obj)
         return db_obj

@@ -4,6 +4,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
+import httpx
+import os
+from django.conf import settings
 
 from ..models import * 
 from ..serializers import *
@@ -30,7 +33,7 @@ __all__ = [
     'ShopSocialMediaListByShopAPIView',
     'ShopSocialMediaDetailAPIView',
     'CreateShopSocialMediaAPIView',
-    'ShopSocialMediaManagementAPIView'
+    'ShopSocialMediaManagementAPIView',
 ]
 
 # Shop Views
@@ -114,16 +117,23 @@ class UserShopAPIView(APIView):
     def get(self, request, user_id):
         try:
             shop = Shop.objects.filter(user=user_id, is_active=True).first()
-            user = request.user
-            data = request.data.copy()  
-            data['user'] = str(user.id)
-            if str(shop.user) != str(user.id):
-                
-                return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
             if not shop:
-                return Response({'error': 'User has no active shop'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({
+                    'error': 'User has no active shop',
+                    'user_id': user_id,
+                    'message': 'This user does not have any active shop. Please create a shop first.',
+                    'status': 'no_shop_found'
+                }, status=status.HTTP_404_NOT_FOUND)
+            
             serializer = ShopDetailSerializer(shop)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({
+                'id': shop.id,
+                'name': shop.name,
+                'slug': shop.slug,
+                'user_id': user_id,
+                'status': 'success',
+                'message': 'Shop found successfully'
+            }, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(
                 {'error': f'Internal server error: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR

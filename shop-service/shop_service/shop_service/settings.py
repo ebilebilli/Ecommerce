@@ -8,6 +8,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv() 
 
+# Service URLs for inter-service communication
+PRODUCT_SERVICE_URL = os.getenv('PRODUCT_SERVICE_URL', 'http://localhost:8006')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -21,6 +24,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "shop-service-814454543179.europe-west1.run.app",
+    "shop-service-web-1",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
