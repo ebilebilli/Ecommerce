@@ -30,7 +30,8 @@ PUBLIC_PATHS = [
     '/user/openapi.json',
     # Shop
     '/shop/api/shops/',
-    '/shop/api/{shop_slug}/',
+    '/shop/api/shops/{shop_slug}/',
+    '/shop/api/shops/{shop_uuid}/'
     '/shop/api/branches/{shop_branch_slug}/',
     '/shop/api/comments/{shop_slug}/',
     '/shop/api/media/{shop_slug}/',

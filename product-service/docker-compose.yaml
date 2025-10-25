@@ -14,7 +14,7 @@ services:
     ports:
       - "8006:8000"
     networks:
-      - product_network
+      - internal_net
       - shared_network
 
   db:
@@ -30,13 +30,14 @@ services:
     ports:
       - "5437:5432"
     networks:
-      - product_network
+      - internal_net
 
 networks:
-  product_network:
+  internal_net:
+  # internal: true
+    driver: bridge
   shared_network:
     external: true
     name: shared_network
-
 volumes:
   postgres_data:

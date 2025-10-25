@@ -29,6 +29,8 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
+    "http://localhost:8002",
+    "http://localhost:8007",
     "http://localhost:8007",
     "http://127.0.0.1:8000",
     "https://shop-service-814454543179.europe-west1.run.app",

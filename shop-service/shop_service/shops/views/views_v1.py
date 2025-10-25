@@ -1,12 +1,12 @@
+import httpx
+import os
+from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
-import httpx
-import os
-from django.conf import settings
 
 from ..models import * 
 from ..serializers import *
@@ -16,7 +16,8 @@ from shop_service.authentication import GatewayHeaderAuthentication
 
 __all__ = [
     'ShopListAPIView',
-    'ShopDetailAPIView',
+    'ShopDetailWithSlugAPIView',
+    'ShopDetailWithUuidAPIView',
     'ShopCreateAPIView',
     'ShopManagementAPIView',
     'UserShopAPIView',
@@ -53,12 +54,22 @@ class ShopListAPIView(APIView):
         return Response({'error': 'Shops not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
-class ShopDetailAPIView(APIView):
+class ShopDetailWithSlugAPIView(APIView):
     """Retrieve details of a specific shop by slug."""
     http_method_names =['get']
 
     def get(self, request, shop_slug):
         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True)
+        serializer = ShopDetailSerializer(shop)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ShopDetailWithUuidAPIView(APIView):
+    """Retrieve details of a specific shop by uuid."""
+    http_method_names =['get']
+
+    def get(self, request, shop_uuid):
+        shop = get_object_or_404(Shop, id=shop_uuid, is_active=True)
         serializer = ShopDetailSerializer(shop)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

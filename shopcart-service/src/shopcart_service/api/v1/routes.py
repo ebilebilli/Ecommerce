@@ -4,7 +4,7 @@ from src.shopcart_service import crud, schemas
 from src.shopcart_service.core import db
 from src.shopcart_service import models
 from pydantic import UUID4
-from src.shopcart_service.core.product_check import product_client
+from src.shopcart_service.core.product_client import product_client
 
 router = APIRouter(prefix="/shopcart", tags=["Cart"])
 
@@ -30,8 +30,8 @@ def get_cart(user_uuid: UUID4, db: Session = Depends(db.get_db)):
 
 @router.post("/{cart_id}/items/{product_var_id}", response_model=schemas.CartItemRead)
 async def add_item(cart_id: int,product_var_id: str, item: schemas.CartItemCreate, db: Session = Depends(db.get_db)):
-    product_var_id = await product_client.get_product_data_by_variation_id(product_var_id)
-    if not product_var_id:
+    product_data = await product_client.get_product_data_by_variation_id(product_var_id)
+    if not product_data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Product with id {product_var_id} not found in Product Service."

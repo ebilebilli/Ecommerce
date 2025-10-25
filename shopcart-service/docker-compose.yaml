@@ -23,7 +23,7 @@ services:
       - ./.cache/uv:/home/appuser/.cache/uv  # fixing permission denied errors
     restart: unless-stopped
     networks:
-      - shopcart_network
+      - internal_net
       - shared_network
 
   db:
@@ -39,10 +39,12 @@ services:
     ports:
       - "5439:5432"
     networks:
-      - shopcart_network
+      - internal_net
 
 networks:
-  shopcart_network:
+  internal_net:
+  # internal: true
+    driver: bridge
   shared_network:
     external: true
     name: shared_network
