@@ -12,7 +12,7 @@ class CartItemCreate(CartItemBase):
 
 class CartItemRead(CartItemBase):
     id: int
-    product_variation_id: int
+    product_variation_id: UUID4
     quantity: int
     created_at: datetime
     updated_at: Optional[datetime]
