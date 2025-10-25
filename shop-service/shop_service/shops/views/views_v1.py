@@ -1,12 +1,12 @@
+import httpx
+import os
+from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
-import httpx
-import os
-from django.conf import settings
 
 from ..models import * 
 from ..serializers import *
@@ -16,7 +16,8 @@ from shop_service.authentication import GatewayHeaderAuthentication
 
 __all__ = [
     'ShopListAPIView',
-    'ShopDetailAPIView',
+    'ShopDetailWithSlugAPIView',
+    'ShopDetailWithUuidAPIView',
     'ShopCreateAPIView',
     'ShopManagementAPIView',
     'UserShopAPIView',
@@ -53,7 +54,7 @@ class ShopListAPIView(APIView):
         return Response({'error': 'Shops not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
-class ShopDetailAPIView(APIView):
+class ShopDetailWithSlugAPIView(APIView):
     """Retrieve details of a specific shop by slug."""
     http_method_names =['get']
 
@@ -63,9 +64,21 @@ class ShopDetailAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class ShopDetailWithUuidAPIView(APIView):
+    """Retrieve details of a specific shop by uuid."""
+    http_method_names =['get']
+
+    def get(self, request, shop_uuid):
+        shop = get_object_or_404(Shop, id=shop_uuid, is_active=True)
+        serializer = ShopDetailSerializer(shop)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class ShopCreateAPIView(APIView):
     """Create a new shop. Only authenticated users can create."""
     http_method_names = ['post']
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def post(self, request):
         user = request.user
@@ -82,6 +95,8 @@ class ShopCreateAPIView(APIView):
 class ShopManagementAPIView(APIView):
     """Update or soft-delete a shop. Only the owner can modify or delete."""
     http_method_names = ['patch', 'delete']
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def patch(self, request, shop_slug):
         user = request.user
@@ -113,9 +128,20 @@ class ShopManagementAPIView(APIView):
 class UserShopAPIView(APIView):
     """Returns a shop for a given user id."""
     http_method_names = ['get']
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def get(self, request, user_id):
         try:
+            # Validate that user can only access their own shop data
+            current_user_id = str(request.user.id)
+            if current_user_id != str(user_id):
+                return Response({
+                    'error': 'Access denied',
+                    'message': 'You can only access your own shop data',
+                    'status': 'access_denied'
+                }, status=status.HTTP_403_FORBIDDEN)
+            
             shop = Shop.objects.filter(user=user_id, is_active=True).first()
             if not shop:
                 return Response({
@@ -171,6 +197,8 @@ class ShopBranchDetailAPIView(APIView):
 class CreateShopBranchAPIView(APIView):
     """Allows an authenticated user to create a new shop branch."""
     http_method_names =['post']
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def post(self, request, shop_slug):
         user = request.user
@@ -195,6 +223,8 @@ class CreateShopBranchAPIView(APIView):
 class ShopBranchManagementAPIView(APIView):
     """Allows the owner to update or soft-delete their shop branch."""
     http_method_names = ['patch', 'delete']
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def patch(self, request, shop_branch_slug):
         data = request.data
@@ -238,6 +268,8 @@ class CommentListByShopAPIView(APIView):
 
 class CreateShopCommentAPIView(APIView):
     """Create a shop comment."""
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def post(self, request, shop_slug):
         user_id = request.user.id 
@@ -256,6 +288,8 @@ class CreateShopCommentAPIView(APIView):
 class CommentManagementAPIView(APIView):
     """Update or delete a comment."""
     http_method_names = ['delete', 'patch']
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def patch(self, request, comment_id):
         data = request.data
@@ -301,6 +335,8 @@ class ShopMediaByShopAPIView(APIView):
 
 class CreateShopMediaAPIView(APIView):
     """Allows an authenticated user to create a new shop media."""
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def post(self, request, shop_slug):
         user = request.user
@@ -325,6 +361,8 @@ class CreateShopMediaAPIView(APIView):
 class DeleteShopMediaAPIView(APIView):
     """Allows the owner to delete their shop media."""
     http_method_names = ['delete']
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
     
     def delete(self, request, media_id):
         shop_media = get_object_or_404(ShopMedia, id=media_id)
@@ -366,6 +404,8 @@ class ShopSocialMediaDetailAPIView(APIView):
 class CreateShopSocialMediaAPIView(APIView):
     """Allows an authenticated user to create a new shop social media."""
     http_method_names = ['post']
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def post(self, request, shop_slug):
         user = request.user
@@ -390,6 +430,8 @@ class CreateShopSocialMediaAPIView(APIView):
 class ShopSocialMediaManagementAPIView(APIView):
     """Allows the owner to update or delete their shop social media."""
     http_method_names = ['patch', 'delete']
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [GatewayHeaderAuthentication]
 
     def patch(self, request, social_media_id):
         data = request.data

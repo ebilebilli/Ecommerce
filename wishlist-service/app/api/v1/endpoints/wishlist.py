@@ -1,48 +1,74 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlmodel import Session, select
 from app.database import get_session
 from app.models import Wishlist, WishlistCreate, WishlistResponse
+from app.product_client import product_client
+from app.shop_client import shop_client
 
 router = APIRouter()
 
 @router.post("/wishlist", response_model=WishlistResponse, status_code=status.HTTP_201_CREATED)
-def add_to_wishlist(
+async def add_to_wishlist(
     wishlist: WishlistCreate, 
     session: Session = Depends(get_session)
 ):
-    """Add product to user's wishlist"""
-    
-    # Check if already exists
-    existing = session.exec(
-        select(Wishlist).where(
-            Wishlist.user_id == wishlist.user_id,
-            Wishlist.product_variation_id == wishlist.product_variation_id,
-            Wishlist.shop_id == wishlist.shop_id
+    if wishlist.product_variation_id:
+        product_data = await product_client.get_product_data_by_variation_id(wishlist.product_variation_id)
+        if not product_data:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Product variation not found in Product Service"
+            )
+        existing = session.exec(
+            select(Wishlist).where(
+                Wishlist.user_id == wishlist.user_id,
+                Wishlist.product_variation_id == wishlist.product_variation_id
+            )
+        ).first()
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Product already in wishlist"
+            )
+        db_wishlist = Wishlist(
+            user_id=wishlist.user_id,
+            product_variation_id=wishlist.product_variation_id
         )
-    ).first()
     
-    if existing:
+    elif wishlist.shop_id:
+        shop_data = await shop_client.get_shop_data(wishlist.shop_id)
+        if not shop_data:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Shop not found in Shop Service"
+            )
+        existing = session.exec(
+            select(Wishlist).where(
+                Wishlist.user_id == wishlist.user_id,
+                Wishlist.shop_id == wishlist.shop_id
+            )
+        ).first()
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Shop already in wishlist"
+            )
+        db_wishlist = Wishlist(
+            user_id=wishlist.user_id,
+            shop_id=wishlist.shop_id
+        )
+    
+    else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Product already in wishlist for this shop"
+            detail="Either product_variation_id or shop_id must be provided"
         )
-    
-    # Create new wishlist item
-    db_wishlist = Wishlist(**wishlist.dict())
+
     session.add(db_wishlist)
     session.commit()
     session.refresh(db_wishlist)
-    
     return db_wishlist
 
-@router.get("/wishlist/{user_id}", response_model=list[WishlistResponse])
-def get_user_wishlist(user_id: int, session: Session = Depends(get_session)):
-    """Get user's wishlist"""
-    wishlist_items = session.exec(
-        select(Wishlist).where(Wishlist.user_id == user_id)
-    ).all()
-    
-    return wishlist_items
 
 @router.delete("/wishlist/{user_id}/{product_variation_id}/{shop_id}")
 def remove_from_wishlist(
