@@ -22,6 +22,9 @@ services:
       - ./pyproject.toml:/app/pyproject.toml:rw
       - ./.cache/uv:/home/appuser/.cache/uv  # fixing permission denied errors
     restart: unless-stopped
+    networks:
+      - shopcart_network
+      - shared_network
 
   db:
     image: postgres:16-alpine
@@ -35,6 +38,14 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5439:5432"
+    networks:
+      - shopcart_network
+
+networks:
+  shopcart_network:
+  shared_network:
+    external: true
+    name: shared_network
 
 volumes:
   postgres_data:
