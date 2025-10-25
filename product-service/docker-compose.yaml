@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  app:
+  product-service-web-1:
     build: .
     container_name: fastapi_app
     restart: always
