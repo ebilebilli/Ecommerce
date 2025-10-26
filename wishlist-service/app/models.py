@@ -15,7 +15,6 @@ class Wishlist(SQLModel, table=True):
 
 # API Schemas
 class WishlistCreate(SQLModel):
-    user_id: str
     product_variation_id: Optional[str] = None
     shop_id: Optional[str] = None
 
@@ -25,3 +24,6 @@ class WishlistResponse(SQLModel):
     product_variation_id: Optional[str]
     shop_id: Optional[str]
     created_at: datetime
+
+class WishlistListResponse(SQLModel):
+    items: list[WishlistResponse]
