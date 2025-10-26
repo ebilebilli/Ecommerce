@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import Header
 from sqlalchemy.orm import Session
 from src.shopcart_service import crud, schemas
 from src.shopcart_service.core import db
@@ -8,8 +9,18 @@ from src.shopcart_service.core.product_client import product_client
 
 router = APIRouter(prefix="/shopcart", tags=["Cart"])
 
+def get_user_id(user_id: str = Header(None, alias="X-User-Id", include_in_schema=False)):
+    """Extract user ID from X-User-Id header"""
+    if not user_id:
+        raise HTTPException(
+            status_code=401, 
+            detail="User ID not found in request headers"
+        )
+    return user_id
+
+
 @router.post("/", response_model=schemas.ShopCartRead)
-def create_cart(user_uuid: UUID4, db: Session = Depends(db.get_db)):
+def create_cart(user_uuid: str = Depends(get_user_id), db: Session = Depends(db.get_db)):
     existing_cart = crud.get_user_by_uuid(db,user_uuid)
     if existing_cart:
         raise HTTPException(status_code = 401 , detail = "You have already got a shop cart")
@@ -18,7 +29,7 @@ def create_cart(user_uuid: UUID4, db: Session = Depends(db.get_db)):
 
 
 @router.get("/mycart", response_model=schemas.ShopCartRead)
-def get_cart(user_uuid: UUID4, db: Session = Depends(db.get_db)):
+def get_cart(user_uuid: str = Depends(get_user_id), db: Session = Depends(db.get_db)):
     cart = crud.get_cart(db, user_uuid)
     if not cart:
         new_cart = crud.create_cart(db,user_uuid)
