@@ -2,7 +2,7 @@ from django.db import models
 
 class Order(models.Model):
     id = models.BigAutoField(primary_key=True)  # BIGSERIAL (PK)
-    user_id = models.BigIntegerField()          # NOT NULL
+    user_id = models.CharField(max_length=36)     # UUID field
     created_at = models.DateTimeField(auto_now_add=True)  # DEFAULT now()
     is_approved = models.BooleanField(default=False)      # DEFAULT FALSE
 
@@ -41,7 +41,7 @@ class OrderItem(models.Model):
 
     status = models.IntegerField(choices=Status.choices, default=Status.PROCESSING)
     quantity = models.IntegerField(default=1)            # INT NOT NULL DEFAULT 1
-    product_variation = models.BigIntegerField()         # BIGINT NOT NULL
+    product_variation = models.CharField(max_length=36)   # UUID field
     price = models.BigIntegerField()                     # BIGINT NOT NULL (kuru x100 saxla: qepik)
 
     class Meta:

@@ -1,10 +1,14 @@
 import httpx
 import os
+import logging
 from typing import Optional
-from fastapi import HTTPException, status
+from rest_framework import status
+from rest_framework.exceptions import  APIException
+
+logger = logging.getLogger(__name__)
 
 
-SHOPCART_SERVICE_URL = os.getenv('SHOPCART_SERVICE_URL', 'http://order_service:8000')
+SHOPCART_SERVICE_URL = os.getenv('SHOPCART_SERVICE_URL', 'http://shopcart_service:8000')
 
 
 class ShopCartServiceDataCheck:
@@ -12,31 +16,36 @@ class ShopCartServiceDataCheck:
         self.base_url = SHOPCART_SERVICE_URL
         self.timeout = 30.0
     
-    async def get_shopcart_data(self, user_uuid: str) -> Optional[dict]:
+    def get_shopcart_data(self, user_uuid: str) -> Optional[dict]:
+        url = f'{self.base_url}/shopcart/mycart/'
+        
         try:
-            url = f'{self.base_url}/shopcart/mycart/{shopcart_id}'                                                      
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(
+            with httpx.Client(timeout=self.timeout, follow_redirects=True) as client:
+                response = client.get(
                     url,
                     headers={
                         'Content-Type': 'application/json',
                         'X-User-ID': user_uuid
-                    })
-                
-                if response.status_code == 200:
-                    shopcart_data = response.json()
-                    shopcart_id = shopcart_data.get('id')
-                    return shopcart_id
-                elif response.status_code == 404:
-                    return None  
-                else:
-                    raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                        detail=f'Product Service error: {response.status_code} - {response.text}'
-                    )           
+                    }
+                )
+            
+            if response.status_code == 200:
+                cart_data = response.json()
+                cart_id = cart_data.get('id')
+                logger.info(f'Shopcart data retrieved successfully - Cart ID: {cart_id}, User: {user_uuid}')
+                return cart_data
+            elif response.status_code == 404:
+                logger.warning(f'No shopcart found for user: {user_uuid}')
+                return None
+            else:
+                logger.error(f'Shopcart service error - Status: {response.status_code}, User: {user_uuid}')
+                raise APIException(f'Shopcart Service error: {response.status_code}')
         except httpx.RequestError as e:
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail=f'Failed to connect to Shopcart Service: {str(e)}'
-            )
+            logger.error(f'Failed to connect to Shopcart Service - User: {user_uuid}, Error: {str(e)}')
+            raise APIException(f'Failed to connect to Shopcart Service: {str(e)}')
+        except Exception as e:
+            logger.error(f'Unexpected error in shopcart request - User: {user_uuid}, Error: {str(e)}')
+            raise
+
 
 shopcart_client = ShopCartServiceDataCheck()

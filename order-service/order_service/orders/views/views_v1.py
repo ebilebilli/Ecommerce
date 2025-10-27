@@ -3,11 +3,13 @@ from rest_framework.permissions import AllowAny  # prod-da öz permission-ların
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-import asyncio
+import logging
 
 from utils.shopcart_client import shopcart_client
 from ..models import * 
 from ..serializers import *
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -95,24 +97,40 @@ def orderitems_detail(request, pk):
 @api_view(['POST'])
 def create_order_from_shopcart(request):
     user_id = str(request.user.id)
-    shopcart_data = asyncio.run(shopcart_client.get_shopcart_data(user_id))
+    
+    shopcart_data = shopcart_client.get_shopcart_data(user_id)
+    
     if not shopcart_data:
         return Response({"detail": "Shopcart not found"}, status=status.HTTP_404_NOT_FOUND)
     
     items = shopcart_data.pop('items', [])
-    order_serializer = OrderSerializer(data={**shopcart_data, "user": user_id})
+    
+    # Order için sadece gerekli field'ları kullan
+    order_data = {"user_id": user_id}
+    
+    order_serializer = OrderSerializer(data=order_data)
     if order_serializer.is_valid():
         order = order_serializer.save()
+        logger.info(f'Order created successfully - Order ID: {order.id}, User: {user_id}, Items: {len(items)}')
     else:
+        logger.error(f'Order serializer errors: {order_serializer.errors}')
         return Response(order_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # 2️⃣ OrderItem-ları yarat
     for item in items:
-        item['order'] = order.id  # ForeignKey-a order.id əlavə et
-        item_serializer = OrderItemSerializer(data=item)
+        # OrderItem için gerekli field'ları hazırla
+        order_item_data = {
+            'order': order.id,
+            'product_variation': item.get('product_variation_id'),
+            'quantity': item.get('quantity', 1),
+            'status': 1,  # Status.PROCESSING (integer)
+            'price': 0  # Price field required, default to 0 (integer)
+        }
+        item_serializer = OrderItemSerializer(data=order_item_data)
         if item_serializer.is_valid():
             item_serializer.save()
         else:
+            logger.error(f'Order item serializer errors: {item_serializer.errors}')
             return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({"message": "Order and items created successfully"}, status=status.HTTP_201_CREATED)

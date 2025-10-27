@@ -19,5 +19,7 @@ dependencies = [
     "whitenoise>=6.5",
     "psycopg[binary] (>=3.2.10,<4.0.0)",
     "drf-yasg>=1.21.7",
+    "httpx>=0.28.1",
+    
 
 ]
