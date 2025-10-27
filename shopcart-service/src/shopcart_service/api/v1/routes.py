@@ -19,6 +19,21 @@ def get_user_id(user_id: str = Header(None, alias="X-User-Id", include_in_schema
     return user_id
 
 
+def verify_cart_ownership(db: Session, cart_id: int, user_uuid: str):
+    """Verify that the cart belongs to the user"""
+    cart = db.query(models.ShopCart).filter(
+        models.ShopCart.id == cart_id,
+        models.ShopCart.user_uuid == user_uuid
+    ).first()
+    
+    if not cart:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You don't have access to this cart"
+        )
+    return cart
+
+
 @router.post("/", response_model=schemas.ShopCartRead)
 def create_cart(user_uuid: str = Depends(get_user_id), db: Session = Depends(db.get_db)):
     existing_cart = crud.get_user_by_uuid(db,user_uuid)
@@ -40,7 +55,16 @@ def get_cart(user_uuid: str = Depends(get_user_id), db: Session = Depends(db.get
 
 
 @router.post("/{cart_id}/items/{product_var_id}", response_model=schemas.CartItemRead)
-async def add_item(cart_id: int,product_var_id: str, item: schemas.CartItemCreate, db: Session = Depends(db.get_db)):
+async def add_item(
+    cart_id: int,
+    product_var_id: str, 
+    item: schemas.CartItemCreate, 
+    user_uuid: str = Depends(get_user_id),
+    db: Session = Depends(db.get_db)
+):
+    # Verify cart ownership
+    verify_cart_ownership(db, cart_id, user_uuid)
+    
     product_data = await product_client.get_product_data_by_variation_id(product_var_id)
     if not product_data:
         raise HTTPException(
@@ -52,16 +76,33 @@ async def add_item(cart_id: int,product_var_id: str, item: schemas.CartItemCreat
 
 
 @router.put("/{cart_id}/items/{item_id}",response_model = schemas.CartItemRead)
-def update_cart_item(cart_id:int, item_id:int, item: schemas.CartItemUpdate, db: Session = Depends(db.get_db)):
-    updated_item = crud.update_cart(db,item_id,cart_id,item)
+def update_cart_item(
+    cart_id: int, 
+    item_id: int, 
+    item: schemas.CartItemUpdate, 
+    user_uuid: str = Depends(get_user_id),
+    db: Session = Depends(db.get_db)
+):
+    # Verify cart ownership
+    verify_cart_ownership(db, cart_id, user_uuid)
+    
+    updated_item = crud.update_cart(db, item_id, cart_id, item)
     if not updated_item:
-        raise HTTPException(status_code=404, detail = "Cart item not found")
+        raise HTTPException(status_code=404, detail="Cart item not found")
     return updated_item
 
 
 
 @router.delete("/{cart_id}/items/{item_id}",response_model = schemas.CartItemRead)
-def delete_cart_item(cart_id: int, item_id: int, db:Session = Depends(db.get_db)):
+def delete_cart_item(
+    cart_id: int, 
+    item_id: int, 
+    user_uuid: str = Depends(get_user_id),
+    db: Session = Depends(db.get_db)
+):
+    # Verify cart ownership
+    verify_cart_ownership(db, cart_id, user_uuid)
+    
     deleted_item = crud.delete_cart_item(db, item_id, cart_id)
     if not deleted_item:
         raise HTTPException(status_code=404, detail="Cart item not found")

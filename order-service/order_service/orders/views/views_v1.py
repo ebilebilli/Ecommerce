@@ -23,7 +23,6 @@ def orders_list_create(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
     
 @api_view(['GET', 'PATCH', 'DELETE'])
 def orders_detail(request, pk):
