@@ -3,9 +3,12 @@ from rest_framework.permissions import AllowAny  # prod-da öz permission-ların
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+import asyncio
 
+from utils.shopcart_client import shopcart_client
 from ..models import * 
 from ..serializers import *
+
 
 
 #Order Create
@@ -91,11 +94,13 @@ def orderitems_detail(request, pk):
 
 @api_view(['POST'])
 def create_order_from_shopcart(request):
-    data = request.data                  #butun shopcart alinacaq
-    items = data.pop('items', [])
-
-        # 1️⃣ Order yarat
-    order_serializer = OrderSerializer(data=data)
+    user_id = str(request.user.id)
+    shopcart_data = asyncio.run(shopcart_client.get_shopcart_data(user_id))
+    if not shopcart_data:
+        return Response({"detail": "Shopcart not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    items = shopcart_data.pop('items', [])
+    order_serializer = OrderSerializer(data={**shopcart_data, "user": user_id})
     if order_serializer.is_valid():
         order = order_serializer.save()
     else:
@@ -111,6 +116,7 @@ def create_order_from_shopcart(request):
             return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({"message": "Order and items created successfully"}, status=status.HTTP_201_CREATED)
+
 
 @api_view(['PATCH'])
 def update_order_item_status(request, pk):

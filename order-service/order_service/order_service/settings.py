@@ -20,6 +20,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "order-service-web", 
     "ecommerce-order-service-tibsudbtnq-ew.a.run.app",
     "ecommerce-order-service-944724518299.europe-west1.run.app",
 ]
