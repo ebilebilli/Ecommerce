@@ -92,7 +92,7 @@ def orderitems_detail(request, pk):
 
 @api_view(['POST'])
 def create_order_from_shopcart(request):
-    data = request.data
+    data = request.data                  #butun shopcart alinacaq
     items = data.pop('items', [])
 
         # 1️⃣ Order yarat

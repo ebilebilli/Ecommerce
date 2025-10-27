@@ -126,40 +126,16 @@ class ShopManagementAPIView(APIView):
 
 
 class UserShopAPIView(APIView):
-    """Returns a shop for a given user id."""
+    permission_classes = [AllowAny]
     http_method_names = ['get']
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [GatewayHeaderAuthentication]
 
     def get(self, request, user_id):
         try:
-            # Validate that user can only access their own shop data
-            current_user_id = str(request.user.id)
-            if current_user_id != str(user_id):
-                return Response({
-                    'error': 'Access denied',
-                    'message': 'You can only access your own shop data',
-                    'status': 'access_denied'
-                }, status=status.HTTP_403_FORBIDDEN)
-            
             shop = Shop.objects.filter(user=user_id, is_active=True).first()
             if not shop:
-                return Response({
-                    'error': 'User has no active shop',
-                    'user_id': user_id,
-                    'message': 'This user does not have any active shop. Please create a shop first.',
-                    'status': 'no_shop_found'
-                }, status=status.HTTP_404_NOT_FOUND)
-            
+                return Response({'error': 'User has no active shop'}, status=status.HTTP_404_NOT_FOUND)
             serializer = ShopDetailSerializer(shop)
-            return Response({
-                'id': shop.id,
-                'name': shop.name,
-                'slug': shop.slug,
-                'user_id': user_id,
-                'status': 'success',
-                'message': 'Shop found successfully'
-            }, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(
                 {'error': f'Internal server error: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR

@@ -9,7 +9,7 @@ class GatewayHeaderAuthentication(BaseAuthentication):
             return None
         try:
             uuid.UUID(user_id)
-            class ShopUser:
+            class OrderUser:
                 def __init__(self, user_id):
                     self.id = user_id
                     self.pk = user_id
@@ -17,9 +17,9 @@ class GatewayHeaderAuthentication(BaseAuthentication):
                     self.is_anonymous = False
                 
                 def __str__(self):
-                    return f"ShopUser({self.id})"
+                    return f"OrderUser({self.id})"
             
-            return (ShopUser(user_id), None)
+            return (OrderUser(user_id), None)
         
         except (ValueError, TypeError):
             return None
