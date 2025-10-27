@@ -5,6 +5,7 @@ from fastapi import Request, HTTPException, status
 from fastapi.responses import JSONResponse
 from jose import jwt, JWTError
 from dotenv import load_dotenv
+from typing import Set
 
 from .services import SERVICE_URLS
 from .logging import logger
@@ -23,7 +24,7 @@ PUBLIC_PATHS = [
     '/public/',
     # User
     '/user/api/user/login/',
-    '/user/api/user/logout/',
+    # '/user/api/user/logout/',  # NOT PUBLIC - needs authentication
     '/user/api/user/register/',
     '/user/api/user/password-reset/request/',
     '/user/api/user/password-reset/confirm/',
@@ -53,6 +54,15 @@ JWT_ALGORITHM = os.getenv('JWT_ALGORITHM')
 HEADER = 'Bearer'
 ACCESS_TOKEN_LIFETIME_MINUTES = int(os.getenv('ACCESS_TOKEN_LIFETIME_MINUTES', 60))
 REFRESH_TOKEN_LIFETIME_DAYS = int(os.getenv('REFRESH_TOKEN_LIFETIME_DAYS', 7))
+BLACKLISTED_TOKENS: Set[str] = set()
+
+
+def add_to_blacklist(token: str):
+    BLACKLISTED_TOKENS.add(token)
+
+
+def is_token_blacklisted(token: str) -> bool:
+    return token in BLACKLISTED_TOKENS
 
 
 def create_access_token(payload: dict):
@@ -77,7 +87,11 @@ async def verify_jwt(request: Request):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token not found or incorrect format."
         )
+    
     token = auth_header.split(" ")[1]
+    if is_token_blacklisted(token):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has been revoked (logged out).")
+    
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         request.state.user = payload  
@@ -110,3 +124,30 @@ async def handle_login(request):
         'refresh_token': refresh,
         'token_type': 'Bearer'
     })
+
+
+async def handle_logout(request: Request):
+    auth_header = request.headers.get("Authorization")
+    
+    # Parse body safely (optional)
+    body = {}
+    refresh_token = None
+    try:
+        body = await request.json()
+        refresh_token = body.get("refresh_token")
+    except Exception:
+        pass  # Body optional
+    
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid")
+
+    access_token = auth_header.split(" ")[1]
+    add_to_blacklist(access_token)
+    
+    if refresh_token:
+        add_to_blacklist(refresh_token)
+    
+    return JSONResponse({
+        "detail": "Successfully logged out"
+    }, status_code=200)
+
