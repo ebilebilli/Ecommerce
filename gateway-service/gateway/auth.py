@@ -90,7 +90,6 @@ async def verify_jwt(request: Request):
         )
 
 
-
 async def handle_login(request):
     body = await request.json()
     async with httpx.AsyncClient() as client:
