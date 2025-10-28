@@ -14,8 +14,7 @@ class ProductServiceDataCheck:
     
     async def get_product_data_by_variation_id(self, product_id: str) -> Optional[dict]:
         try:
-            url = f'{self.base_url}/api/products/{product_id}'    # Tempororily it is product id beacause of 
-                                                                # there is not product variation endpoint for spesific product variation id
+            url = f'{self.base_url}/api/products/variations{product_variation_id}'
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 response = await client.get(
                     url,
