@@ -4,11 +4,14 @@ import logging
 from typing import Optional
 from rest_framework import status
 from rest_framework.exceptions import  APIException
+from dotenv impor load_dotenv
+
 
 logger = logging.getLogger(__name__)
 
+load_dotenv()
 
-SHOPCART_SERVICE_URL = os.getenv('SHOPCART_SERVICE_URL', 'http://shopcart_service:8000')
+SHOPCART_SERVICE_URL = os.getenv('SHOPCART_SERVICE_URL')
 
 
 class ShopCartServiceDataCheck:
