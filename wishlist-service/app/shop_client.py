@@ -2,9 +2,12 @@ import httpx
 import os
 from typing import Optional
 from fastapi import HTTPException, status
+from dotenv import load_dotenv
 
 
-SHOP_SERVICE_URL = os.getenv('SHOP_SERVICE_URL', 'http://shop-service-web-1:8000')
+load_dotenv() 
+
+SHOP_SERVICE_URL = os.getenv('SHOP_SERVICE_URL')
 
 
 class ShopServiceDataCheck:

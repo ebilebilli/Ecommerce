@@ -2,9 +2,12 @@ import httpx
 import os
 from typing import Optional
 from fastapi import HTTPException, status
+from dotenv import load_dotenv
 
 
-PRODUCT_SERVICE_URL = os.getenv('PRODUCT_SERVICE_URL', 'http://fastapi_app:8000')
+load_dotenv() 
+
+PRODUCT_SERVICE_URL = os.getenv('PRODUCT_SERVICE_URL')
 
 
 class ProductServiceDataCheck:
@@ -12,7 +15,7 @@ class ProductServiceDataCheck:
         self.base_url = PRODUCT_SERVICE_URL
         self.timeout = 30.0
     
-    async def get_product_data_by_variation_id(self, product_id: str) -> Optional[dict]:
+    async def get_product_data_by_variation_id(self, product_variation_id: str) -> Optional[dict]:
         try:
             url = f'{self.base_url}/api/products/variations{product_variation_id}'
             async with httpx.AsyncClient(timeout=self.timeout) as client:
