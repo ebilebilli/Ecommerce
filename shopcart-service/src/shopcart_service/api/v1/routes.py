@@ -1,11 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi import Header
 from sqlalchemy.orm import Session
+import logging
 from src.shopcart_service import crud, schemas
 from src.shopcart_service.core import db
 from src.shopcart_service import models
 from pydantic import UUID4
 from src.shopcart_service.core.product_client import product_client
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/shopcart", tags=["Cart"])
 
@@ -62,15 +65,23 @@ async def add_item(
     user_uuid: str = Depends(get_user_id),
     db: Session = Depends(db.get_db)
 ):
+    logger.info(f'Add item request - Cart ID: {cart_id}, Product variation ID: {product_var_id}, User: {user_uuid}')
+    
     # Verify cart ownership
     verify_cart_ownership(db, cart_id, user_uuid)
     
+    logger.info(f'Calling product_client.get_product_data_by_variation_id({product_var_id})')
     product_data = await product_client.get_product_data_by_variation_id(product_var_id)
+    logger.info(f'Product client returned data: {product_data}')
+    
     if not product_data:
+        logger.warning(f'Product not found for variation ID: {product_var_id}')
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Product with id {product_var_id} not found in Product Service."
         )
+    
+    logger.info(f'Adding item to cart - Cart ID: {cart_id}')
     return crud.add_item_to_cart(db, product_var_id, cart_id, item)
 
 

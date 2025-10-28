@@ -11,10 +11,12 @@ class BaseRepository(Generic[T]):
         self.db_session = db_session
 
     def create(self, obj_in) -> T:
-        if isinstance(obj_in, dict):
-            db_obj = self.model(**obj_in)
+        # Handle both Pydantic models and plain dictionaries
+        if hasattr(obj_in, 'dict'):
+            data = obj_in.dict()
         else:
-            db_obj = self.model(**obj_in.dict())
+            data = obj_in
+        db_obj = self.model(**data)
         self.db_session.add(db_obj)
         self.db_session.commit()
         self.db_session.refresh(db_obj)
@@ -30,12 +32,13 @@ class BaseRepository(Generic[T]):
         db_obj = self.get(id)
         if not db_obj:
             return None
-        if isinstance(obj_in, dict):
-            for key, value in obj_in.items():
-                setattr(db_obj, key, value)
+        # Handle both Pydantic models and plain dictionaries
+        if hasattr(obj_in, 'dict'):
+            data = obj_in.dict(exclude_unset=True)
         else:
-            for key, value in obj_in.dict(exclude_unset=True).items():
-                setattr(db_obj, key, value)
+            data = obj_in
+        for key, value in data.items():
+            setattr(db_obj, key, value)
         self.db_session.commit()
         self.db_session.refresh(db_obj)
         return db_obj
