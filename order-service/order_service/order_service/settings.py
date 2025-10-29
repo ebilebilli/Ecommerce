@@ -17,13 +17,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "order-service-web", 
-    "ecommerce-order-service-tibsudbtnq-ew.a.run.app",
-    "ecommerce-order-service-944724518299.europe-west1.run.app",
-]
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8080",

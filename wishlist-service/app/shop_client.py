@@ -7,12 +7,12 @@ from dotenv import load_dotenv
 
 load_dotenv() 
 
-SHOP_SERVICE_URL = os.getenv('SHOP_SERVICE_URL')
+SHOP_SERVICE = os.getenv('SHOP_SERVICE')
 
 
 class ShopServiceDataCheck:
     def __init__(self):
-        self.base_url = SHOP_SERVICE_URL
+        self.base_url = SHOP_SERVICE
         self.timeout = 30.0
     
     async def get_shop_data(self, shop_id: str) -> Optional[dict]:
