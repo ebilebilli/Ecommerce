@@ -47,7 +47,7 @@ networks:
   # internal: true
     driver: bridge
   shared_network:
-    external: true
+    driver: bridge
     name: shared_network
 
 volumes:
