@@ -23,4 +23,4 @@ services:
 
 networks:
   shared_network:
-    external: true
+    driver: bridge
