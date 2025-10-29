@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:16-alpine
@@ -40,7 +38,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
     volumes:
       - ./:/app:rw
-      - media:/app/shop_service/media
+      - media:/app/user_service/media
       - staticfiles:/app/staticfiles
     ports:
       - "${WEB_PORT:-8005}:8000"
