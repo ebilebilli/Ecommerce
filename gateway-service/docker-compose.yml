@@ -18,3 +18,9 @@ services:
       - ./pyproject.toml:/app/pyproject.toml:rw
       - ./.cache/uv:/home/appuser/.cache/uv  
     restart: unless-stopped
+    networks:
+      - shared_network
+
+networks:
+  shared_network:
+    external: true

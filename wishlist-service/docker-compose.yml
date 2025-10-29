@@ -36,7 +36,7 @@ services:
     volumes:
       - ./:/app:rw
     ports:
-      - "8002:8000"
+      - "8009:8000"
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     networks:
       - internal_net

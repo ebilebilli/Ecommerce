@@ -2,17 +2,17 @@ import httpx
 import os
 from typing import Optional
 from fastapi import HTTPException, status
-from dotenv impor load_dotenv
+from dotenv import load_dotenv
 
 
 load_dotenv()
 
-SHOP_SERVICE_URL = os.getenv('SHOP_SERVICE_URL')
+SHOP_SERVICE = os.getenv('SHOP_SERVICE')
 
 
 class ShopServiceClient:
     def __init__(self):
-        self.base_url = SHOP_SERVICE_URL
+        self.base_url = SHOP_SERVICE
         self.timeout = 30.0
     
     async def get_shop_by_user_id(self, user_id: str) -> Optional[str]:

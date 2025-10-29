@@ -7,12 +7,12 @@ from dotenv import load_dotenv
 
 load_dotenv() 
 
-PRODUCT_SERVICE_URL = os.getenv('PRODUCT_SERVICE_URL')
+PRODUCT_SERVICE = os.getenv('PRODUCT_SERVICE')
 
 
 class ProductServiceDataCheck:
     def __init__(self):
-        self.base_url = PRODUCT_SERVICE_URL
+        self.base_url = PRODUCT_SERVICE
         self.timeout = 30.0
     
     async def get_product_data_by_variation_id(self, product_variation_id: str) -> Optional[dict]:

@@ -4,19 +4,19 @@ import logging
 from typing import Optional
 from rest_framework import status
 from rest_framework.exceptions import  APIException
-from dotenv impor load_dotenv
+from dotenv import load_dotenv
 
 
 logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-SHOPCART_SERVICE_URL = os.getenv('SHOPCART_SERVICE_URL')
+SHOPCART_SERVICE = os.getenv('SHOPCART_SERVICE')
 
 
 class ShopCartServiceDataCheck:
     def __init__(self):
-        self.base_url = SHOPCART_SERVICE_URL
+        self.base_url = SHOPCART_SERVICE
         self.timeout = 30.0
     
     def get_shopcart_data(self, user_uuid: str) -> Optional[dict]:
