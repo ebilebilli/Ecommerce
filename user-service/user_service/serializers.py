@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'slug', 'created_at']
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'slug', 'created_at', 'is_shop_owner']
 
 # Register
 class RegisterSerializer(serializers.ModelSerializer):
