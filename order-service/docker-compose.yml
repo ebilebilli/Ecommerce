@@ -44,6 +44,7 @@ services:
       - "${WEB_PORT:-8003}:8000"
     networks:
       - internal_net
+      - shared_network
 
 volumes:
   pgdata:
@@ -54,3 +55,6 @@ networks:
   internal_net:
   # internal: true
     driver: bridge
+  shared_network:
+    external: true
+    name: shared_network
