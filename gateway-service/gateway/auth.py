@@ -115,9 +115,11 @@ async def verify_jwt(request: Request):
         )
     
     token = auth_header.split(" ")[1]
-    if is_token_blacklisted(token):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has been revoked (logged out).")
-    
+    try:
+        if is_token_blacklisted(token):
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has been revoked (logged out).")
+    except Exception as e:
+        logger.error(f"Blacklist check failed: {e}")
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         request.state.user = payload  
