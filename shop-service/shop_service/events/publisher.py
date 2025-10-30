@@ -1,11 +1,14 @@
 import json
 import pika
 import os
+from dotenv import load_dotenv
 
 
-RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'rabbitmq')
-RABBITMQ_USER = os.getenv('RABBITMQ_USER', 'admin')
-RABBITMQ_PASS = os.getenv('RABBITMQ_PASS', 'supersecret123')
+load_dotenv()
+
+RABBITMQ_HOST = os.getenv('RABBITMQ_HOST')
+RABBITMQ_USER = os.getenv('RABBITMQ_USER')
+RABBITMQ_PASS = os.getenv('RABBITMQ_PASS')
 
 
 def publish_event(event_name: str, payload: dict):
