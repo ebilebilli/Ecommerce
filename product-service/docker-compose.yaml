@@ -37,7 +37,7 @@ networks:
   # internal: true
     driver: bridge
   shared_network:
-    driver: bridge
+    external: true
     name: shared_network
 volumes:
   postgres_data:
