@@ -6,6 +6,7 @@ from .base import BaseRepository
 from src.app.models.v1 import Product, ProductCategory
 from src.app.schemas.v1 import ProductCreate
 
+
 class ProductRepository(BaseRepository[Product]):
     def __init__(self, db_session: Session):
         super().__init__(Product, db_session)

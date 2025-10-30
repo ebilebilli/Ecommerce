@@ -10,17 +10,22 @@ urlpatterns = [
         name='shop-list'
     ),         
     path(
-        '<slug:shop_slug>/', 
-        ShopDetailAPIView.as_view(), 
-        name='shop-detail'
+        'shops/<str:shop_uuid>/', 
+        ShopDetailWithUuidAPIView.as_view(), 
+        name='shop-detail-uuid'
+    ),
+    path(
+        'shops/<slug:shop_slug>/', 
+        ShopDetailWithSlugAPIView.as_view(), 
+        name='shop-detail-slug'
     ),  
     path(
-        'shop/create/',
+        'create/',
         ShopCreateAPIView.as_view(), 
         name='shop-create'
     ),
     path(
-        '<slug:shop_slug>/management/',
+        'shops/<slug:shop_slug>/management/',
         ShopManagementAPIView.as_view(), 
         name='shop-manage'
     ),
@@ -102,5 +107,5 @@ urlpatterns = [
         'media/<int:media_id>/delete/',
         DeleteShopMediaAPIView.as_view(),
         name='shop-media-delete'
-    ),             
+    ),           
 ]

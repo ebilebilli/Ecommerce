@@ -1,5 +1,4 @@
-from fastapi import FastAPI
-
+from fastapi import FastAPI, Request
 from src.app.api.v1.routes import router
 
 app = FastAPI(
@@ -9,7 +8,7 @@ app = FastAPI(
     debug=True,
 )
 
-app.include_router(router, prefix="/api/v1")
+app.include_router(router, prefix="/api")
 
 @app.get("/")
 def read_root():

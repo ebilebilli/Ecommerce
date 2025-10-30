@@ -22,6 +22,9 @@ services:
       - ./pyproject.toml:/app/pyproject.toml:rw
       - ./.cache/uv:/home/appuser/.cache/uv  # fixing permission denied errors
     restart: unless-stopped
+    networks:
+      - internal_net
+      - shared_network
 
   db:
     image: postgres:16-alpine
@@ -35,6 +38,16 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5439:5432"
+    networks:
+      - internal_net
+
+networks:
+  internal_net:
+  # internal: true
+    driver: bridge
+  shared_network:
+    driver: bridge
+    name: shared_network
 
 volumes:
   postgres_data:

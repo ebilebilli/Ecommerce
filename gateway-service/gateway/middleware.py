@@ -3,7 +3,7 @@ import json
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from .logging import logger
-from .auth import verify_jwt, PUBLIC_PATHS, handle_login
+from .auth import verify_jwt, is_endpoint_public, handle_login, handle_logout
 from .services import SERVICE_URLS
 
 
@@ -23,8 +23,18 @@ async def auth_middleware(request: Request, call_next):
 
     if path == '/user/api/user/login/' and request.method == 'POST':
         return await handle_login(request)
+    
+    if path == '/user/api/user/logout/' and request.method == 'POST':
+        try:
+            payload = await verify_jwt(request)
+            request.state.user = payload
+        except Exception as e:
+            logger.error(f'JWT verification failed for logout: {e}')
+            return JSONResponse({"detail": str(e)}, status_code=401)
+        
+        return await handle_logout(request)
 
-    if not any(path == p or path.startswith(p + '/') for p in PUBLIC_PATHS):
+    if not is_endpoint_public(path, request.method):
         try:
             payload = await verify_jwt(request)
             request.state.user = payload

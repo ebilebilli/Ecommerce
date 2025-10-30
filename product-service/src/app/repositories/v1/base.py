@@ -11,7 +11,12 @@ class BaseRepository(Generic[T]):
         self.db_session = db_session
 
     def create(self, obj_in) -> T:
-        db_obj = self.model(**obj_in.dict())
+        # Handle both Pydantic models and plain dictionaries
+        if hasattr(obj_in, 'dict'):
+            data = obj_in.dict()
+        else:
+            data = obj_in
+        db_obj = self.model(**data)
         self.db_session.add(db_obj)
         self.db_session.commit()
         self.db_session.refresh(db_obj)
@@ -27,7 +32,12 @@ class BaseRepository(Generic[T]):
         db_obj = self.get(id)
         if not db_obj:
             return None
-        for key, value in obj_in.dict(exclude_unset=True).items():
+        # Handle both Pydantic models and plain dictionaries
+        if hasattr(obj_in, 'dict'):
+            data = obj_in.dict(exclude_unset=True)
+        else:
+            data = obj_in
+        for key, value in data.items():
             setattr(db_obj, key, value)
         self.db_session.commit()
         self.db_session.refresh(db_obj)
