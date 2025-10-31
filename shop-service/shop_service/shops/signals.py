@@ -7,4 +7,4 @@ from events.publisher import publish_event
 @receiver(post_save, sender=Shop)
 def shop_created(sender, instance, created, **kwargs):
     if created:
-        publish_event('SHOP CREATED', {'user_id': instance.user})
+        publish_event('SHOP CREATED', {'user_id': str(instance.user)})
