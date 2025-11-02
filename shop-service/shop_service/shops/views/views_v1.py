@@ -125,7 +125,7 @@ class ShopCreateAPIView(APIView):
     def post(self, request):
         user = request.user
         logger.info(f"POST /create/ - Shop creation request from user {user.id}")
-        if Shop.objects.filter(user=user).first():
+        if Shop.objects.filter(user=user.id).first():
             logger.warning(f"POST /create/ - User {user.id} already has a shop")
             return Response({'error': 'You already have Shop'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -133,10 +133,8 @@ class ShopCreateAPIView(APIView):
         data['user'] = str(user.id)  
         serializer = ShopCreateUpdateSerializer(data=data)
         if serializer.is_valid():
-            shop = serializer.save()
+            shop = serializer.save(user=user.id)  
             logger.info(f"POST /create/ - Shop {shop.id} created successfully by user {user.id} with status {shop.status}")
-            # Event will be sent automatically via signal when status changes to APPROVED
-            # No need to send event here as shop is created with PENDING status by default
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         

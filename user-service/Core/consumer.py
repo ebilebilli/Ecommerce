@@ -37,13 +37,13 @@ class ShopEventConsumer:
         )
         return pika.BlockingConnection(parameters)
     
-    def handle_shop_created(self, message: dict):
+    def handle_shop_approved(self, message: dict):
         try:
             user_uuid = message.get('user_uuid')
             shop_id = message.get('shop_id')
             
             if not user_uuid:
-                logger.warning("Missing user_uuid in shop.created event")
+                logger.warning("Missing user_uuid in shop.approved event")
                 return False
             
             user = User.objects.get(id=user_uuid)
@@ -57,7 +57,7 @@ class ShopEventConsumer:
             logger.error(f"User {user_uuid} not found")
             return False
         except Exception as e:
-            logger.error(f"Failed to handle shop.created event: {e}")
+            logger.error(f"Failed to handle shop.approved event: {e}")
             return False
     
     def callback(self, ch, method, properties, body):
@@ -65,10 +65,10 @@ class ShopEventConsumer:
             message = json.loads(body)
             event_type = message.get('event_type')
             
-            logger.debug(f"Received event: {event_type}")
+            logger.info(f"Received event: {event_type}")
             
-            if event_type == 'shop.created':
-                success = self.handle_shop_created(message)
+            if event_type == 'shop.approved':
+                success = self.handle_shop_approved(message)
             else:
                 logger.warning(f"Unknown event type: {event_type}")
                 success = True
@@ -105,7 +105,7 @@ class ShopEventConsumer:
                 channel.queue_bind(
                     exchange='shop_events',
                     queue=queue_name,
-                    routing_key='shop.created'
+                    routing_key='shop.approved'
                 )
                 
                 channel.basic_qos(prefetch_count=1)
@@ -114,7 +114,7 @@ class ShopEventConsumer:
                     on_message_callback=self.callback
                 )
                 
-                logger.info("User service listening for shop.created events…")
+                logger.info("User service listening for shop.approved events…")
                 channel.start_consuming()
                 
             except KeyboardInterrupt:
@@ -122,7 +122,6 @@ class ShopEventConsumer:
                 break
             except Exception as e:
                 logger.error(f"Connection error: {e}")
-                logger.info("Retrying in 5 seconds…")
                 time.sleep(5)
 
 

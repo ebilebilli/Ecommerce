@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     # Apps
-    'shops'
+    'shops.apps.ShopsConfig'
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,68 @@
+INFO 2025-11-02 20:08:29,161 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-02 20:09:07,236 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:10:15,640 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:11:24,090 django.server "GET /openapi.json HTTP/1.1" 200 3587
+WARNING 2025-11-02 20:11:45,221 django.request Bad Request: /api/user/login/
+WARNING 2025-11-02 20:11:45,223 django.server "POST /api/user/login/ HTTP/1.1" 400 50
+INFO 2025-11-02 20:11:55,221 django.server "POST /api/user/register/ HTTP/1.1" 201 245
+INFO 2025-11-02 20:12:30,410 django.server "POST /api/user/login/ HTTP/1.1" 200 74
+INFO 2025-11-02 20:12:32,309 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:13:40,828 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:14:51,161 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:15:28,227 django.server "GET /api/user/profile/ HTTP/1.1" 200 236
+INFO 2025-11-02 20:15:59,544 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:17:07,809 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:18:16,135 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:19:24,598 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:20:32,738 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:21:41,028 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:22:51,124 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:23:59,509 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:25:07,880 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:26:16,424 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:27:24,846 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:27:46,490 django.server "GET /api/user/profile/ HTTP/1.1" 200 236
+INFO 2025-11-02 20:28:27,236 django.server "GET /api/user/profile/ HTTP/1.1" 200 236
+INFO 2025-11-02 20:28:33,318 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:28:34,203 django.server "GET /api/user/profile/ HTTP/1.1" 200 236
+INFO 2025-11-02 20:28:35,406 django.server "GET /api/user/profile/ HTTP/1.1" 200 236
+INFO 2025-11-02 20:29:43,536 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:30:51,928 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:31:51,997 django.server "GET /api/user/profile/ HTTP/1.1" 200 236
+INFO 2025-11-02 20:32:00,417 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:33:09,826 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:34:17,120 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:35:25,385 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:36:33,661 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:37:43,947 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:38:52,555 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:40:01,065 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:41:09,413 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:42:17,762 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:43:26,125 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:44:36,502 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:45:44,879 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:46:53,470 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:46:59,956 django.utils.autoreload /app/Core/settings.py changed, reloading.
+INFO 2025-11-02 20:47:00,655 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-02 20:47:38,029 user_events Starting consumer | host=rabbitmq port=5672
+INFO 2025-11-02 20:47:38,030 user_events Attempting to connect to RabbitMQ at rabbitmq:5672
+INFO 2025-11-02 20:47:38,046 user_events Successfully connected to RabbitMQ
+INFO 2025-11-02 20:47:38,051 user_events Channel created
+INFO 2025-11-02 20:47:38,053 user_events Exchange 'shop_events' declared
+INFO 2025-11-02 20:47:38,055 user_events Queue 'user_shop_events' declared
+INFO 2025-11-02 20:47:38,056 user_events Queue 'user_shop_events' bound to exchange 'shop_events' with routing key 'shop.approved'
+INFO 2025-11-02 20:47:38,058 user_events User service listening for shop.approved events…
+INFO 2025-11-02 20:48:01,878 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:48:08,898 django.utils.autoreload /app/Core/settings.py changed, reloading.
+INFO 2025-11-02 20:48:09,422 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-02 20:48:38,244 django.server "PATCH /api/user/profile/ HTTP/1.1" 200 236
+INFO 2025-11-02 20:49:10,270 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:49:13,652 user_events User 0cd87512-70ad-4308-8c3f-634c4c27e908 is now shop owner (shop=132261bd-ab46-465d-b358-cba04aa8f888)
+INFO 2025-11-02 20:49:32,980 django.server "GET /api/user/profile/ HTTP/1.1" 200 235
+INFO 2025-11-02 20:49:35,321 django.server "GET /api/user/profile/ HTTP/1.1" 200 235
+INFO 2025-11-02 20:50:18,672 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:51:27,141 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:52:37,603 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-02 20:52:48,205 django.utils.autoreload /app/Core/settings.py changed, reloading.
+INFO 2025-11-02 20:52:48,853 django.utils.autoreload Watching for file changes with StatReloader
