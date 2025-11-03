@@ -3,6 +3,7 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 import os
+import sys
 from alembic import context
 
 from dotenv import load_dotenv
@@ -10,6 +11,8 @@ load_dotenv()
 
 from src.shopcart_service.core.db import Base
 from src.shopcart_service.models import ShopCart,CartItem
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

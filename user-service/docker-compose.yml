@@ -13,7 +13,7 @@ services:
     ports:
       - "5436:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -34,8 +34,13 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_HOST: db
+      POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
+      PYTHONUNBUFFERED: 1  # to force immediate log output
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: admin
+      RABBITMQ_PASS: admin12345
     volumes:
       - ./:/app:rw
       - media:/app/user_service/media
@@ -46,8 +51,9 @@ services:
       - internal_net
       - shared_network
 
-  consumer:
+  shop_consumer:
     build: .
+    container_name: user_shop_consumer
     depends_on:
       - db
       - web
@@ -59,14 +65,16 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_HOST: db
+      POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      PYTHONUNBUFFERED: 1  # to force immediate log output
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: admin
+      RABBITMQ_PASS: admin12345
     volumes:
       - ./:/app:rw
-    command: sh -c "cd /app && python events/consume_events.py"
+    command: python -u Core/consumer.py 
     restart: unless-stopped
     networks:
       - internal_net

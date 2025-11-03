@@ -7,7 +7,7 @@ from pydantic import UUID4
 class CartItemBase(BaseModel):
     quantity: int = 1
 
-class CartItemCreate(CartItemBase):
+class CartItemCreate(BaseModel):
     pass
 
 class CartItemRead(CartItemBase):

@@ -8,6 +8,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from Core.authentication import GatewayHeaderAuthentication
+from Core.messaging import publisher
 
 from .serializers import (
     UserSerializer, 
@@ -29,6 +30,12 @@ class RegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        if user.is_active:
+            publisher.publish_user_created(
+                user_uuid=str(user.id),
+                email=user.email,
+                is_active=user.is_active
+            )
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data
         }, status=status.HTTP_201_CREATED)
