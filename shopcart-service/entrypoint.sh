@@ -19,9 +19,13 @@ for i in $(seq 1 30); do
   sleep 2
 done
 
-# Run migrations
-alembic upgrade head || { echo "Migration failed!"; exit 1; }
-
+# Check if we should run migrations (only for main service, not consumer)
+if [ "$SKIP_MIGRATIONS" != "true" ]; then
+  echo "Running migrations..."
+  alembic upgrade head || { echo " Migration failed!"; exit 1; }
+else
+  echo "Skipping migrations (SKIP_MIGRATIONS=true)"
+fi
 # Start FastAPI
 if [ "$ENV" = "development" ]; then
   echo "Running in development mode with reload..."

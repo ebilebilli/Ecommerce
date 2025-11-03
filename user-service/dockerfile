@@ -1,6 +1,9 @@
 # Base image
 FROM python:3.10-slim
 
+# Force Python to not buffer output
+ENV PYTHONUNBUFFERED=1
+
 # Working directory
 WORKDIR /app
 

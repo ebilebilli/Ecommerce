@@ -2,7 +2,7 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.urls import reverse
-from order_service.models import Order, OrderItem
+from order_service.orders.models import Order, OrderItem
 
 
 @pytest.fixture

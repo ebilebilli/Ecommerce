@@ -10,11 +10,11 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 # User
 class UserSerializer(serializers.ModelSerializer):
-    
+    is_shop_owner = serializers.BooleanField(read_only=True)
     slug = serializers.SlugField(read_only=True)
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'slug', 'created_at', 'is_shop_owner']
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'slug', 'created_at','is_shop_owner']
 
 # Register
 class RegisterSerializer(serializers.ModelSerializer):
