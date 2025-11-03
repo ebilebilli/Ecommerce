@@ -20,7 +20,7 @@ class ShopCartServiceDataCheck:
         self.timeout = 30.0
     
     def get_shopcart_data(self, user_uuid: str) -> Optional[dict]:
-        url = f'{self.base_url}/shopcart/mycart/'
+        url = f'{self.base_url}/shopcart/api/mycart/'
         
         try:
             with httpx.Client(timeout=self.timeout, follow_redirects=True) as client:

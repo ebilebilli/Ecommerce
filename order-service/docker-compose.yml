@@ -22,7 +22,7 @@ services:
 
   web:
     build: .
-    container_name: order_service
+    container_name: order-service
     depends_on:
       db:
         condition: service_healthy

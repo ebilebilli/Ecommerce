@@ -1,11 +1,13 @@
 from rest_framework import viewsets, mixins
-from rest_framework.permissions import AllowAny  # prod-da öz permission-ların
+from rest_framework.permissions import AllowAny  
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 import logging
 
 from utils.shopcart_client import shopcart_client
+from utils.product_client import product_client
+from utils.shop_client import shop_client
 from ..models import * 
 from ..serializers import *
 
@@ -104,8 +106,6 @@ def create_order_from_shopcart(request):
         return Response({"detail": "Shopcart not found"}, status=status.HTTP_404_NOT_FOUND)
     
     items = shopcart_data.pop('items', [])
-    
-    # Order için sadece gerekli field'ları kullan
     order_data = {"user_id": user_id}
     
     order_serializer = OrderSerializer(data=order_data)
@@ -116,15 +116,13 @@ def create_order_from_shopcart(request):
         logger.error(f'Order serializer errors: {order_serializer.errors}')
         return Response(order_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # 2️⃣ OrderItem-ları yarat
     for item in items:
-        # OrderItem için gerekli field'ları hazırla
         order_item_data = {
             'order': order.id,
             'product_variation': item.get('product_variation_id'),
             'quantity': item.get('quantity', 1),
-            'status': 1,  # Status.PROCESSING (integer)
-            'price': 0  # Price field required, default to 0 (integer)
+            'status': 1,  
+            'price': 0  
         }
         item_serializer = OrderItemSerializer(data=order_item_data)
         if item_serializer.is_valid():
@@ -142,12 +140,27 @@ def update_order_item_status(request, pk):
         item = OrderItem.objects.get(pk=pk)
     except OrderItem.DoesNotExist:
         return Response({"error": "OrderItem not found"}, status=status.HTTP_404_NOT_FOUND)
-
+    
     new_status = request.data.get("status")
     if new_status not in dict(OrderItem.Status.choices):
         return Response({"error": "Invalid status"}, status=status.HTTP_400_BAD_REQUEST)
 
+    variation_id = str(item.product_variation)
+    variation_data = product_client.get_variation(variation_id)
+    product_id = str(variation_data.get("product_id")) if variation_data else None
+    product_data = product_client.get_product(product_id)
+    shop_id = str(product_data.get("shop_id")) if product_data else None
+    user_id = str(request.user.id)
+    user_shop_ids = shop_client.get_user_shop_ids(user_id)
+
+    if shop_id not in user_shop_ids:
+        return Response({"error": "Forbidden: You do not own this shop's item"}, status=status.HTTP_403_FORBIDDEN)
+
     item.status = new_status
+    if not item.product_id:
+        item.product_id = product_id
+    if not item.shop_id:
+        item.shop_id = shop_id
     item.save()
 
     item.order.check_and_approve()

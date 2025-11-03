@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/shopcart/api", tags=["Cart"])
 
-def get_user_id(user_id: str = Header(None, alias="X-User-Id", include_in_schema=False)):
+def get_user_id(user_id: str = Header(None, alias="X-User-ID", include_in_schema=False)):
     """Extract user ID from X-User-Id header"""
     if not user_id:
         raise HTTPException(
