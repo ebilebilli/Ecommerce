@@ -15,12 +15,7 @@ class ProductServiceClient:
         self.timeout = 30.0
     
     def get_variation(self, variation_id: str) -> Optional[dict]:
-        """
-        Product variation məlumatını alır.
-        Returns: {"id": "...", "product_id": "...", "price": 29.99, ...}
-        """
         url = f'{self.base_url}/api/products/variations/{variation_id}'
-        
         try:
             with httpx.Client(timeout=self.timeout, follow_redirects=True) as client:
                 response = client.get(
@@ -43,10 +38,6 @@ class ProductServiceClient:
             raise
 
     def get_product(self, product_id: str) -> Optional[dict]:
-        """
-        Product məlumatını alır.
-        Returns: {"id": "...", "shop_id": "...", ...}
-        """
         url = f'{self.base_url}/api/products/{product_id}'
         
         try:

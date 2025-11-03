@@ -15,14 +15,9 @@ class ShopServiceClient:
         self.timeout = 30.0
 
     def get_user_shop_ids(self, user_id: str) -> List[str]:
-        """
-        Verilmiş user üçün sahib olduğu mağazaların siyahısını qaytarır.
-        Gözlənilən cavab: [{"id": "..."}, ...] və ya [{"shop_id": "..."}, ...]
-        """
         if not self.base_url:
             raise APIException('Shop Service configuration missing')
 
-        # Shop-service endpoint trailing slash tələb edir
         url = f'{self.base_url}/api/user/{user_id}/'
         try:
             with httpx.Client(timeout=self.timeout, follow_redirects=True) as client:
@@ -36,7 +31,6 @@ class ShopServiceClient:
             if response.status_code == 200:
                 data = response.json() or []
                 ids = []
-                # Defensiv parse: list[str] və ya list[dict] və ya dict{"shops": ...}
                 items = []
                 if isinstance(data, dict):
                     shops_val = data.get('shops')
