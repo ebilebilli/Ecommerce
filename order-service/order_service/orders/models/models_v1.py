@@ -33,7 +33,7 @@ class Order(models.Model):
                 print("Sent to analytics:", response.status_code)
             except requests.exceptions.RequestException as e:
                 print("Analytics request failed:", e)
-            
+
     class Meta:
         db_table = "orders"
         indexes = [
@@ -62,6 +62,8 @@ class OrderItem(models.Model):
     status = models.IntegerField(choices=Status.choices, default=Status.PROCESSING)
     quantity = models.IntegerField(default=1)            # INT NOT NULL DEFAULT 1
     product_variation = models.CharField(max_length=36)   # UUID field
+    product_id = models.CharField(max_length=36, null=True, blank=True)  # UUID field (product service-dən)
+    shop_id = models.CharField(max_length=36, null=True, blank=True)      # UUID field (product service-dən)
     price = models.BigIntegerField()                     # BIGINT NOT NULL (kuru x100 saxla: qepik)
 
     class Meta:
