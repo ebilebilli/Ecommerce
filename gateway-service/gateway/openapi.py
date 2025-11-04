@@ -55,7 +55,10 @@ async def merge_openapi_schemas(app: FastAPI):
 
 async def periodic_refresh(app: FastAPI, interval: int = 30):
 	while True:
-		app.state.merged_openapi_schema = await merge_openapi_schemas(app)
+		try:
+			app.state.merged_openapi_schema = await merge_openapi_schemas(app)
+		except Exception:
+			pass
 		await asyncio.sleep(interval)
 
 
