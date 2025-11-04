@@ -95,19 +95,18 @@ def orderitems_detail(request, pk):
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-
 @api_view(['POST'])
 def create_order_from_shopcart(request):
     user_id = str(request.user.id)
-    
+
     shopcart_data = shopcart_client.get_shopcart_data(user_id)
-    
+
     if not shopcart_data:
         return Response({"detail": "Shopcart not found"}, status=status.HTTP_404_NOT_FOUND)
-    
+
     items = shopcart_data.pop('items', [])
     order_data = {"user_id": user_id}
-    
+
     order_serializer = OrderSerializer(data=order_data)
     if order_serializer.is_valid():
         order = order_serializer.save()
@@ -118,12 +117,16 @@ def create_order_from_shopcart(request):
 
     for item in items:
         order_item_data = {
-            'order': order.id,
-            'product_variation': item.get('product_variation_id'),
+            'order': order.id,  # bu sətri dəyişəcəyik
+            'product_variation': item.get('product_variation'),
             'quantity': item.get('quantity', 1),
             'status': 1,  
             'price': 0  
         }
+
+        # ✅ Əsas dəyişiklik: order instance göndəririk, id yox
+        order_item_data['order'] = order
+
         item_serializer = OrderItemSerializer(data=order_item_data)
         if item_serializer.is_valid():
             item_serializer.save()
@@ -131,7 +134,10 @@ def create_order_from_shopcart(request):
             logger.error(f'Order item serializer errors: {item_serializer.errors}')
             return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({"message": "Order and items created successfully"}, status=status.HTTP_201_CREATED)
+    return Response(
+        {"message": "Order and items created successfully"},
+        status=status.HTTP_201_CREATED
+    )
 
 
 @api_view(['PATCH'])
