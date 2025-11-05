@@ -12,6 +12,9 @@ services:
       - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal_net
+
 
   web:
     build: .
@@ -23,6 +26,17 @@ services:
       - .env
     depends_on:
       - db
+    networks:
+      - internal_net
+      - shared_network
+
+networks:
+  internal_net:
+    driver: bridge
+  shared_network:
+    external: true
+    name: shared_network
+
 
 volumes:
   postgres_data:

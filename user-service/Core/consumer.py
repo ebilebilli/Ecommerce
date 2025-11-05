@@ -21,10 +21,10 @@ logger = logging.getLogger("user_events")
 
 class ShopEventConsumer:
     def __init__(self):
-        self.host = os.getenv('RABBITMQ_HOST', 'rabbitmq')
-        self.port = int(os.getenv('RABBITMQ_PORT', 5672))
-        self.user = os.getenv('RABBITMQ_USER', 'admin')
-        self.password = os.getenv('RABBITMQ_PASS', 'admin12345')
+        self.host = os.getenv('RABBITMQ_HOST')
+        self.port = int(os.getenv('RABBITMQ_PORT'))
+        self.user = os.getenv('RABBITMQ_USER')
+        self.password = os.getenv('RABBITMQ_PASS')
         
     def get_connection(self):
         credentials = pika.PlainCredentials(self.user, self.password)

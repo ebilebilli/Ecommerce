@@ -12,7 +12,9 @@ __all__ = [
     'ShopBranchDetailSerializer',
     'ShopMediaSerializer',
     'ShopSocialMediaSerializer',
-    'ShopCommentSerializer'
+    'ShopCommentSerializer',
+    'ShopOrderItemSerializer',
+    'ShopOrderItemStatusUpdateSerializer'
 ]
 
 class ShopListSerializer(serializers.ModelSerializer):
@@ -163,3 +165,48 @@ class ShopSocialMediaSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['shop'] = self.context.get('shop')
         return super().create(validated_data)
+
+
+class ShopOrderItemSerializer(serializers.ModelSerializer):
+    shop = ShopListSerializer(read_only=True)
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+    
+    class Meta:
+        model = ShopOrderItem
+        fields = [
+            'id',
+            'shop',
+            'order_id',
+            'product_id',
+            'product_variation',
+            'quantity',
+            'price',
+            'status',
+            'status_display',
+            'user_id',
+            'created_at',
+            'updated_at'
+        ]
+        read_only_fields = [
+            'id', 
+            'shop', 
+            'order_id', 
+            'product_id', 
+            'product_variation',           
+            'quantity', 
+            'price', 
+            'user_id', 
+            'created_at', 
+            'updated_at'
+        ]
+
+
+class ShopOrderItemStatusUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShopOrderItem
+        fields = ['status']
+    
+    def validate_status(self, value):
+        if value not in dict(ShopOrderItem.Status.choices):
+            raise serializers.ValidationError('Invalid status value')
+        return value
