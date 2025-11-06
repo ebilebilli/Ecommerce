@@ -48,13 +48,17 @@ class ShopDetailSerializer(serializers.ModelSerializer):
 
 class ShopCreateUpdateSerializer(serializers.ModelSerializer):
     profile = serializers.ImageField(required=False)
+    id = serializers.UUIDField(read_only=True)
+    status = serializers.CharField(read_only=True)  
 
     class Meta:
         model = Shop
         fields = [
+            'id',
             'user',
             'name',
             'about',
+            'status',
             'profile',
         ]
         read_only_fields = ['user']

@@ -11,8 +11,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
+    # ports:
+    #   - "5433:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -42,8 +42,8 @@ services:
       RABBITMQ_PASS: ${RABBITMQ_PASS:-admin12345}
     volumes:
       - ./:/app:rw
-    ports:
-      - "8003:8000"
+    # ports:
+    #   - "8003:8000"
     networks:
       - internal_net
       - shared_network
