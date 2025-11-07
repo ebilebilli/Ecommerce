@@ -8,16 +8,11 @@ Dockerfile
 .docker
 .dockerignore
 
-# Python
-app/__pycache__
-app/*/__pycache__
-app/*/*/__pycache__
-app/*/*/*/__pycache__
+# Python cache
+**/__pycache__/
 
-
-# Django stuff:
+# Django stuff
 *.log
-
 
 # Virtual environment
 .env
