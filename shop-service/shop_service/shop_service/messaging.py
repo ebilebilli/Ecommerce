@@ -63,5 +63,5 @@ class RabbitMQPublisher:
             logger.error(f"failed to publish shop.approved event: {e}", exc_info=True)
 
 
-# Create a singleton instance of the publisher
+
 publisher = RabbitMQPublisher()

@@ -58,3 +58,22 @@ class ShopSocialMediaAdmin(admin.ModelAdmin):
     list_display = ('shop', 'media_name', 'media_url')
     search_fields = ('shop__name', 'media_name')
     list_filter = ('media_name',)
+
+
+@admin.register(ShopOrderItem)
+class ShopOrderItemAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'shop',
+        'order_id',
+        'product_id',
+        'status',
+        'quantity',
+        'price',
+        'created_at',
+    )
+    list_display_links = ('id', )
+    list_filter = ('status', 'shop', 'created_at')
+    search_fields = ('id', 'order_id', 'product_id', 'user_id')
+    ordering = ('-created_at',)
+    readonly_fields = ('created_at', 'updated_at')
