@@ -1,6 +1,9 @@
 from sqlmodel import SQLModel, create_engine, Session
 from app.config import DATABASE_URL
 
+
+assert DATABASE_URL is not None
+
 # Database Engine
 engine = create_engine(DATABASE_URL, echo=True)
 

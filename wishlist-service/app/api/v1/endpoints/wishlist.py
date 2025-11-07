@@ -6,10 +6,12 @@ from app.models import Wishlist, WishlistCreate, WishlistResponse, WishlistListR
 from app.product_client import product_client
 from app.shop_client import shop_client
 
+from app.rabbitmq.publisher import event_publisher
+
 router = APIRouter()
 
 def get_user_id(user_id: str = Header(None, alias="X-User-Id", include_in_schema=False)):
-    """Extract user ID from X-User-Id header - hidden from Swagger UI"""
+
     if not user_id:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -24,6 +26,7 @@ async def add_to_wishlist(
     session: Session = Depends(get_session),
     user_id: str = Depends(get_user_id)
 ):
+
     if wishlist.product_variation_id:
         product_data = await product_client.get_product_data_by_variation_id(wishlist.product_variation_id)
         if not product_data:
@@ -79,6 +82,14 @@ async def add_to_wishlist(
     session.add(db_wishlist)
     session.commit()
     session.refresh(db_wishlist)
+
+    await event_publisher.publish_wishlist_created(
+        wishlist_id=db_wishlist.id, # type: ignore
+        user_id=user_id,
+        product_variation_id=wishlist.product_variation_id,
+        shop_id=wishlist.shop_id
+    )
+    
     return db_wishlist
 
 
@@ -88,8 +99,7 @@ async def remove_from_wishlist(
     session: Session = Depends(get_session),
     user_id: str = Depends(get_user_id)
 ):
-    """Remove item from wishlist - user can only delete their own items"""
-    
+
     wishlist_item = session.get(Wishlist, item_id)
     
     if not wishlist_item:
@@ -98,7 +108,6 @@ async def remove_from_wishlist(
             detail="Wishlist item not found"
         )
     
-    # Security check: user can only delete their own items
     if wishlist_item.user_id != user_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -108,14 +117,19 @@ async def remove_from_wishlist(
     session.delete(wishlist_item)
     session.commit()
     
+    await event_publisher.publish_wishlist_deleted(
+        wishlist_id=item_id,
+        user_id=user_id
+    )
+    
     return {"message": "Item removed from wishlist successfully"}
+
 
 @router.get("/wishlist", response_model=list[WishlistResponse])
 async def get_wishlist_items(
     session: Session = Depends(get_session),
     user_id: str = Depends(get_user_id)
 ):
-    """Get all items in authenticated user's wishlist"""
     
     wishlist_items = session.exec(
         select(Wishlist).where(Wishlist.user_id == user_id)
@@ -129,7 +143,6 @@ async def get_wishlist_count(
     session: Session = Depends(get_session),
     user_id: str = Depends(get_user_id)
 ):
-    """Get count of items in authenticated user's wishlist"""
     
     count = session.exec(
         select(Wishlist).where(Wishlist.user_id == user_id)

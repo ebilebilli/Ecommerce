@@ -107,5 +107,21 @@ urlpatterns = [
         'media/<int:media_id>/delete/',
         DeleteShopMediaAPIView.as_view(),
         name='shop-media-delete'
+    ),
+    # ShopOrderItem endpoints
+    path(
+        'order-items/<slug:shop_slug>/',
+        ShopOrderItemListAPIView.as_view(),
+        name='shop-order-item-list'
+    ),
+    path(
+        'order-items/<int:order_item_id>/',
+        ShopOrderItemDetailAPIView.as_view(),
+        name='shop-order-item-detail'
+    ),
+    path(
+        'order-items/<int:order_item_id>/status/',
+        ShopOrderItemStatusUpdateAPIView.as_view(),
+        name='shop-order-item-status-update'
     ),           
 ]
