@@ -10,7 +10,6 @@ from utils.product_client import product_client
 from utils.shop_client import shop_client
 from ..models import * 
 from ..serializers import *
-from ..producer import publisher
 
 logger = logging.getLogger(__name__)
 
