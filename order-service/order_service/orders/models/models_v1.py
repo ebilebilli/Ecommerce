@@ -1,7 +1,7 @@
 import requests
 from django.db import models
 from django.conf import settings
-from ...utils import analytic_client
+from utils.analytic_client import analytic_client
 import logging
 
 logger = logging.getLogger(__name__)
