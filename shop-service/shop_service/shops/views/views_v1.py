@@ -96,10 +96,30 @@ class ShopCreateAPIView(APIView):
         summary='Create a new shop',
         description='Create a new shop. Only authenticated users can create shops.',
         tags=['Shop'],
-        request=ShopCreateUpdateSerializer,
+        request={
+            'multipart/form-data': {
+                'type': 'object',
+                'properties': {
+                    'name': {
+                        'type': 'string',
+                        'description': 'Shop name'
+                    },
+                    'about': {
+                        'type': 'string',
+                        'description': 'Shop description'
+                    },
+                    'profile': {
+                        'type': 'string',
+                        'format': 'binary',
+                        'description': 'Shop profile image (optional)'
+                    }
+                },
+                'required': ['name']
+            }
+        },
         responses={201: ShopCreateUpdateSerializer, 400: None},
-        exclude=['profile']
     )
+    
     def post(self, request):
         user = request.user
         logger.info(f"POST /create/ - Shop creation request from user {user.id}")
@@ -468,7 +488,28 @@ class CreateShopMediaAPIView(APIView):
         parameters=[
             OpenApiParameter(name='shop_slug', type=OpenApiTypes.STR, location=OpenApiParameter.PATH, description='Shop slug')
         ],
-        request=ShopMediaSerializer,
+        request={
+            'multipart/form-data': {
+                'type': 'object',
+                'properties': {
+                    'image': {
+                        'type': 'string',
+                        'format': 'binary',
+                        'description': 'Image file (JPEG or PNG, max 5MB)'
+                    },
+                    'alt_text': {
+                        'type': 'string',
+                        'description': 'Alt text for the image'
+                    },
+                    'shop': {
+                        'type': 'string',
+                        'format': 'uuid',
+                        'description': 'Shop UUID'
+                    }
+                },
+                'required': ['image', 'shop']
+            }
+        },
         responses={201: ShopMediaSerializer, 400: None, 403: None}
     )
     def post(self, request, shop_slug):
