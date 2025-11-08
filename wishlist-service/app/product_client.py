@@ -12,9 +12,9 @@ class ProductServiceDataCheck:
         self.base_url = PRODUCT_SERVICE_URL
         self.timeout = 30.0
     
-    async def get_product_data_by_variation_id(self, product_id: str) -> Optional[dict]:
+    async def get_product_data_by_variation_id(self, product_var_id: str) -> Optional[dict]:
         try:
-            url = f'{self.base_url}/api/products/{product_id}'
+            url = f'{self.base_url}/api/products/variations/{product_var_id}'
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 response = await client.get(
                     url,

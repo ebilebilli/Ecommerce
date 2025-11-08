@@ -9,7 +9,7 @@ logger = logging.getLogger('shop_service')
 class OrderServiceClient:
     def __init__(self):
         self.base_url = os.getenv('ORDER_SERVICE')
-        self.timeout = 30.0
+        self.timeout = 10.0  # Reduced timeout for faster failure detection
         
     def update_order_item_status(self, order_item_id: int, status: int, shop_owner_user_id: str) -> Optional[Dict[str, Any]]:
         """
@@ -33,7 +33,6 @@ class OrderServiceClient:
                 response = client.patch(url, json=data, headers=headers)
                 
                 if response.status_code == 200:
-                    logger.info(f"Successfully updated order item {order_item_id} status to {status} in order service")
                     return response.json()
                 else:
                     logger.error(

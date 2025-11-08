@@ -667,3 +667,499 @@ INFO 2025-11-06 06:30:21,913 django.server "GET /openapi.json HTTP/1.1" 200 3587
 INFO 2025-11-06 06:31:10,000 django.server "GET /openapi.json HTTP/1.1" 200 3587
 INFO 2025-11-06 06:31:58,975 django.server "GET /openapi.json HTTP/1.1" 200 3587
 INFO 2025-11-06 06:32:47,142 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:46:17,036 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-07 05:46:21,871 user_events User service listening for shop.approved events…
+INFO 2025-11-07 05:47:42,130 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:48:28,102 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:49:17,189 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:50:05,189 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:50:53,126 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:51:41,100 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:52:29,157 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:53:17,196 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:54:05,247 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:54:54,255 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:55:42,302 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:56:30,375 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:57:18,524 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:58:06,707 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:58:55,774 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 05:59:44,961 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:00:33,006 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:01:21,987 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:02:11,077 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:03:00,182 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:03:49,439 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:04:37,571 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:05:26,452 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:06:14,598 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:07:02,561 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:07:51,586 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:08:39,720 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:09:28,686 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:10:16,817 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:11:04,893 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:11:53,935 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:12:42,999 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:13:32,079 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:14:22,026 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:15:09,080 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:15:57,163 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:16:45,211 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:17:34,160 django.server "GET /openapi.json HTTP/1.1" 200 3587
+WARNING 2025-11-07 06:17:42,299 django.request Bad Request: /api/user/register/
+WARNING 2025-11-07 06:17:42,300 django.server "POST /api/user/register/ HTTP/1.1" 400 50
+WARNING 2025-11-07 06:17:48,553 django.request Bad Request: /api/user/register/
+WARNING 2025-11-07 06:17:48,554 django.server "POST /api/user/register/ HTTP/1.1" 400 50
+INFO 2025-11-07 06:17:54,715 django.server "POST /api/user/register/ HTTP/1.1" 201 248
+INFO 2025-11-07 06:18:05,747 django.server "POST /api/user/login/ HTTP/1.1" 200 75
+INFO 2025-11-07 06:18:23,191 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:19:12,149 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:20:00,136 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:20:48,175 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:21:37,057 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:22:26,079 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:23:14,125 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:24:02,147 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:24:51,271 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:25:39,347 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:26:27,415 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:27:15,485 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:27:17,583 django.server "POST /api/user/register/ HTTP/1.1" 201 248
+INFO 2025-11-07 06:27:27,271 django.server "POST /api/user/login/ HTTP/1.1" 200 75
+INFO 2025-11-07 06:28:03,575 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:28:52,773 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:29:40,896 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:30:28,956 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:31:17,174 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:32:06,165 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:32:54,246 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:33:42,221 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:34:30,198 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:35:18,226 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:36:06,121 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:36:54,186 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:37:42,241 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:38:30,180 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:39:19,319 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:40:07,390 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:40:55,532 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:41:43,648 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:42:32,633 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:43:20,816 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:44:08,911 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:44:57,954 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:45:47,038 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:46:35,051 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:47:24,636 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:48:14,873 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:49:02,915 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:49:51,138 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:50:39,068 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:51:07,764 django.server "GET /api/user/profile/ HTTP/1.1" 200 239
+INFO 2025-11-07 06:51:27,111 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:52:15,235 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:53:03,255 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:53:51,488 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:54:39,514 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:55:27,791 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:56:15,915 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:57:05,082 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:57:53,227 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:58:41,116 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 06:59:30,239 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:00:18,504 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:01:06,547 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:05:27,985 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:05:46,134 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:06:34,177 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:07:22,244 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:08:10,171 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:08:58,312 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:09:46,395 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:10:34,476 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:11:22,631 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:12:10,725 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:12:59,969 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:13:48,767 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:14:38,273 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:15:28,538 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:16:16,747 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:17:04,878 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:17:53,061 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:18:41,163 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:19:30,298 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:20:18,474 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:20:22,560 user_events Received event: shop.approved
+INFO 2025-11-07 07:20:23,304 user_events User e295e7c0-4709-459a-9719-d625a10a5aeb is now shop owner (shop=e5323cb9-473a-4375-8f72-68396e73e1ba)
+INFO 2025-11-07 07:20:33,511 django.server "GET /api/user/profile/ HTTP/1.1" 200 238
+INFO 2025-11-07 07:21:06,517 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:21:44,000 django.utils.autoreload /app/Core/urls.py changed, reloading.
+INFO 2025-11-07 07:21:45,071 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-07 07:21:55,089 django.utils.autoreload /app/Core/urls.py changed, reloading.
+INFO 2025-11-07 07:21:55,636 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-07 07:21:57,707 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:22:43,641 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:23:32,718 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:24:21,837 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:24:48,008 django.utils.autoreload /app/Core/urls.py changed, reloading.
+INFO 2025-11-07 07:24:49,122 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-07 07:25:10,010 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:25:35,635 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-07 07:25:44,624 user_events User service listening for shop.approved events…
+ERROR 2025-11-07 07:26:37,814 user_events Connection error: (320, "CONNECTION_FORCED - broker forced connection closure with reason 'shutdown'")
+ERROR 2025-11-07 07:26:46,864 user_events Connection error: 
+ERROR 2025-11-07 07:26:51,871 user_events Connection error: 
+ERROR 2025-11-07 07:26:56,875 user_events Connection error: 
+ERROR 2025-11-07 07:27:01,880 user_events Connection error: 
+ERROR 2025-11-07 07:27:06,890 user_events Connection error: 
+INFO 2025-11-07 07:27:11,908 user_events User service listening for shop.approved events…
+INFO 2025-11-07 07:52:25,272 user_events User service listening for shop.approved events…
+INFO 2025-11-07 07:52:27,696 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-07 07:52:56,231 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-07 07:53:46,632 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 07:56:29,660 user_events Connection error: 
+ERROR 2025-11-08 07:56:34,666 user_events Connection error: 
+ERROR 2025-11-08 07:56:39,675 user_events Connection error: 
+ERROR 2025-11-08 07:56:44,683 user_events Connection error: 
+ERROR 2025-11-08 07:56:49,690 user_events Connection error: 
+ERROR 2025-11-08 07:56:54,697 user_events Connection error: 
+ERROR 2025-11-08 07:56:59,705 user_events Connection error: 
+ERROR 2025-11-08 07:57:04,785 user_events Connection error: 
+ERROR 2025-11-08 07:57:09,793 user_events Connection error: 
+ERROR 2025-11-08 07:57:14,799 user_events Connection error: 
+ERROR 2025-11-08 07:57:19,803 user_events Connection error: 
+ERROR 2025-11-08 07:57:24,811 user_events Connection error: 
+ERROR 2025-11-08 07:57:29,818 user_events Connection error: 
+ERROR 2025-11-08 07:57:34,883 user_events Connection error: 
+ERROR 2025-11-08 07:57:39,888 user_events Connection error: 
+ERROR 2025-11-08 07:57:44,896 user_events Connection error: 
+ERROR 2025-11-08 07:57:49,904 user_events Connection error: 
+ERROR 2025-11-08 07:57:54,907 user_events Connection error: 
+ERROR 2025-11-08 07:57:59,914 user_events Connection error: 
+ERROR 2025-11-08 07:58:08,922 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 07:58:17,903 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 07:58:26,910 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 07:58:27,548 django.utils.autoreload Watching for file changes with StatReloader
+ERROR 2025-11-08 07:58:35,928 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 07:58:44,939 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 07:58:53,935 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 07:59:02,897 user_events Connection error: [Errno -2] Name or service not known
+INFO 2025-11-08 07:59:09,813 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 07:59:11,923 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 07:59:20,929 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 07:59:29,904 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 07:59:38,928 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 07:59:47,908 user_events Connection error: [Errno -2] Name or service not known
+INFO 2025-11-08 07:59:56,871 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 07:59:56,916 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:00:05,892 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:00:14,900 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:00:23,829 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:00:32,747 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:00:41,766 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:00:50,697 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:00:59,703 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:01:08,765 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:01:17,773 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:01:26,778 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:01:35,835 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:01:44,843 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:01:53,848 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:02:02,798 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:02:11,871 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:02:20,880 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:02:29,886 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:02:38,939 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:02:47,910 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:02:56,846 user_events Connection error: [Errno -2] Name or service not known
+INFO 2025-11-08 08:03:03,268 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:03:05,918 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:03:14,927 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:03:21,365 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:03:23,929 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:03:32,937 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:03:42,006 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:03:51,014 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:04:00,022 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:04:09,083 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:04:09,447 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:04:18,089 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:04:27,001 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:04:36,029 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:04:45,037 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:04:53,989 user_events Connection error: [Errno -2] Name or service not known
+INFO 2025-11-08 08:04:57,565 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:04:58,997 user_events Connection error: 
+ERROR 2025-11-08 08:05:04,001 user_events Connection error: 
+ERROR 2025-11-08 08:05:09,064 user_events Connection error: 
+ERROR 2025-11-08 08:05:14,072 user_events Connection error: 
+ERROR 2025-11-08 08:05:19,079 user_events Connection error: 
+ERROR 2025-11-08 08:05:24,083 user_events Connection error: 
+ERROR 2025-11-08 08:05:29,086 user_events Connection error: 
+ERROR 2025-11-08 08:05:34,108 user_events Connection error: 
+ERROR 2025-11-08 08:05:39,204 user_events Connection error: 
+ERROR 2025-11-08 08:05:44,211 user_events Connection error: 
+INFO 2025-11-08 08:05:45,798 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:05:49,219 user_events Connection error: 
+ERROR 2025-11-08 08:05:54,221 user_events Connection error: 
+ERROR 2025-11-08 08:05:59,229 user_events Connection error: 
+INFO 2025-11-08 08:06:05,198 user_events User service listening for shop.approved events…
+INFO 2025-11-08 08:06:33,917 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:07:22,110 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:08:10,157 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:08:15,143 django.server "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-08 08:08:15,332 django.server "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4170
+INFO 2025-11-08 08:08:15,523 django.server "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+INFO 2025-11-08 08:08:15,531 django.server "GET /static/admin/css/login.css HTTP/1.1" 200 951
+INFO 2025-11-08 08:08:15,532 django.server "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2025-11-08 08:08:15,534 django.server "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+INFO 2025-11-08 08:08:15,534 django.server "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+INFO 2025-11-08 08:08:15,536 django.server "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+INFO 2025-11-08 08:08:15,573 django.server "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+WARNING 2025-11-08 08:08:15,707 django.request Not Found: /favicon.ico
+WARNING 2025-11-08 08:08:15,707 django.server "GET /favicon.ico HTTP/1.1" 404 3032
+INFO 2025-11-08 08:08:58,188 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:09:46,365 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:10:34,484 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:11:10,253 user_events Connection error: (320, "CONNECTION_FORCED - broker forced connection closure with reason 'shutdown'")
+ERROR 2025-11-08 08:11:19,258 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:11:22,701 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:11:28,209 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:11:37,264 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:11:46,272 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:11:55,219 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:12:04,227 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:12:10,865 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:12:13,321 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:12:22,300 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:12:31,308 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:12:40,369 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:12:49,378 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:12:58,383 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:12:58,931 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:13:07,366 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:13:16,356 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:13:25,361 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:13:34,369 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:13:43,479 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:13:47,139 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:13:52,486 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:14:01,491 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:14:10,555 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:14:19,563 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:14:28,572 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:14:35,157 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:14:37,632 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:14:46,639 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:14:55,647 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:15:04,589 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:15:13,695 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:15:22,638 user_events Connection error: [Errno -2] Name or service not known
+INFO 2025-11-08 08:15:23,195 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:15:31,581 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:15:40,639 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:15:49,643 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:15:58,647 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:16:07,708 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:16:11,216 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:16:16,716 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:16:25,724 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:16:34,729 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:16:43,817 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:16:52,807 user_events Connection error: [Errno -2] Name or service not known
+INFO 2025-11-08 08:16:59,148 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:17:01,741 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:17:10,791 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:17:19,769 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:17:28,752 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:17:37,765 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:17:46,774 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:17:47,201 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:17:55,779 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:18:04,686 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:18:13,773 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:18:22,781 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:18:31,739 user_events Connection error: [Errno -2] Name or service not known
+INFO 2025-11-08 08:18:35,180 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:18:40,803 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:18:49,812 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:18:58,819 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:19:07,825 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:19:16,796 user_events Connection error: [Errno -2] Name or service not known
+INFO 2025-11-08 08:19:23,244 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:19:25,737 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:19:34,742 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:19:45,260 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:19:54,267 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:20:03,275 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:20:11,119 user_events Connection error: [Errno -5] No address associated with hostname
+INFO 2025-11-08 08:20:11,710 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:20:20,126 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:20:29,103 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-08 08:20:38,168 user_events Connection error: [Errno -5] No address associated with hostname
+ERROR 2025-11-08 08:20:43,173 user_events Connection error: 
+ERROR 2025-11-08 08:20:48,176 user_events Connection error: 
+ERROR 2025-11-08 08:20:53,186 user_events Connection error: 
+ERROR 2025-11-08 08:20:58,193 user_events Connection error: 
+INFO 2025-11-08 08:20:59,778 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-08 08:21:03,196 user_events Connection error: 
+ERROR 2025-11-08 08:21:08,261 user_events Connection error: 
+ERROR 2025-11-08 08:21:13,265 user_events Connection error: 
+INFO 2025-11-08 08:21:20,754 user_events User service listening for shop.approved events…
+INFO 2025-11-08 08:21:47,947 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:22:36,031 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:23:24,192 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:24:12,238 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:25:00,219 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:25:43,919 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:26:27,485 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:27:11,970 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:27:55,319 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:28:39,266 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:29:22,825 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:30:06,045 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:30:49,785 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:31:33,195 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:32:16,802 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:33:00,075 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:33:43,750 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:34:27,131 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:35:10,425 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:35:54,111 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:36:37,463 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:37:21,047 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:38:04,387 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:38:48,062 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:39:31,332 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:40:15,075 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:40:58,343 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:41:42,032 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:42:25,325 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:43:08,655 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:43:52,032 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:44:35,390 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:45:19,055 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:46:02,337 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:46:46,160 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:47:29,424 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:48:13,222 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:48:56,527 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:49:40,014 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:50:23,755 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:51:07,093 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:51:50,476 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:52:34,157 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:52:40,495 django.server "POST /api/user/register/ HTTP/1.1" 201 254
+INFO 2025-11-08 08:52:51,904 django.server "POST /api/user/login/ HTTP/1.1" 200 77
+INFO 2025-11-08 08:53:17,857 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:53:20,752 django.server "GET /api/user/profile/ HTTP/1.1" 200 245
+INFO 2025-11-08 08:54:01,112 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:54:44,411 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:55:28,180 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:56:11,659 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:56:55,162 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:57:38,787 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:57:58,546 django.server "POST /api/user/login/ HTTP/1.1" 200 75
+INFO 2025-11-08 08:58:22,242 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:59:05,460 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 08:59:49,067 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:00:12,635 django.server "POST /api/user/login/ HTTP/1.1" 200 74
+INFO 2025-11-08 09:00:26,219 django.server "GET /api/user/profile/ HTTP/1.1" 200 235
+INFO 2025-11-08 09:00:32,683 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:01:16,102 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:01:59,402 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:02:42,912 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:03:26,427 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:04:10,124 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:04:53,795 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:05:37,055 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:06:20,477 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:07:04,212 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:07:47,597 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:08:31,090 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:09:14,798 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:09:58,132 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:10:41,358 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:11:25,231 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:12:08,540 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:12:52,078 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:13:35,691 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:14:19,114 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:15:02,447 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:15:46,135 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:16:29,545 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:17:13,031 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:17:56,419 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:18:40,047 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:19:23,585 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:20:07,074 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:20:50,552 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:21:34,119 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:22:17,408 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:23:01,184 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:23:44,414 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:24:28,351 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:25:11,730 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:25:55,276 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:26:38,766 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:27:22,194 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:28:05,770 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:28:49,218 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:29:32,827 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:30:16,198 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:31:00,034 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:31:43,344 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:32:26,866 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:33:10,146 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:33:53,556 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:34:37,137 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:35:20,473 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:36:04,078 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:36:47,475 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:37:31,199 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:38:14,465 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:38:58,133 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:39:41,406 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:40:25,235 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:41:08,542 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:41:52,083 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:42:35,505 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:43:18,972 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:44:02,379 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:44:45,791 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:45:29,140 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:46:12,427 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:46:56,170 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:47:39,459 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:48:23,178 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:49:06,714 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:49:50,077 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:50:33,719 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:51:17,072 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:52:00,498 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:52:44,002 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:53:27,370 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:54:11,600 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:54:55,081 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:55:38,457 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:56:22,025 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:57:05,452 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:57:48,999 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:58:32,442 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:59:16,080 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 09:59:59,577 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:00:43,105 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:01:26,493 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:01:45,899 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:01:59,178 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:02:42,483 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:03:26,178 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:04:17,403 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:05:01,063 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:05:44,530 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:06:28,039 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:07:11,431 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:07:55,118 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:08:38,765 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-08 10:09:22,027 django.server "GET /openapi.json HTTP/1.1" 200 3587

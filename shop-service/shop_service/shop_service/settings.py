@@ -19,6 +19,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
+    "shop-admin.localhost",
     "127.0.0.1",
     "shop-service-814454543179.europe-west1.run.app",
     "shop-service-web-1",
