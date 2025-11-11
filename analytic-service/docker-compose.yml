@@ -29,6 +29,12 @@ services:
     networks:
       - internal_net
       - shared_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.analytic-admin.rule=Host(`analytic-admin.localhost`)"
+      - "traefik.http.routers.analytic-admin.entrypoints=web"
+      - "traefik.http.routers.analytic-admin.service=order-web-service"
+      - "traefik.http.services.analytic-web-service.loadbalancer.server.port=8000"
 
 networks:
   internal_net:

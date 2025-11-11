@@ -1,16 +1,24 @@
+# config/urls.py - JSON FORMATINDA QAYTAR
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import permissions
-from rest_framework.renderers import JSONRenderer
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from django.shortcuts import redirect
+from django.http import JsonResponse
+from django.views import View
+from drf_spectacular.views import SpectacularAPIView
 
+# ✅ JSON FORMATINDA OPENAPI
+class JSONOpenAPI(View):
+    def get(self, request):
+        # Spectacular view-dən məlumatı al
+        spectacular_view = SpectacularAPIView.as_view()
+        response = spectacular_view(request)
+        
+        # JSON formatında qaytar
+        return JsonResponse(response.data)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('analitic.urls')),  
-
-    path('openapi.json', SpectacularAPIView.as_view(api_version='1.0', renderer_classes=[JSONRenderer]), name='schema'),
-    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/v1/', include('analitic.urls')),
+    path('', lambda request: redirect('admin/', permanent=False)),
+    path('openapi.json', JSONOpenAPI.as_view()),  # ✅ JSON formatında
 ]
-

@@ -13,7 +13,10 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['*']
 
 # CSRF
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost:8000', 'http://localhost:8004' ]
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8001', 'http://localhost:8001']
+
+# config/settings.py - ƏLAVƏ EDİN
+PRODUCT_SERVICE_URL = os.environ.get('PRODUCT_SERVICE', 'http://product-service:8000')
 
 # Installed apps
 INSTALLED_APPS = [
@@ -25,8 +28,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'analitic',
+    'drf_yasg',
     'drf_spectacular',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -40,6 +46,28 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_VERSION': 'v1',
+    'ALLOWED_VERSIONS': ('v1', 'v2'),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Analitic API',
+    'DESCRIPTION': 'Analitic servisin API endpoint-ləri',
+    'VERSION': 'v1',
+    'CONTACT': {'email': 'ilham@example.com'},
+    'LICENSE': {'name': 'BSD License'},
+}
+
+
+
+
+
 
 TEMPLATES = [
     {
@@ -61,16 +89,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Local Windows üçün:
 if os.environ.get("DOCKER", None) == "1":
-    DB_HOST = os.environ.get("DB_HOST", "db")  # Docker Compose konteyner adı
-else:
-    DB_HOST = os.environ.get("DB_HOST", "127.0.0.1")  # Lokal host
+    DB_HOST = os.environ.get("POSTGRES_HOST", "db-analytic")  # Docker Compose konteyner adı
 
+else:
+    DB_HOST = os.environ.get("POSTGRES_HOST", "127.0.0.1")  # Lokal host
+
+# config/settings.py - DÜZƏLDİN
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'ecommerce_db'),
-        'USER': os.environ.get('DB_USER', 'ecommerce_user'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', '12345'),
+        'NAME': os.environ.get('DB_NAME', 'analytic_db'),         # ✅ DÜZGÜN
+        'USER': os.environ.get('DB_USER', 'analytic_user'),       # ✅ DÜZGÜN
+        'PASSWORD': os.environ.get('DB_PASSWORD', '12345'),       # ✅ DÜZGÜN
         'HOST': DB_HOST,
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
@@ -94,16 +124,3 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'Analitic API',
-    'DESCRIPTION': 'Analitic servisin API endpoint-ləri',
-    'VERSION': 'v1',
-    'CONTACT': {'email': 'ilham@example.com'},
-    'LICENSE': {'name': 'BSD License'},
-}
-
-REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-}
