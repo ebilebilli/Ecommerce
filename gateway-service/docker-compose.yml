@@ -26,6 +26,11 @@ services:
       - "traefik.http.routers.gateway.rule=Host(`gateway.localhost`)"
       - "traefik.http.routers.gateway.entrypoints=web"
       - "traefik.http.services.gateway.loadbalancer.server.port=8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   shared_network:
