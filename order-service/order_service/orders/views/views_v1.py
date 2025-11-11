@@ -131,7 +131,7 @@ def create_order_from_shopcart(request):
             return Response({"error": "Missing product_variation_id"}, status=status.HTTP_400_BAD_REQUEST)
         
         # Fetch product_id and shop_id from product service
-        variation_data = product_client.get_variation(str(variation_id))
+        variation_data = product_client.get_variation(str(variation_id), user_id=user_id)
         if not variation_data:
             logger.error(f'Product variation not found: {variation_id}')
             return Response({"error": f"Product variation not found: {variation_id}"}, status=status.HTTP_404_NOT_FOUND)
@@ -141,7 +141,7 @@ def create_order_from_shopcart(request):
             logger.error(f'Product ID not found in variation data: {variation_id}')
             return Response({"error": "Product ID not found in variation"}, status=status.HTTP_404_NOT_FOUND)
         
-        product_data = product_client.get_product(product_id)
+        product_data = product_client.get_product(product_id, user_id=user_id)
         if not product_data:
             logger.error(f'Product not found: {product_id}')
             return Response({"error": f"Product not found: {product_id}"}, status=status.HTTP_404_NOT_FOUND)
@@ -216,12 +216,12 @@ def update_order_item_status(request, pk):
     if not shop_id or not product_id:
         logger.warning(f'Missing shop_id or product_id for OrderItem {item.id}, fetching from product service')
         variation_id = str(item.product_variation)
-        variation_data = product_client.get_variation(variation_id)
+        variation_data = product_client.get_variation(variation_id, user_id=user_id)
         if variation_data and not product_id:
             product_id = str(variation_data.get("product_id")) if variation_data.get("product_id") else None
         
         if product_id and not shop_id:
-            product_data = product_client.get_product(product_id)
+            product_data = product_client.get_product(product_id, user_id=user_id)
             if product_data:
                 shop_id = str(product_data.get("shop_id")) if product_data.get("shop_id") else None
     

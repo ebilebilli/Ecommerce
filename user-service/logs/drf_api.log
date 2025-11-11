@@ -1251,3 +1251,5 @@ INFO 2025-11-08 11:08:07,474 django.server "GET /openapi.json HTTP/1.1" 200 3587
 INFO 2025-11-08 11:08:51,277 django.server "GET /openapi.json HTTP/1.1" 200 3587
 INFO 2025-11-08 11:09:34,758 django.server "GET /openapi.json HTTP/1.1" 200 3587
 ERROR 2025-11-08 11:10:05,494 user_events Connection error: (320, "CONNECTION_FORCED - broker forced connection closure with reason 'shutdown'")
+INFO 2025-11-11 17:07:55,395 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-11 17:08:05,887 user_events User service listening for shop.approved events…

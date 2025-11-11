@@ -6,11 +6,16 @@ class ProductClient:
     def __init__(self):
         self.base_url = getattr(settings, 'PRODUCT_SERVICE', 'http://product-service:8000')
     
-    def get_product_variation_data(self, product_variation_uuid):
+    def get_product_variation_data(self, product_variation_uuid, user_id=None):
         """Product servisindən variation məlumatlarını al"""
         try:
+            headers = {}
+            if user_id:
+                headers['X-User-ID'] = str(user_id)
+            
             response = requests.get(
-                f"{self.base_url}/api/products/variations/{product_variation_uuid}/"
+                f"{self.base_url}/api/products/variations/{product_variation_uuid}/",
+                headers=headers
             )
             if response.status_code == 200:
                 data = response.json()

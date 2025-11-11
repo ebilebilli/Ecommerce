@@ -37,8 +37,14 @@ class AnalyticServiceClient:
 
         url = f"{self.base_url}/api/orders/"
         try:
+            headers = {
+                'Content-Type': 'application/json',
+            }
+            if order.user_id:
+                headers['X-User-ID'] = str(order.user_id)
+            
             with httpx.Client(timeout=self.timeout, follow_redirects=True) as client:
-                response = client.post(url, json=payload)
+                response = client.post(url, json=payload, headers=headers)
             
             if response.status_code == 201 or response.status_code == 200:
                 logger.info(f"Order {order.id} successfully sent to analytics.")

@@ -48,6 +48,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'config.urls'
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'shop_service.authentication.GatewayHeaderAuthentication',
+    ),
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
     'DEFAULT_VERSION': 'v1',
     'ALLOWED_VERSIONS': ('v1', 'v2'),
@@ -63,10 +66,6 @@ SPECTACULAR_SETTINGS = {
     'CONTACT': {'email': 'ilham@example.com'},
     'LICENSE': {'name': 'BSD License'},
 }
-
-
-
-
 
 
 TEMPLATES = [

@@ -12,13 +12,18 @@ class ShopServiceDataCheck:
         self.base_url = SHOP_SERVICE_URL
         self.timeout = 30.0
     
-    async def get_shop_data(self, shop_id: str) -> Optional[dict]:
+    async def get_shop_data(self, shop_id: str, user_id: Optional[str] = None) -> Optional[dict]:
         try:
             url = f'{self.base_url}/api/shops/{shop_id}/'
+            
+            headers = {'Content-Type': 'application/json'}
+            if user_id:
+                headers['X-User-ID'] = str(user_id)
+            
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 response = await client.get(
                     url,
-                    headers={'Content-Type': 'application/json'}
+                    headers=headers
                 )
                 
                 if response.status_code == 200:
