@@ -61,7 +61,7 @@ def delete_category(category_id: UUID, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Category not found")
     return {"message": "Category deleted"}
 
-# Endpoints for Product
+
 # Endpoints for Product
 @router.post("/products/", response_model=Product)
 async def create_product(product: ProductCreate, request: Request, db: Session = Depends(get_db)):
