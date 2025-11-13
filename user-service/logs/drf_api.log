@@ -1462,3 +1462,59 @@ INFO 2025-11-12 07:30:09,846 django.server "GET /openapi.json HTTP/1.1" 200 3587
 INFO 2025-11-12 07:30:53,356 django.server "GET /openapi.json HTTP/1.1" 200 3587
 ERROR 2025-11-12 07:31:06,031 user_events Connection error: (320, "CONNECTION_FORCED - broker forced connection closure with reason 'shutdown'")
 ERROR 2025-11-12 07:31:11,073 user_events Connection error: 
+INFO 2025-11-13 06:41:13,436 django.utils.autoreload Watching for file changes with StatReloader
+ERROR 2025-11-13 06:41:15,073 user_events Connection error: [Errno -3] Temporary failure in name resolution
+ERROR 2025-11-13 06:41:24,028 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-13 06:41:29,305 user_events Connection error: 
+ERROR 2025-11-13 06:41:34,529 user_events Connection error: 
+ERROR 2025-11-13 06:41:39,603 user_events Connection error: 
+ERROR 2025-11-13 06:41:44,572 user_events Connection error: 
+ERROR 2025-11-13 06:41:49,580 user_events Connection error: 
+ERROR 2025-11-13 06:41:54,584 user_events Connection error: 
+ERROR 2025-11-13 06:41:59,591 user_events Connection error: 
+ERROR 2025-11-13 06:42:05,815 user_events Connection error: 
+ERROR 2025-11-13 06:42:10,824 user_events Connection error: 
+ERROR 2025-11-13 06:42:15,787 user_events Connection error: 
+ERROR 2025-11-13 06:42:20,795 user_events Connection error: 
+INFO 2025-11-13 06:42:23,240 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-13 06:42:25,876 user_events Connection error: 
+ERROR 2025-11-13 06:42:30,883 user_events Connection error: 
+ERROR 2025-11-13 06:42:35,891 user_events Connection error: 
+ERROR 2025-11-13 06:42:40,900 user_events Connection error: 
+ERROR 2025-11-13 06:42:45,843 user_events Connection error: 
+ERROR 2025-11-13 06:42:50,850 user_events Connection error: 
+ERROR 2025-11-13 06:42:55,858 user_events Connection error: 
+ERROR 2025-11-13 06:43:00,866 user_events Connection error: 
+ERROR 2025-11-13 06:43:05,873 user_events Connection error: 
+ERROR 2025-11-13 06:43:10,878 user_events Connection error: 
+INFO 2025-11-13 06:43:11,657 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-13 06:43:15,820 user_events Connection error: 
+ERROR 2025-11-13 06:43:20,828 user_events Connection error: 
+ERROR 2025-11-13 06:43:25,836 user_events Connection error: 
+ERROR 2025-11-13 06:43:31,044 user_events Connection error: 
+ERROR 2025-11-13 06:43:36,053 user_events Connection error: 
+ERROR 2025-11-13 06:43:41,061 user_events Connection error: 
+ERROR 2025-11-13 06:43:45,975 user_events Connection error: 
+ERROR 2025-11-13 06:43:50,979 user_events Connection error: 
+ERROR 2025-11-13 06:43:56,065 user_events Connection error: 
+INFO 2025-11-13 06:44:00,276 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-13 06:44:01,071 user_events Connection error: 
+ERROR 2025-11-13 06:44:06,135 user_events Connection error: 
+ERROR 2025-11-13 06:44:11,922 user_events Connection error: 
+ERROR 2025-11-13 06:44:17,146 user_events Connection error: 
+ERROR 2025-11-13 06:44:22,154 user_events Connection error: 
+ERROR 2025-11-13 06:44:27,159 user_events Connection error: 
+ERROR 2025-11-13 06:44:32,166 user_events Connection error: 
+ERROR 2025-11-13 06:44:37,170 user_events Connection error: 
+ERROR 2025-11-13 06:44:42,174 user_events Connection error: 
+ERROR 2025-11-13 06:44:47,166 user_events Connection error: 
+INFO 2025-11-13 06:44:48,389 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-13 06:44:52,173 user_events Connection error: 
+ERROR 2025-11-13 06:44:57,181 user_events Connection error: 
+ERROR 2025-11-13 06:45:02,189 user_events Connection error: 
+ERROR 2025-11-13 06:45:07,197 user_events Connection error: 
+INFO 2025-11-13 06:45:13,196 user_events User service listening for shop.approved events…
+INFO 2025-11-13 06:45:36,361 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-13 06:46:24,380 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-13 06:47:12,711 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-13 06:48:00,959 django.server "GET /openapi.json HTTP/1.1" 200 3587

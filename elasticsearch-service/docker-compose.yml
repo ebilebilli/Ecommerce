@@ -32,12 +32,12 @@ services:
       - "traefik.http.services.kibana.loadbalancer.server.port=5601"
   
   shop_consumer:
-    build: ./elastic_service
+    build: .
     container_name: elastic_consumer
     command: >
-      sh -c "python -m asyncio run elastic_service.consumer.start_consumer"
+      sh -c "python -m asyncio run elasticsearch.consumer.start_consumer"
     env_file:
-      - ./elastic_service/.env
+      - .env
     depends_on:
       - elasticsearch
     networks:
