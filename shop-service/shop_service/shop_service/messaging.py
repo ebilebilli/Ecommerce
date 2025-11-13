@@ -27,7 +27,7 @@ class RabbitMQPublisher:
         )
         return pika.BlockingConnection(parameters)
     
-    def publish_shop_created(self, user_uuid: str, shop_id: str):
+    def publish_shop_created(self, user_uuid: str, shop_id: str, shop_data: dict):
         """Publish shop.approved event when a shop status changes to APPROVED"""
         try:
             connection = self.get_connection()
@@ -43,7 +43,8 @@ class RabbitMQPublisher:
                 'event_type': 'shop.approved',
                 'user_uuid': str(user_uuid),
                 'shop_id': str(shop_id),
-                'is_shop_owner': True
+                'is_shop_owner': True,
+                'shop_data': shop_data
             }
             
             channel.basic_publish(
@@ -58,10 +59,17 @@ class RabbitMQPublisher:
             
             logger.info(f"published shop.approved event | user={user_uuid} shop={shop_id}")
             connection.close()
-            
+          
         except Exception as e:
             logger.error(f"failed to publish shop.approved event: {e}", exc_info=True)
 
+    def publish_shop_updated(self, user_uuid: str, shop_id: str, shop_data: dict):
+        logger.info(f"published shop.updated event | user={user_uuid} shop={shop_id}")
+        self._publish('updated', user_uuid, shop_id, shop_data)
+
+    def publish_shop_deleted(self, user_uuid: str, shop_id: str):
+        logger.info(f"published shop.deleted event | user={user_uuid} shop={shop_id}")
+        self._publish('deleted', user_uuid, shop_id)
 
 
 publisher = RabbitMQPublisher()

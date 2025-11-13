@@ -59,7 +59,30 @@ class ShopEventConsumer:
         except Exception as e:
             logger.error(f"Failed to handle shop.approved event: {e}")
             return False
-    
+        
+    def handle_shop_deleted(self, message: dict):
+        try:
+            user_uuid = message.get('user_uuid')
+            shop_id = message.get('shop_id')
+            
+            if not user_uuid:
+                logger.warning("Missing user_uuid in shop.deleted event")
+                return False
+            
+            user = User.objects.get(id=user_uuid)
+            user.is_shop_owner = False
+            user.save()
+            
+            logger.info(f"User {user_uuid} is no longer shop owner (shop={shop_id})")
+            return True
+            
+        except User.DoesNotExist:
+            logger.error(f"User {user_uuid} not found")
+            return False
+        except Exception as e:
+            logger.error(f"Failed to handle shop.deleted event: {e}")
+            return False
+        
     def callback(self, ch, method, properties, body):
         try:
             message = json.loads(body)
