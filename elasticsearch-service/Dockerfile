@@ -23,6 +23,9 @@ COPY elasticsearch/ /app/elasticsearch
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
+# Create logs directory
+RUN mkdir -p /app/logs
+
 # Create non-root user
 RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser

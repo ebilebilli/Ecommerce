@@ -11,17 +11,53 @@ services:
       - shared_network
     restart: always
     labels:
-      - "traefik.enable=false" 
+      - "traefik.enable=false"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        tag: "elasticsearch" 
+
+  setup_kibana_password:
+    image: curlimages/curl:latest
+    container_name: setup_kibana_password
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Waiting for Elasticsearch..."
+        until curl -s -u "$${ELASTIC_USERNAME:-elastic}:$${ELASTIC_PASSWORD}" "$${ELASTIC_HOST}" > /dev/null 2>&1; do
+          sleep 2
+        done
+        echo "Setting kibana_system password..."
+        curl -X POST -u "$${ELASTIC_USERNAME:-elastic}:$${ELASTIC_PASSWORD}" \
+          "$${ELASTIC_HOST}/_security/user/kibana_system/_password" \
+          -H "Content-Type: application/json" \
+          -d "{\"password\":\"$${KIBANA_SYSTEM_PASSWORD:-$${ELASTIC_PASSWORD}}\"}" \
+          || echo "Password may already be set"
+    environment:
+      - ELASTIC_HOST=${ELASTIC_HOST}
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - KIBANA_SYSTEM_PASSWORD=${KIBANA_SYSTEM_PASSWORD:-${ELASTIC_PASSWORD}}
+    depends_on:
+      - elasticsearch
+    networks:
+      - shared_network
+    restart: "no"
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.12.1
     container_name: kibana
     environment:
       - ELASTICSEARCH_HOSTS=${ELASTIC_HOST}
-      - ELASTICSEARCH_USERNAME=${ELASTIC_USERNAME}
-      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=${KIBANA_SYSTEM_PASSWORD:-${ELASTIC_PASSWORD}}
+      - SERVERNAME=kibana
+      - SERVER_HOST=0.0.0.0
     depends_on:
       - elasticsearch
+      - setup_kibana_password
     networks:
       - shared_network
     restart: always
@@ -30,12 +66,18 @@ services:
       - "traefik.http.routers.kibana.rule=Host(`kibana-admin.localhost`)"
       - "traefik.http.routers.kibana.entrypoints=web"
       - "traefik.http.services.kibana.loadbalancer.server.port=5601"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        tag: "kibana"
   
   shop_consumer:
     build: .
     container_name: elastic_consumer
-    command: >
-      sh -c "python -m asyncio run elasticsearch.consumer.start_consumer"
+    entrypoint: ["/bin/sh", "-c"]
+    command: "python -u elasticsearch/consumer.py"
     env_file:
       - .env
     depends_on:
@@ -45,6 +87,13 @@ services:
     restart: always
     labels:
       - "traefik.enable=false"
+    volumes:
+      - ./logs:/app/logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   shared_network:
