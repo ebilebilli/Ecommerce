@@ -4,3 +4,4 @@ from pydantic import BaseModel
 class ShopSchema(BaseModel):
     id: str
     name: str
+    is_active: bool = True

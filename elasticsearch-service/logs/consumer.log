@@ -1,0 +1,109 @@
+2025-11-13 19:37:14,735 - INFO - Received event: shop.approved for shop: 132261bd-ab46-465d-b358-cba04aa8f888
+2025-11-13 19:37:14,737 - INFO - Resurrected node <Urllib3HttpNode(http://elasticsearch:9200)> (force=False)
+2025-11-13 19:37:24,750 - INFO - PUT http://elasticsearch:9200/shops/_doc/132261bd-ab46-465d-b358-cba04aa8f888 [status:N/A duration:10.012s]
+2025-11-13 19:37:24,750 - WARNING - Node <Urllib3HttpNode(http://elasticsearch:9200)> has failed for 1 times in a row, putting on 1 second timeout
+2025-11-13 19:37:24,751 - ERROR - Failed processing message: Connection timed out
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/urllib3/connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "/usr/local/lib/python3.13/site-packages/urllib3/connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "/usr/local/lib/python3.13/http/client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/http/client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/http/client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/elastic_transport/_node/_http_urllib3.py", line 167, in perform_request
+    response = self.pool.urlopen(
+        method,
+    ...<4 lines>...
+        **kw,  # type: ignore[arg-type]
+    )
+  File "/usr/local/lib/python3.13/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "/usr/local/lib/python3.13/site-packages/urllib3/util/retry.py", line 449, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/urllib3/util/util.py", line 39, in reraise
+    raise value
+  File "/usr/local/lib/python3.13/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "/usr/local/lib/python3.13/site-packages/urllib3/connectionpool.py", line 536, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/urllib3/connectionpool.py", line 367, in _raise_timeout
+    raise ReadTimeoutError(
+        self, url, f"Read timed out. (read timeout={timeout_value})"
+    ) from err
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='elasticsearch', port=9200): Read timed out. (read timeout=10)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/consumer.py", line 146, in start_consumer
+    es.index(index=INDEX_NAME, id=shop_id, document=shop.model_dump())
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/elasticsearch/_sync/client/utils.py", line 452, in wrapped
+    return api(*args, **kwargs)
+  File "/usr/local/lib/python3.13/site-packages/elasticsearch/_sync/client/__init__.py", line 3028, in index
+    return self.perform_request(  # type: ignore[return-value]
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        __method,
+        ^^^^^^^^^
+    ...<5 lines>...
+        path_parts=__path_parts,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/elasticsearch/_sync/client/_base.py", line 271, in perform_request
+    response = self._perform_request(
+        method,
+    ...<4 lines>...
+        otel_span=otel_span,
+    )
+  File "/usr/local/lib/python3.13/site-packages/elasticsearch/_sync/client/_base.py", line 315, in _perform_request
+    meta, resp_body = self.transport.perform_request(
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<8 lines>...
+        otel_span=otel_span,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/elastic_transport/_transport.py", line 342, in perform_request
+    resp = node.perform_request(
+        method,
+    ...<3 lines>...
+        request_timeout=request_timeout,
+    )
+  File "/usr/local/lib/python3.13/site-packages/elastic_transport/_node/_http_urllib3.py", line 202, in perform_request
+    raise err from e
+elastic_transport.ConnectionTimeout: Connection timed out
+2025-11-13 19:39:36,777 - INFO - Received event: shop.approved for shop: 132261bd-ab46-465d-b358-cba04aa8f888
+2025-11-13 19:39:36,778 - INFO - Resurrected node <Urllib3HttpNode(http://elasticsearch:9200)> (force=False)
+2025-11-13 19:39:40,441 - INFO - PUT http://elasticsearch:9200/shops/_doc/132261bd-ab46-465d-b358-cba04aa8f888 [status:200 duration:3.662s]
+2025-11-13 19:39:40,441 - WARNING - Node <Urllib3HttpNode(http://elasticsearch:9200)> has been marked alive after a successful request
+2025-11-13 19:39:40,442 - INFO - Indexed shop 132261bd-ab46-465d-b358-cba04aa8f888 (Qelyan) to Elasticsearch
+2025-11-13 19:39:52,273 - INFO - Received event: shop.approved for shop: 9251b333-6f1b-4040-ae53-c14b2bd52ef0
+2025-11-13 19:39:52,274 - INFO - Resurrected node <Urllib3HttpNode(http://elasticsearch:9200)> (force=False)
+2025-11-13 19:39:54,202 - INFO - PUT http://elasticsearch:9200/shops/_doc/9251b333-6f1b-4040-ae53-c14b2bd52ef0 [status:201 duration:1.926s]
+2025-11-13 19:39:54,202 - INFO - Indexed shop 9251b333-6f1b-4040-ae53-c14b2bd52ef0 (Kababs) to Elasticsearch

@@ -56,6 +56,9 @@ PUBLIC_ENDPOINTS = {
     '/product/api/products/variations/{variation_id}': ['GET'],
     '/product/api/products/variations/{variation_id}/images/': ['GET'],
     '/product/api/products/variations/{variation_id}/comments/': ['GET'],
+
+    # Elasticsearch endpints
+    '/elasticsearch/api/elasticsearch/search/': ['GET'],
 }
 
 

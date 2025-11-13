@@ -17,7 +17,10 @@ RUN pip install --upgrade pip
 RUN pip install .
 
 # Copy application 
-COPY elasticsearch/ /app/elasticsearch
+COPY elastic/ /app/elastic
+
+# Copy consumer script
+COPY consumer.py /app/consumer.py
 
 # Copy entrypoint script and make executable
 COPY entrypoint.sh /app/entrypoint.sh

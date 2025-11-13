@@ -21,5 +21,5 @@ SERVICE_URLS = {
     'order': ORDER_SERVICE,
     'wishlist': WISHLIST_SERVICE,
     'analytic': ANALYTIC_SERVICE,
-    'elastic': ELASTICSEARCH_SERVICE
+    'elasticsearch': ELASTICSEARCH_SERVICE
 }

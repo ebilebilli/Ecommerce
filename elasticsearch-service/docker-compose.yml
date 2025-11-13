@@ -76,12 +76,19 @@ services:
   shop_consumer:
     build: .
     container_name: elastic_consumer
-    entrypoint: ["/bin/sh", "-c"]
-    command: "python -u elasticsearch/consumer.py"
     env_file:
       - .env
+    environment:
+      - ELASTIC_HOST=${ELASTIC_HOST:-http://elasticsearch:9200}
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME:-elastic}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - RABBITMQ_HOST=${RABBITMQ_HOST:-rabbitmq}
+      - RABBITMQ_PORT=${RABBITMQ_PORT:-5672}
+      - RABBITMQ_USER=${RABBITMQ_USER:-admin}
+      - RABBITMQ_PASS=${RABBITMQ_PASS:-admin12345}
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_started
     networks:
       - shared_network
     restart: always
@@ -89,6 +96,39 @@ services:
       - "traefik.enable=false"
     volumes:
       - ./logs:/app/logs
+    working_dir: /app
+    command: python /app/consumer.py
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  elasticsearch_api:
+    build: .
+    container_name: elasticsearch_api
+    env_file:
+      - .env
+    environment:
+      - ELASTIC_HOST=${ELASTIC_HOST:-http://elasticsearch:9200}
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME:-elastic}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    depends_on:
+      elasticsearch:
+        condition: service_started
+    networks:
+      - shared_network
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.elasticsearch-api.rule=Host(`elasticsearch-api.localhost`)"
+      - "traefik.http.routers.elasticsearch-api.entrypoints=web"
+      - "traefik.http.services.elasticsearch-api.loadbalancer.server.port=8000"
+    volumes:
+      - ./logs:/app/logs
+    working_dir: /app
+    entrypoint: []
+    command: ["uvicorn", "elastic.main:app", "--host", "0.0.0.0", "--port", "8000"]
     logging:
       driver: "json-file"
       options:

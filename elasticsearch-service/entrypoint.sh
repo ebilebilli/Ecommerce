@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -e
 
-echo "Starting FastAPI entrypoint..."
+echo "Starting Elasticsearch consumer..."
 
-# Start FastAPI
-exec uvicorn elasticsearch.main:app --host 0.0.0.0 --port ${PORT} --proxy-headers
+# Wait for Elasticsearch
+python /app/consumer.py
