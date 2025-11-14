@@ -19,8 +19,8 @@ RUN pip install .
 # Copy application 
 COPY elastic/ /app/elastic
 
-# Copy consumer script
-COPY consumer.py /app/consumer.py
+# Copy consumer script (it's in elastic folder, copy it to root for entrypoint)
+COPY elastic/consumer.py /app/consumer.py
 
 # Copy entrypoint script and make executable
 COPY entrypoint.sh /app/entrypoint.sh
