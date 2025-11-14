@@ -74,50 +74,6 @@ class RabbitMQPublisher:
             logger.error(f"Failed to publish product.created event: {e}", exc_info=True)
             return False
 
-    def publish_product_variation_created(self, variation_data: Dict[str, Any]):
-        """Publish product_variation.created event to RabbitMQ"""
-        try:
-            conn = self.get_connection()
-            channel = conn.channel()
-            channel.exchange_declare(
-                exchange='product_events',
-                exchange_type='topic',
-                durable=True
-            )
-
-            message = {
-                'event_type': 'product_variation.created',
-                'variation_id': str(variation_data.get('id')),
-                'variation_data': {
-                    'id': str(variation_data.get('id')),
-                    'product_id': str(variation_data.get('product_id')),
-                    'size': variation_data.get('size'),
-                    'color': variation_data.get('color'),
-                    'count': variation_data.get('count', 0),
-                    'amount': variation_data.get('amount', 0),
-                    'price': float(variation_data.get('price')) if variation_data.get('price') else None,
-                    'discount': float(variation_data.get('discount')) if variation_data.get('discount') else None,
-                }
-            }
-
-            channel.basic_publish(
-                exchange='product_events',
-                routing_key='product_variation.created',
-                body=json.dumps(message),
-                properties=pika.BasicProperties(
-                    delivery_mode=2,  # Make message persistent
-                    content_type='application/json'
-                )
-            )
-
-            logger.info(f"Published product_variation.created event for variation {variation_data.get('id')}")
-            conn.close()
-            return True
-
-        except Exception as e:
-            logger.error(f"Failed to publish product_variation.created event: {e}", exc_info=True)
-            return False
-
     def publish_product_updated(self, product_data: Dict[str, Any]):
         """Publish product.updated event to RabbitMQ"""
         try:
@@ -196,84 +152,6 @@ class RabbitMQPublisher:
 
         except Exception as e:
             logger.error(f"Failed to publish product.deleted event: {e}", exc_info=True)
-            return False
-
-    def publish_product_variation_updated(self, variation_data: Dict[str, Any]):
-        """Publish product_variation.updated event to RabbitMQ"""
-        try:
-            conn = self.get_connection()
-            channel = conn.channel()
-            channel.exchange_declare(
-                exchange='product_events',
-                exchange_type='topic',
-                durable=True
-            )
-
-            message = {
-                'event_type': 'product_variation.updated',
-                'variation_id': str(variation_data.get('id')),
-                'variation_data': {
-                    'id': str(variation_data.get('id')),
-                    'product_id': str(variation_data.get('product_id')),
-                    'size': variation_data.get('size'),
-                    'color': variation_data.get('color'),
-                    'count': variation_data.get('count', 0),
-                    'amount': variation_data.get('amount', 0),
-                    'price': float(variation_data.get('price')) if variation_data.get('price') else None,
-                    'discount': float(variation_data.get('discount')) if variation_data.get('discount') else None,
-                }
-            }
-
-            channel.basic_publish(
-                exchange='product_events',
-                routing_key='product_variation.updated',
-                body=json.dumps(message),
-                properties=pika.BasicProperties(
-                    delivery_mode=2,
-                    content_type='application/json'
-                )
-            )
-
-            logger.info(f"Published product_variation.updated event for variation {variation_data.get('id')}")
-            conn.close()
-            return True
-
-        except Exception as e:
-            logger.error(f"Failed to publish product_variation.updated event: {e}", exc_info=True)
-            return False
-
-    def publish_product_variation_deleted(self, variation_id: UUID):
-        """Publish product_variation.deleted event to RabbitMQ"""
-        try:
-            conn = self.get_connection()
-            channel = conn.channel()
-            channel.exchange_declare(
-                exchange='product_events',
-                exchange_type='topic',
-                durable=True
-            )
-
-            message = {
-                'event_type': 'product_variation.deleted',
-                'variation_id': str(variation_id)
-            }
-
-            channel.basic_publish(
-                exchange='product_events',
-                routing_key='product_variation.deleted',
-                body=json.dumps(message),
-                properties=pika.BasicProperties(
-                    delivery_mode=2,
-                    content_type='application/json'
-                )
-            )
-
-            logger.info(f"Published product_variation.deleted event for variation {variation_id}")
-            conn.close()
-            return True
-
-        except Exception as e:
-            logger.error(f"Failed to publish product_variation.deleted event: {e}", exc_info=True)
             return False
 
 

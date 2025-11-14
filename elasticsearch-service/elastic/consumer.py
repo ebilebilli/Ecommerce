@@ -8,7 +8,7 @@ import logging
 import aio_pika
 from elasticsearch import Elasticsearch
 
-from elastic.models import ShopSchema, ProductSchema, ProductVariationSchema
+from elastic.models import ShopSchema, ProductSchema
 
 
 logger = logging.getLogger("consumer")
@@ -28,7 +28,6 @@ es = Elasticsearch(
 
 SHOP_INDEX_NAME = "shops"
 PRODUCT_INDEX_NAME = "products"
-PRODUCT_VARIATION_INDEX_NAME = "product_variations"
 
 
 def wait_for_elasticsearch(max_retries=30, delay=2):
@@ -88,12 +87,10 @@ async def start_consumer():
     # Declare queues
     shop_queue = await channel.declare_queue("shop_queue", durable=True)
     product_queue = await channel.declare_queue("product_queue", durable=True)
-    product_variation_queue = await channel.declare_queue("product_variation_queue", durable=True)
     
     # Bind queues to exchanges
     await shop_queue.bind(shop_exchange, routing_key="shop.*")
     await product_queue.bind(product_exchange, routing_key="product.*")
-    await product_variation_queue.bind(product_exchange, routing_key="product_variation.*")
 
     logger.info("RabbitMQ consumer started. Waiting for messages...")
 
@@ -110,7 +107,7 @@ async def start_consumer():
                     logger.info(f"Deleted shop {shop_id} from Elasticsearch")
                 else:
                     shop = ShopSchema(**shop_data)
-                    es.index(index=SHOP_INDEX_NAME, id=shop_id, document=shop.dict())
+                    es.index(index=SHOP_INDEX_NAME, id=shop_id, document=shop.model_dump())
                     logger.info(f"Indexed shop {shop_id} ({shop.name}) to Elasticsearch")
             except Exception as e:
                 logger.error(f"Failed processing shop message: {e}", exc_info=True)
@@ -125,31 +122,13 @@ async def start_consumer():
                 if event_type == "product.created" or event_type == "product.updated":
                     product_data = data.get("product_data", {})
                     product = ProductSchema(**product_data)
-                    es.index(index=PRODUCT_INDEX_NAME, id=product_id, document=product.dict())
+                    es.index(index=PRODUCT_INDEX_NAME, id=product_id, document=product.model_dump())
                     logger.info(f"Indexed product {product_id} ({product.title}) to Elasticsearch")
                 elif event_type == "product.deleted":
                     es.delete(index=PRODUCT_INDEX_NAME, id=product_id, ignore=[404])
                     logger.info(f"Deleted product {product_id} from Elasticsearch")
             except Exception as e:
                 logger.error(f"Failed processing product message: {e}", exc_info=True)
-
-    async def process_product_variation_message(message: aio_pika.IncomingMessage):
-        async with message.process():
-            try:
-                data = json.loads(message.body)
-                event_type = data.get("event_type")
-                variation_id = data.get("variation_id")
-                
-                if event_type == "product_variation.created" or event_type == "product_variation.updated":
-                    variation_data = data.get("variation_data", {})
-                    variation = ProductVariationSchema(**variation_data)
-                    es.index(index=PRODUCT_VARIATION_INDEX_NAME, id=variation_id, document=variation.dict())
-                    logger.info(f"Indexed product variation {variation_id} (product: {variation.product_id}) to Elasticsearch")
-                elif event_type == "product_variation.deleted":
-                    es.delete(index=PRODUCT_VARIATION_INDEX_NAME, id=variation_id, ignore=[404])
-                    logger.info(f"Deleted product variation {variation_id} from Elasticsearch")
-            except Exception as e:
-                logger.error(f"Failed processing product variation message: {e}", exc_info=True)
 
     # Start consuming from all queues concurrently
     async def consume_shop():
@@ -162,18 +141,12 @@ async def start_consumer():
             async for message in queue_iter:
                 await process_product_message(message)
     
-    async def consume_product_variation():
-        async with product_variation_queue.iterator() as queue_iter:
-            async for message in queue_iter:
-                await process_product_variation_message(message)
-    
     logger.info("All queues are being consumed. Waiting for messages...")
     
     # Run all consumers concurrently
     await asyncio.gather(
         consume_shop(),
-        consume_product(),
-        consume_product_variation()
+        consume_product()
     )
 
 def main():

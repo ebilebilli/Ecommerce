@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Query, APIRouter
-from .documents import create_indices, SHOP_INDEX_NAME, PRODUCT_INDEX_NAME, PRODUCT_VARIATION_INDEX_NAME, ELASTIC
+from .documents import create_indices, SHOP_INDEX_NAME, PRODUCT_INDEX_NAME, ELASTIC
 
 
 router = APIRouter(prefix='/api/elasticsearch', tags=['ElasticSearch'])
@@ -8,16 +8,15 @@ app = FastAPI(title="Elasticsearch Service API", version="1.0.0")
 
 @router.get('/search/')
 def search_all(
-    query: str = Query(..., description='Search query for shops, products, and variations'),
+    query: str = Query(..., description='Search query for shops and products'),
     size: int = Query(10, description='Number of results per type')
 ):
     """
-    Unified search endpoint that searches across shops, products, and product variations
+    Unified search endpoint that searches across shops and products
     """
     results = {
         'shops': [],
-        'products': [],
-        'product_variations': []
+        'products': []
     }
     
     # Search shops
@@ -54,23 +53,6 @@ def search_all(
         results['products'] = [hit['_source'] for hit in product_result['hits']['hits']]
     except Exception as e:
         print(f"Error searching products: {e}")
-    
-    # Search product variations
-    try:
-        variation_result = ELASTIC.search(
-            index=PRODUCT_VARIATION_INDEX_NAME,
-            query={
-                'multi_match': {
-                    'query': query,
-                    'fields': ['size', 'color'],
-                    'fuzziness': 'AUTO'
-                }
-            },
-            size=size
-        )
-        results['product_variations'] = [hit['_source'] for hit in variation_result['hits']['hits']]
-    except Exception as e:
-        print(f"Error searching product variations: {e}")
     
     return results
 

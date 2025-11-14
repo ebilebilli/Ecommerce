@@ -24,13 +24,3 @@ class ProductSchema(BaseModel):
     sku: Optional[str] = None
     created_at: Optional[str] = None
 
-
-class ProductVariationSchema(BaseModel):
-    id: str
-    product_id: str
-    size: Optional[str] = None
-    color: Optional[str] = None
-    count: int = 0
-    amount: int = 0
-    price: Optional[float] = None
-    discount: Optional[float] = None

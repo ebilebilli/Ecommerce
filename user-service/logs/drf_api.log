@@ -2132,3 +2132,47 @@ ERROR 2025-11-14 06:26:03,817 user_events Connection error:
 ERROR 2025-11-14 06:26:08,827 user_events Connection error: 
 ERROR 2025-11-14 06:26:13,831 user_events Connection error: 
 INFO 2025-11-14 06:26:18,843 user_events User service listening for shop.approved events…
+INFO 2025-11-14 06:54:40,228 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-14 06:55:35,749 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 06:55:53,664 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 06:56:39,990 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 06:57:17,024 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 06:57:34,929 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 06:58:21,993 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 06:59:10,630 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 06:59:13,852 django.server "POST /api/user/register/ HTTP/1.1" 201 244
+INFO 2025-11-14 06:59:23,209 django.server "POST /api/user/login/ HTTP/1.1" 200 75
+INFO 2025-11-14 06:59:54,396 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:00:40,716 user_events Received event: shop.approved
+INFO 2025-11-14 07:00:42,256 user_events User 16e662dc-1bc3-4abe-b5d8-248934bfc53d is now shop owner (shop=6eb02d55-7e55-41cd-9314-1c0c495c4125)
+INFO 2025-11-14 07:00:55,466 django.server "PATCH /api/user/profile/ HTTP/1.1" 200 234
+INFO 2025-11-14 07:01:03,580 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:01:03,594 django.server "GET /api/user/profile/ HTTP/1.1" 200 234
+INFO 2025-11-14 07:01:42,509 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:02:33,666 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:03:21,202 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:04:15,484 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:05:04,261 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:05:50,224 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:06:36,080 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:07:23,135 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:08:08,966 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:08:55,942 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:09:38,732 user_events Received event: shop.approved
+INFO 2025-11-14 07:09:39,306 user_events User 16e662dc-1bc3-4abe-b5d8-248934bfc53d is now shop owner (shop=6eb02d55-7e55-41cd-9314-1c0c495c4125)
+INFO 2025-11-14 07:09:42,039 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:10:29,917 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:11:16,043 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:11:42,910 user_events Received event: shop.approved
+INFO 2025-11-14 07:11:43,236 user_events User 0cd87512-70ad-4308-8c3f-634c4c27e908 is now shop owner (shop=132261bd-ab46-465d-b358-cba04aa8f888)
+INFO 2025-11-14 07:12:01,347 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:12:09,075 user_events Received event: shop.approved
+INFO 2025-11-14 07:12:09,275 user_events User 16e662dc-1bc3-4abe-b5d8-248934bfc53d is now shop owner (shop=6eb02d55-7e55-41cd-9314-1c0c495c4125)
+INFO 2025-11-14 07:12:47,454 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:13:34,036 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:14:21,102 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:15:06,796 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:15:51,797 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:16:38,459 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:17:23,284 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-14 07:18:08,165 django.server "GET /openapi.json HTTP/1.1" 200 3587

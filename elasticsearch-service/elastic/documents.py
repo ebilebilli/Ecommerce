@@ -19,7 +19,6 @@ ELASTIC = Elasticsearch(
 
 SHOP_INDEX_NAME = 'shops'
 PRODUCT_INDEX_NAME = 'products'
-PRODUCT_VARIATION_INDEX_NAME = 'product_variations'
 
 
 def create_indices():
@@ -51,25 +50,6 @@ def create_indices():
                         "top_popular": {"type": "boolean"},
                         "sku": {"type": "keyword"},
                         "created_at": {"type": "date"}
-                    }
-                }
-            }
-        )
-    
-    if not ELASTIC.indices.exists(index=PRODUCT_VARIATION_INDEX_NAME):
-        ELASTIC.indices.create(
-            index=PRODUCT_VARIATION_INDEX_NAME,
-            body={
-                "mappings": {
-                    "properties": {
-                        "id": {"type": "keyword"},
-                        "product_id": {"type": "keyword"},
-                        "size": {"type": "keyword"},
-                        "color": {"type": "keyword"},
-                        "count": {"type": "integer"},
-                        "amount": {"type": "integer"},
-                        "price": {"type": "float"},
-                        "discount": {"type": "float"}
                     }
                 }
             }

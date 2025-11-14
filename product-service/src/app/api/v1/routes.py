@@ -190,18 +190,6 @@ def delete_product(product_id: UUID, db: Session = Depends(get_db)):
 def create_product_variation(product_id: UUID, variation: ProductVariationCreate, db: Session = Depends(get_db)): # Can be eliminated(product_id)
     repo = ProductVariationRepository(db)
     result = repo.create(variation)
-    # Publish product variation created event to RabbitMQ
-    variation_dict = {
-        'id': result.id,
-        'product_id': result.product_id,
-        'size': result.size,
-        'color': result.color,
-        'count': result.count,
-        'amount': result.amount,
-        'price': result.price,
-        'discount': result.discount,
-    }
-    rabbitmq_publisher.publish_product_variation_created(variation_dict)
     return result
 
 
@@ -226,18 +214,6 @@ def update_product_variation(variation_id: UUID, variation: ProductVariationCrea
     updated_variation = repo.update(variation_id, variation)
     if not updated_variation:
         raise HTTPException(status_code=404, detail="Variation not found")
-    # Publish product variation updated event to RabbitMQ
-    variation_dict = {
-        'id': updated_variation.id,
-        'product_id': updated_variation.product_id,
-        'size': updated_variation.size,
-        'color': updated_variation.color,
-        'count': updated_variation.count,
-        'amount': updated_variation.amount,
-        'price': updated_variation.price,
-        'discount': updated_variation.discount,
-    }
-    rabbitmq_publisher.publish_product_variation_updated(variation_dict)
     return updated_variation
 
 
@@ -249,8 +225,6 @@ def delete_product_variation(variation_id: UUID, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Variation not found")
     if not repo.delete(variation_id):
         raise HTTPException(status_code=404, detail="Variation not found")
-    # Publish product variation deleted event to RabbitMQ
-    rabbitmq_publisher.publish_product_variation_deleted(variation_id)
     return {"message": "Variation deleted"}
 
 
