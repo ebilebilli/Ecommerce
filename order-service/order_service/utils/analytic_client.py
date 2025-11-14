@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-ANALYTIC_SERVICE = os.getenv('ANALYTIC_SERVICE')
+ANALYTIC_SERVICE = os.getenv('ANALYTIC_SERVICE') or settings.SERVICE_URLS.get('analytic')
 
 
 class AnalyticServiceClient:

@@ -11,7 +11,6 @@ from utils.product_client import product_client
 from utils.shop_client import shop_client
 from ..models import * 
 from ..serializers import *
-# from ..producer import publisher
 
 logger = logging.getLogger('order_service')
 
@@ -97,7 +96,6 @@ def orderitems_detail(request, pk):
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-
 @api_view(['POST'])
 def create_order_from_shopcart(request):
     user_id = str(request.user.id)
@@ -152,10 +150,8 @@ def create_order_from_shopcart(request):
             return Response({"error": "Shop ID not found in product"}, status=status.HTTP_404_NOT_FOUND)
         
         order_item_data = {
-            'order': order.id,
-            'product_variation': variation_id,
-            'product_id': product_id,
-            'shop_id': shop_id,
+            'order': order.id,  # bu sətri dəyişəcəyik
+            'product_variation': item.get('product_variation'),
             'quantity': item.get('quantity', 1),
             'status': 1,  
             'price': 0  
