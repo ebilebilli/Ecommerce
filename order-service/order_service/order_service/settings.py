@@ -19,6 +19,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "order_service",
+    "oder-admin.localhost",
     "localhost",
     "127.0.0.1",
     "*",

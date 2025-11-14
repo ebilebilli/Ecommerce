@@ -96,9 +96,30 @@ class ShopCreateAPIView(APIView):
         summary='Create a new shop',
         description='Create a new shop. Only authenticated users can create shops.',
         tags=['Shop'],
-        request=ShopCreateUpdateSerializer,
-        responses={201: ShopCreateUpdateSerializer, 400: None}
+        request={
+            'multipart/form-data': {
+                'type': 'object',
+                'properties': {
+                    'name': {
+                        'type': 'string',
+                        'description': 'Shop name'
+                    },
+                    'about': {
+                        'type': 'string',
+                        'description': 'Shop description'
+                    },
+                    'profile': {
+                        'type': 'string',
+                        'format': 'binary',
+                        'description': 'Shop profile image (optional)'
+                    }
+                },
+                'required': ['name']
+            }
+        },
+        responses={201: ShopCreateUpdateSerializer, 400: None},
     )
+    
     def post(self, request):
         user = request.user
         logger.info(f"POST /create/ - Shop creation request from user {user.id}")
@@ -117,6 +138,7 @@ class ShopCreateAPIView(APIView):
         
         logger.warning(f"POST /create/ - Validation failed: {serializer.errors}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ShopManagementAPIView(APIView):
     """Update or soft-delete a shop. Only the owner can modify or delete."""
@@ -466,7 +488,28 @@ class CreateShopMediaAPIView(APIView):
         parameters=[
             OpenApiParameter(name='shop_slug', type=OpenApiTypes.STR, location=OpenApiParameter.PATH, description='Shop slug')
         ],
-        request=ShopMediaSerializer,
+        request={
+            'multipart/form-data': {
+                'type': 'object',
+                'properties': {
+                    'image': {
+                        'type': 'string',
+                        'format': 'binary',
+                        'description': 'Image file (JPEG or PNG, max 5MB)'
+                    },
+                    'alt_text': {
+                        'type': 'string',
+                        'description': 'Alt text for the image'
+                    },
+                    'shop': {
+                        'type': 'string',
+                        'format': 'uuid',
+                        'description': 'Shop UUID'
+                    }
+                },
+                'required': ['image', 'shop']
+            }
+        },
         responses={201: ShopMediaSerializer, 400: None, 403: None}
     )
     def post(self, request, shop_slug):
@@ -702,12 +745,13 @@ class ShopOrderItemStatusUpdateAPIView(APIView):
     )
     def patch(self, request, order_item_id):
         user = request.user
-        logger.info(f"PATCH /order-items/{order_item_id}/status/ - Status update request from user {user.id}")
-
         order_item = get_object_or_404(ShopOrderItem, id=order_item_id)
         serializer = ShopOrderItemStatusUpdateSerializer(order_item, data=request.data, partial=True)
         if serializer.is_valid():
             new_status = serializer.validated_data.get('status')
+            
+            # Update status in order-service (source of truth)
+            # Shop-service will receive status update via RabbitMQ event
             order_service_response = order_client.update_order_item_status(
                 order_item_id=order_item_id,
                 status=new_status,
@@ -721,13 +765,11 @@ class ShopOrderItemStatusUpdateAPIView(APIView):
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
             
-            serializer.save()
-            order_item.refresh_from_db()
-            logger.info(
-                f"PATCH /order-items/{order_item_id}/status/ - "
-                f"Order item {order_item.id} status updated to {order_item.status} "
-                f"(synced with order service)"
-            )
+            # Update local status from order-service response (source of truth)
+            updated_status = order_service_response.get('status')
+            if updated_status is not None:
+                order_item.status = updated_status
+                order_item.save(update_fields=['status'])
             
             full_serializer = ShopOrderItemSerializer(order_item)
             return Response(full_serializer.data, status=status.HTTP_200_OK)

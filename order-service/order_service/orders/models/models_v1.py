@@ -1,3 +1,4 @@
+import requests
 from django.db import models
 from django.conf import settings
 from utils.analytic_client import analytic_client

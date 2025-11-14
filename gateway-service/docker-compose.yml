@@ -22,10 +22,8 @@ services:
       - shared_network
     
     labels:
-      # Enable Traefik for the service
       - "traefik.enable=true"
-      # Route ALL traffic to gateway
-      - "traefik.http.routers.gateway.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.gateway.rule=Host(`gateway.localhost`)"
       - "traefik.http.routers.gateway.entrypoints=web"
       - "traefik.http.services.gateway.loadbalancer.server.port=8080"
 

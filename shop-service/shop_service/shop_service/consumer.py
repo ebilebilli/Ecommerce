@@ -6,12 +6,13 @@ import django
 from django.db import transaction
 from dotenv import load_dotenv
 
+# Load environment variables before Django setup
+load_dotenv()
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shop_service.settings')
 django.setup()
 
 from shops.models import ShopOrderItem, Shop
-
-load_dotenv()
 
 logging.basicConfig(
     level=logging.INFO,

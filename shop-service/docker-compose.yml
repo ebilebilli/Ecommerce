@@ -49,6 +49,12 @@ services:
     networks:
       - internal_net
       - shared_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.shop-admin.rule=Host(`shop-admin.localhost`)"
+      - "traefik.http.routers.shop-admin.entrypoints=web"
+      - "traefik.http.routers.shop-admin.service=shop-web-service"
+      - "traefik.http.services.shop-web-service.loadbalancer.server.port=8000"
 
   order_consumer:
     build: .
@@ -60,7 +66,7 @@ services:
       - .env
     environment:
       DJANGO_SETTINGS_MODULE: shop_service.settings
-      PYTHONPATH: /app
+      PYTHONPATH: /app/shop_service
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -73,6 +79,7 @@ services:
       RABBITMQ_PASS: ${RABBITMQ_PASS}
     volumes:
       - ./:/app:rw
+    working_dir: /app/shop_service
     command: python -u shop_service/consumer.py 
     restart: unless-stopped
     networks:

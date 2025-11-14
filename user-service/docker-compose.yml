@@ -50,6 +50,12 @@ services:
     networks:
       - internal_net
       - shared_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.user-admin.rule=Host(`user-admin.localhost`)"
+      - "traefik.http.routers.user-admin.entrypoints=web"
+      - "traefik.http.routers.user-admin.service=user-web-service"
+      - "traefik.http.services.user-web-service.loadbalancer.server.port=8000"
 
   shop_consumer:
     build: .

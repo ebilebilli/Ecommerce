@@ -46,6 +46,12 @@ services:
     networks:
       - internal_net
       - shared_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.order-admin.rule=Host(`order-admin.localhost`)"
+      - "traefik.http.routers.order-admin.entrypoints=web"
+      - "traefik.http.routers.order-admin.service=order-web-service"
+      - "traefik.http.services.order-web-service.loadbalancer.server.port=8000"
 
 volumes:
   pgdata:

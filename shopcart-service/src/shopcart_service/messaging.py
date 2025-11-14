@@ -76,7 +76,7 @@ class RabbitMQConsumer:
             return False
         
 
-    def handle_shop_created(self, db: Session, message: dict):
+    def handle_shop_approved(self, db: Session, message: dict):
         """
         Handle shop.created event.
         When user becomes a shop owner, delete their shopping cart.
@@ -130,7 +130,7 @@ class RabbitMQConsumer:
                 success = self.handle_order_created(db, message)
 
             elif event_type == 'shop.created':
-                success = self.handle_shop_created(db, message)
+                success = self.handle_shop_approved(db, message)
                 
             else:
                 print(f"⚠️ Unknown event type: {event_type}")
@@ -200,7 +200,7 @@ class RabbitMQConsumer:
                 channel.queue_bind(
                     exchange='shop_events',
                     queue=queue_name,
-                    routing_key='shop.created'
+                    routing_key='shop.approved'
                 )
                 
                 channel.basic_qos(prefetch_count=1)
@@ -211,7 +211,7 @@ class RabbitMQConsumer:
                     on_message_callback=self.callback
                 )
                 
-                print('🎧 Waiting for messages (user.created, order.created, shop.created). To exit press CTRL+C')
+                print('🎧 Waiting for messages (user.created, order.created, shop.approved). To exit press CTRL+C')
                 channel.start_consuming()
                 
             except KeyboardInterrupt:
