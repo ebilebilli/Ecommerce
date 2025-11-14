@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Query, APIRouter
 from .documents import create_indices, SHOP_INDEX_NAME, PRODUCT_INDEX_NAME, ELASTIC
+from .logging_config import get_logger
 
+logger = get_logger(__name__)
 
 router = APIRouter(prefix='/api/elasticsearch', tags=['ElasticSearch'])
 app = FastAPI(title="Elasticsearch Service API", version="1.0.0")
@@ -35,7 +37,7 @@ def search_all(
         )
         results['shops'] = [hit['_source'] for hit in shop_result['hits']['hits']]
     except Exception as e:
-        print(f"Error searching shops: {e}")
+        logger.error(f"Error searching shops: {e}", exc_info=True)
     
     # Search products
     try:
@@ -52,7 +54,7 @@ def search_all(
         )
         results['products'] = [hit['_source'] for hit in product_result['hits']['hits']]
     except Exception as e:
-        print(f"Error searching products: {e}")
+        logger.error(f"Error searching products: {e}", exc_info=True)
     
     return results
 
@@ -73,58 +75,82 @@ def get_products_by_shop(
             'error': 'shop_id is required'
         }
     
+    # Normalize shop_id - remove any whitespace
+    shop_id = shop_id.strip()
+    
     try:
-        # Use term query for exact match on keyword field
-        # term query works with keyword fields and does exact match
+        if not ELASTIC.indices.exists(index=PRODUCT_INDEX_NAME):
+            logger.error(f"Index '{PRODUCT_INDEX_NAME}' does not exist")
+            return {
+                'products': [],
+                'total': 0,
+                'error': 'Products index does not exist. Please create a product first.'
+            }
+        
+        # Try term query first (exact match for keyword field)
         result = ELASTIC.search(
             index=PRODUCT_INDEX_NAME,
             query={
-                'bool': {
-                    'must': [
-                        {
-                            'term': {
-                                'shop_id': shop_id
-                            }
-                        },
-                        {
-                            'exists': {
-                                'field': 'shop_id'
-                            }
-                        }
-                    ]
+                'term': {
+                    'shop_id': shop_id
                 }
             },
             size=size
         )
-        products = [hit['_source'] for hit in result['hits']['hits']]
-        return {
-            'products': products,
-            'total': result['hits']['total']['value']
-        }
-    except Exception as e:
-        print(f"Error searching products by shop_id: {e}")
-        # Fallback: Try simple term query
-        try:
-            result = ELASTIC.search(
-                index=PRODUCT_INDEX_NAME,
-                query={
-                    'term': {
-                        'shop_id': shop_id
-                    }
-                },
-                size=size
-            )
+        
+        total = result['hits']['total']['value']
+        
+        if total > 0:
             products = [hit['_source'] for hit in result['hits']['hits']]
             return {
                 'products': products,
-                'total': result['hits']['total']['value']
+                'total': total
             }
-        except Exception as e2:
+        
+        # If term query didn't work, try match query (more flexible)
+        result = ELASTIC.search(
+            index=PRODUCT_INDEX_NAME,
+            query={
+                'match': {
+                    'shop_id': shop_id
+                }
+            },
+            size=size
+        )
+        
+        total = result['hits']['total']['value']
+        
+        if total > 0:
+            products = [hit['_source'] for hit in result['hits']['hits']]
+            return {
+                'products': products,
+                'total': total
+            }
+        
+        return {
+            'products': [],
+            'total': 0,
+            'error': f'No products found for shop_id={shop_id}'
+        }
+        
+    except Exception as e:
+        error_msg = str(e)
+        logger.error(f"Error searching products by shop_id='{shop_id}': {error_msg}", exc_info=True)
+        
+        # Check if it's index not found error
+        if 'index_not_found_exception' in error_msg.lower() or 'no such index' in error_msg.lower():
             return {
                 'products': [],
                 'total': 0,
-                'error': str(e2)
+                'error': 'Products index does not exist. Please create a product first.',
+                'details': error_msg
             }
+        
+        return {
+            'products': [],
+            'total': 0,
+            'error': error_msg
+        }
 
 
 app.include_router(router)
@@ -134,6 +160,5 @@ app.include_router(router)
 def startup_event():
     try:
         create_indices()
-        print("Indices created or already exist")
     except Exception as e:
-        print(f"Warning: Could not create indices: {e}")
+        logger.error(f"Could not create indices: {e}", exc_info=True)
