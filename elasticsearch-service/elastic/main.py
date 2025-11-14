@@ -74,11 +74,24 @@ def get_products_by_shop(
         }
     
     try:
+        # Use term query for exact match on keyword field
+        # term query works with keyword fields and does exact match
         result = ELASTIC.search(
             index=PRODUCT_INDEX_NAME,
             query={
-                'term': {
-                    'shop_id': shop_id
+                'bool': {
+                    'must': [
+                        {
+                            'term': {
+                                'shop_id': shop_id
+                            }
+                        },
+                        {
+                            'exists': {
+                                'field': 'shop_id'
+                            }
+                        }
+                    ]
                 }
             },
             size=size
@@ -90,11 +103,28 @@ def get_products_by_shop(
         }
     except Exception as e:
         print(f"Error searching products by shop_id: {e}")
-        return {
-            'products': [],
-            'total': 0,
-            'error': str(e)
-        }
+        # Fallback: Try simple term query
+        try:
+            result = ELASTIC.search(
+                index=PRODUCT_INDEX_NAME,
+                query={
+                    'term': {
+                        'shop_id': shop_id
+                    }
+                },
+                size=size
+            )
+            products = [hit['_source'] for hit in result['hits']['hits']]
+            return {
+                'products': products,
+                'total': result['hits']['total']['value']
+            }
+        except Exception as e2:
+            return {
+                'products': [],
+                'total': 0,
+                'error': str(e2)
+            }
 
 
 app.include_router(router)

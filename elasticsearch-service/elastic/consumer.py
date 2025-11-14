@@ -23,7 +23,7 @@ es = Elasticsearch(
     basic_auth=(ELASTIC_USERNAME, ELASTIC_PASSWORD) if ELASTIC_PASSWORD else None,
     verify_certs=False,
     ssl_show_warn=False,
-    request_timeout=10
+    request_timeout=30  # Increased timeout for slow connections
 )
 
 SHOP_INDEX_NAME = "shops"
