@@ -36,6 +36,7 @@ class ProductUpdate(ProductBase):
 
 class Product(ProductBase):
     id: UUID
+    shop_id: Optional[UUID] = None
     created_at: datetime
 
 #    categories: List["Category"] = []
