@@ -730,7 +730,12 @@ class ShopOrderItemListAPIView(APIView):
     pagination_class = CustomPagination
 
     def get(self, request, shop_slug):
+        user = request.user
         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True)
+        if str(shop.user) != str(request.user.id):
+            logger.warning(f"GET /shop-order-items/{shop.id} - Permission denied for user {user.id}")
+            return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
+        
         pagination = self.pagination_class()
         order_items = ShopOrderItem.objects.filter(shop=shop)
         paginated_items = pagination.paginate_queryset(order_items, request)
@@ -750,7 +755,12 @@ class ShopOrderItemDetailAPIView(APIView):
     authentication_classes = [GatewayHeaderAuthentication]
 
     def get(self, request, order_item_id):
+        user = request.user
         order_item = get_object_or_404(ShopOrderItem, id=order_item_id)
+        if str(order_item.shop.user) != str(request.user.id):
+            logger.warning(f"GET /order-item/{order_item.shop.id} - Permission denied for user {user.id}")
+            return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
+        
         serializer = ShopOrderItemSerializer(order_item)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -775,6 +785,10 @@ class ShopOrderItemStatusUpdateAPIView(APIView):
     def patch(self, request, order_item_id):
         user = request.user
         order_item = get_object_or_404(ShopOrderItem, id=order_item_id)
+        if str(order_item.shop.user) != str(request.user.id):
+            logger.warning(f"PATCH /order-item/{order_item.shop.id} - Permission denied for user {user.id}")
+            return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
+        
         serializer = ShopOrderItemStatusUpdateSerializer(order_item, data=request.data, partial=True)
         if serializer.is_valid():
             new_status = serializer.validated_data.get('status')
