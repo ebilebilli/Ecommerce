@@ -79,5 +79,54 @@ class RabbitMQPublisher:
             logger.error(f"failed to publish order.item_variation event: {e}", exc_info=True)
 
 
+    def publish_order_created(self, order_id: str, user_id: str, total_price: str, shop_id: str, status: str, created_at: str):
+        """
+        Publish 'order.created' event when a new order is created.
+        """
+        try:
+            connection = self.get_connection()
+            channel = connection.channel()
+
+            # Declare exchange (topic exchange like your current setup)
+            channel.exchange_declare(
+                exchange='order_events',
+                exchange_type='topic',
+                durable=True
+            )
+
+            message = {
+                'event_type': 'order.created',
+                'order_id': str(order_id),
+                'user_id': str(user_id),
+                'total_price': str(total_price),
+                'shop_id': str(shop_id) if shop_id else None,
+                'status': status,
+                'created_at': created_at
+            }
+
+            channel.basic_publish(
+                exchange='order_events',
+                routing_key='order.created',
+                body=json.dumps(message),
+                properties=pika.BasicProperties(
+                    delivery_mode=2,
+                    content_type='application/json'
+                )
+            )
+
+            logger.info(
+                f"published order.created event | order={order_id} user={user_id} shop={shop_id}"
+            )
+
+            connection.close()
+            return True
+
+        except Exception as e:
+            logger.error(f"failed to publish order.created event: {e}", exc_info=True)
+            return False
+
+
 # Singleton instance
 publisher = RabbitMQPublisher()
+
+
