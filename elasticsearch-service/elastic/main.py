@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Query, APIRouter
-from .documents import create_index, INDEX_NAME, ELASTIC
+from .documents import create_indices, SHOP_INDEX_NAME, PRODUCT_INDEX_NAME, PRODUCT_VARIATION_INDEX_NAME, ELASTIC
 
 
 router = APIRouter(prefix='/api/elasticsearch', tags=['ElasticSearch'])
@@ -7,22 +7,112 @@ app = FastAPI(title="Elasticsearch Service API", version="1.0.0")
 
 
 @router.get('/search/')
-def search_shops(query: str = Query(..., description='Shop name query')):
-    result = ELASTIC.search(
-        index=INDEX_NAME,
-        query={
-            'match': {
-                'name': {
-                    'query': query,
-                    'fuzziness': 'AUTO'  
+def search_all(
+    query: str = Query(..., description='Search query for shops, products, and variations'),
+    size: int = Query(10, description='Number of results per type')
+):
+    """
+    Unified search endpoint that searches across shops, products, and product variations
+    """
+    results = {
+        'shops': [],
+        'products': [],
+        'product_variations': []
+    }
+    
+    # Search shops
+    try:
+        shop_result = ELASTIC.search(
+            index=SHOP_INDEX_NAME,
+            query={
+                'match': {
+                    'name': {
+                        'query': query,
+                        'fuzziness': 'AUTO'  
+                    }
                 }
-            }
-        },
-        size=10
-    )
-    hits = result['hits']['hits']
-    return [hit['_source'] for hit in hits]
+            },
+            size=size
+        )
+        results['shops'] = [hit['_source'] for hit in shop_result['hits']['hits']]
+    except Exception as e:
+        print(f"Error searching shops: {e}")
+    
+    # Search products
+    try:
+        product_result = ELASTIC.search(
+            index=PRODUCT_INDEX_NAME,
+            query={
+                'multi_match': {
+                    'query': query,
+                    'fields': ['title^2', 'about'],
+                    'fuzziness': 'AUTO'
+                }
+            },
+            size=size
+        )
+        results['products'] = [hit['_source'] for hit in product_result['hits']['hits']]
+    except Exception as e:
+        print(f"Error searching products: {e}")
+    
+    # Search product variations
+    try:
+        variation_result = ELASTIC.search(
+            index=PRODUCT_VARIATION_INDEX_NAME,
+            query={
+                'multi_match': {
+                    'query': query,
+                    'fields': ['size', 'color'],
+                    'fuzziness': 'AUTO'
+                }
+            },
+            size=size
+        )
+        results['product_variations'] = [hit['_source'] for hit in variation_result['hits']['hits']]
+    except Exception as e:
+        print(f"Error searching product variations: {e}")
+    
+    return results
 
+
+@router.get('/shop/{shop_id}/products/')
+def get_products_by_shop(
+    shop_id: str,
+    size: int = Query(100, description='Number of results to return')
+):
+    """
+    Get all products for a specific shop by shop_id
+    Returns only products
+    """
+    if not shop_id or shop_id.strip() == '':
+        return {
+            'products': [],
+            'total': 0,
+            'error': 'shop_id is required'
+        }
+    
+    try:
+        result = ELASTIC.search(
+            index=PRODUCT_INDEX_NAME,
+            query={
+                'term': {
+                    'shop_id': shop_id
+                }
+            },
+            size=size
+        )
+        products = [hit['_source'] for hit in result['hits']['hits']]
+        return {
+            'products': products,
+            'total': result['hits']['total']['value']
+        }
+    except Exception as e:
+        print(f"Error searching products by shop_id: {e}")
+        return {
+            'products': [],
+            'total': 0,
+            'error': str(e)
+        }
 
 
 app.include_router(router)
@@ -31,7 +121,7 @@ app.include_router(router)
 @app.on_event('startup')
 def startup_event():
     try:
-        create_index()
-        print("Index created or already exists")
+        create_indices()
+        print("Indices created or already exist")
     except Exception as e:
-        print(f"Warning: Could not create index: {e}")
+        print(f"Warning: Could not create indices: {e}")

@@ -1,4 +1,3 @@
-# consumer.py
 import os
 import sys
 import json
@@ -9,22 +8,8 @@ import logging
 import aio_pika
 from elasticsearch import Elasticsearch
 
-from elastic.models import ShopSchema
+from elastic.models import ShopSchema, ProductSchema, ProductVariationSchema
 
-
-LOG_DIR = Path(os.getenv("LOG_DIR", "/app/logs"))
-LOG_DIR.mkdir(parents=True, exist_ok=True)
-LOG_FILE = LOG_DIR / "consumer.log"
-FORMAT = '%(asctime)s - %(levelname)s - %(message)s'
-
-logging.basicConfig(
-    level=logging.INFO,
-    format=FORMAT,
-    handlers=[
-        logging.StreamHandler(sys.stdout),
-        logging.FileHandler(LOG_FILE)
-    ]
-)
 
 logger = logging.getLogger("consumer")
 
@@ -41,7 +26,9 @@ es = Elasticsearch(
     request_timeout=10
 )
 
-INDEX_NAME = "shops"
+SHOP_INDEX_NAME = "shops"
+PRODUCT_INDEX_NAME = "products"
+PRODUCT_VARIATION_INDEX_NAME = "product_variations"
 
 
 def wait_for_elasticsearch(max_retries=30, delay=2):
@@ -93,34 +80,115 @@ async def start_consumer():
     logger.info("Connecting to RabbitMQ...")
     connection = await aio_pika.connect_robust(rabbit_url)
     channel = await connection.channel()
-    queue = await channel.declare_queue("shop_queue", durable=True)
+    
+    # Declare exchanges
+    shop_exchange = await channel.declare_exchange("shop_events", aio_pika.ExchangeType.TOPIC, durable=True)
+    product_exchange = await channel.declare_exchange("product_events", aio_pika.ExchangeType.TOPIC, durable=True)
+    
+    # Declare queues
+    shop_queue = await channel.declare_queue("shop_queue", durable=True)
+    product_queue = await channel.declare_queue("product_queue", durable=True)
+    product_variation_queue = await channel.declare_queue("product_variation_queue", durable=True)
+    
+    # Bind queues to exchanges
+    await shop_queue.bind(shop_exchange, routing_key="shop.*")
+    await product_queue.bind(product_exchange, routing_key="product.*")
+    await product_variation_queue.bind(product_exchange, routing_key="product_variation.*")
 
     logger.info("RabbitMQ consumer started. Waiting for messages...")
 
-    async with queue.iterator() as queue_iter:
-        async for message in queue_iter:
-            async with message.process():
-                try:
-                    data = json.loads(message.body)
-                    event_type = data.get("event_type")
-                    shop_data = data.get("shop_data", {})
-                    shop_id = data.get("shop_id")
+    async def process_shop_message(message: aio_pika.IncomingMessage):
+        async with message.process():
+            try:
+                data = json.loads(message.body)
+                event_type = data.get("event_type")
+                shop_data = data.get("shop_data", {})
+                shop_id = data.get("shop_id")
 
-                    if event_type == "deleted":
-                        es.delete(index=INDEX_NAME, id=shop_id, ignore=[404])
-                        logger.info(f"Deleted shop {shop_id} from Elasticsearch")
-                    else:
-                        shop = ShopSchema(**shop_data)
-                        es.index(index=INDEX_NAME, id=shop_id, document=shop.dict())
-                        logger.info(f"Indexed shop {shop_id} ({shop.name}) to Elasticsearch")
-                except Exception as e:
-                    logger.error(f"Failed processing message: {e}", exc_info=True)
+                if event_type == "deleted":
+                    es.delete(index=SHOP_INDEX_NAME, id=shop_id, ignore=[404])
+                    logger.info(f"Deleted shop {shop_id} from Elasticsearch")
+                else:
+                    shop = ShopSchema(**shop_data)
+                    es.index(index=SHOP_INDEX_NAME, id=shop_id, document=shop.dict())
+                    logger.info(f"Indexed shop {shop_id} ({shop.name}) to Elasticsearch")
+            except Exception as e:
+                logger.error(f"Failed processing shop message: {e}", exc_info=True)
+
+    async def process_product_message(message: aio_pika.IncomingMessage):
+        async with message.process():
+            try:
+                data = json.loads(message.body)
+                event_type = data.get("event_type")
+                product_id = data.get("product_id")
+                
+                if event_type == "product.created" or event_type == "product.updated":
+                    product_data = data.get("product_data", {})
+                    product = ProductSchema(**product_data)
+                    es.index(index=PRODUCT_INDEX_NAME, id=product_id, document=product.dict())
+                    logger.info(f"Indexed product {product_id} ({product.title}) to Elasticsearch")
+                elif event_type == "product.deleted":
+                    es.delete(index=PRODUCT_INDEX_NAME, id=product_id, ignore=[404])
+                    logger.info(f"Deleted product {product_id} from Elasticsearch")
+            except Exception as e:
+                logger.error(f"Failed processing product message: {e}", exc_info=True)
+
+    async def process_product_variation_message(message: aio_pika.IncomingMessage):
+        async with message.process():
+            try:
+                data = json.loads(message.body)
+                event_type = data.get("event_type")
+                variation_id = data.get("variation_id")
+                
+                if event_type == "product_variation.created" or event_type == "product_variation.updated":
+                    variation_data = data.get("variation_data", {})
+                    variation = ProductVariationSchema(**variation_data)
+                    es.index(index=PRODUCT_VARIATION_INDEX_NAME, id=variation_id, document=variation.dict())
+                    logger.info(f"Indexed product variation {variation_id} (product: {variation.product_id}) to Elasticsearch")
+                elif event_type == "product_variation.deleted":
+                    es.delete(index=PRODUCT_VARIATION_INDEX_NAME, id=variation_id, ignore=[404])
+                    logger.info(f"Deleted product variation {variation_id} from Elasticsearch")
+            except Exception as e:
+                logger.error(f"Failed processing product variation message: {e}", exc_info=True)
+
+    # Start consuming from all queues concurrently
+    async def consume_shop():
+        async with shop_queue.iterator() as queue_iter:
+            async for message in queue_iter:
+                await process_shop_message(message)
+    
+    async def consume_product():
+        async with product_queue.iterator() as queue_iter:
+            async for message in queue_iter:
+                await process_product_message(message)
+    
+    async def consume_product_variation():
+        async with product_variation_queue.iterator() as queue_iter:
+            async for message in queue_iter:
+                await process_product_variation_message(message)
+    
+    logger.info("All queues are being consumed. Waiting for messages...")
+    
+    # Run all consumers concurrently
+    await asyncio.gather(
+        consume_shop(),
+        consume_product(),
+        consume_product_variation()
+    )
 
 def main():
     if not wait_for_elasticsearch():
         sys.exit(1)
     if not wait_for_rabbitmq():
         sys.exit(1)
+    
+    # Create indices before starting consumer
+    try:
+        from elastic.documents import create_indices
+        create_indices()
+        logger.info("Elasticsearch indices created or already exist")
+    except Exception as e:
+        logger.warning(f"Could not create indices: {e}")
 
     try:
         logger.info("Starting consumer...")

@@ -2065,3 +2065,26 @@ INFO 2025-11-13 19:39:37,865 user_events User 0cd87512-70ad-4308-8c3f-634c4c27e9
 INFO 2025-11-13 19:39:52,273 user_events Received event: shop.approved
 INFO 2025-11-13 19:39:53,459 user_events User 8f842a7b-422f-4dcd-be5f-32484fd4dc56 is now shop owner (shop=9251b333-6f1b-4040-ae53-c14b2bd52ef0)
 INFO 2025-11-13 19:39:59,573 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-13 19:40:43,002 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-13 19:41:27,724 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-14 06:21:01,652 user_events Connection error: 
+ERROR 2025-11-14 06:21:06,657 user_events Connection error: 
+ERROR 2025-11-14 06:21:11,667 user_events Connection error: 
+ERROR 2025-11-14 06:21:16,676 user_events Connection error: 
+ERROR 2025-11-14 06:21:21,689 user_events Connection error: 
+ERROR 2025-11-14 06:21:26,698 user_events Connection error: 
+ERROR 2025-11-14 06:21:30,691 user_events Connection error: 
+ERROR 2025-11-14 06:21:35,701 user_events Connection error: 
+ERROR 2025-11-14 06:21:40,712 user_events Connection error: 
+ERROR 2025-11-14 06:21:45,724 user_events Connection error: 
+ERROR 2025-11-14 06:21:50,732 user_events Connection error: 
+ERROR 2025-11-14 06:21:55,740 user_events Connection error: 
+ERROR 2025-11-14 06:21:59,798 user_events Connection error: 
+ERROR 2025-11-14 06:22:04,806 user_events Connection error: 
+ERROR 2025-11-14 06:22:09,814 user_events Connection error: 
+ERROR 2025-11-14 06:22:14,824 user_events Connection error: 
+ERROR 2025-11-14 06:22:19,838 user_events Connection error: 
+ERROR 2025-11-14 06:22:24,845 user_events Connection error: 
+ERROR 2025-11-14 06:22:28,817 user_events Connection error: 
+ERROR 2025-11-14 06:22:34,065 user_events Connection error: 
+ERROR 2025-11-14 06:22:39,073 user_events Connection error: 

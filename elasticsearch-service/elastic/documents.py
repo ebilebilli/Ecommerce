@@ -17,17 +17,59 @@ ELASTIC = Elasticsearch(
     ssl_show_warn=False
 )
 
-INDEX_NAME = 'shops'
+SHOP_INDEX_NAME = 'shops'
+PRODUCT_INDEX_NAME = 'products'
+PRODUCT_VARIATION_INDEX_NAME = 'product_variations'
 
 
-def create_index():
-    if not ELASTIC.indices.exists(index=INDEX_NAME):
+def create_indices():
+    if not ELASTIC.indices.exists(index=SHOP_INDEX_NAME):
         ELASTIC.indices.create(
-            index=INDEX_NAME,
+            index=SHOP_INDEX_NAME,
             body={
                 "mappings": {
                     "properties": {
                         "name": {"type": "text", "analyzer": "standard"}
+                    }
+                }
+            }
+        )
+    
+    if not ELASTIC.indices.exists(index=PRODUCT_INDEX_NAME):
+        ELASTIC.indices.create(
+            index=PRODUCT_INDEX_NAME,
+            body={
+                "mappings": {
+                    "properties": {
+                        "id": {"type": "keyword"},
+                        "shop_id": {"type": "keyword"},
+                        "title": {"type": "text", "analyzer": "standard"},
+                        "about": {"type": "text", "analyzer": "standard"},
+                        "on_sale": {"type": "boolean"},
+                        "is_active": {"type": "boolean"},
+                        "top_sale": {"type": "boolean"},
+                        "top_popular": {"type": "boolean"},
+                        "sku": {"type": "keyword"},
+                        "created_at": {"type": "date"}
+                    }
+                }
+            }
+        )
+    
+    if not ELASTIC.indices.exists(index=PRODUCT_VARIATION_INDEX_NAME):
+        ELASTIC.indices.create(
+            index=PRODUCT_VARIATION_INDEX_NAME,
+            body={
+                "mappings": {
+                    "properties": {
+                        "id": {"type": "keyword"},
+                        "product_id": {"type": "keyword"},
+                        "size": {"type": "keyword"},
+                        "color": {"type": "keyword"},
+                        "count": {"type": "integer"},
+                        "amount": {"type": "integer"},
+                        "price": {"type": "float"},
+                        "discount": {"type": "float"}
                     }
                 }
             }

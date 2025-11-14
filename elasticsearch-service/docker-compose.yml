@@ -73,7 +73,7 @@ services:
         max-file: "3"
         tag: "kibana"
   
-  shop_consumer:
+  consumer:
     build: .
     container_name: elastic_consumer
     env_file:
