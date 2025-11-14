@@ -79,7 +79,7 @@ class RabbitMQPublisher:
             logger.error(f"failed to publish order.item_variation event: {e}", exc_info=True)
 
 
-    def publish_order_created(self, order_id: str, user_id: str, total_price: str, shop_id: str, status: str, created_at: str):
+    def publish_order_created(self, order_id: str, user_id: str, created_at: str):
         """
         Publish 'order.created' event when a new order is created.
         """
@@ -98,9 +98,6 @@ class RabbitMQPublisher:
                 'event_type': 'order.created',
                 'order_id': str(order_id),
                 'user_id': str(user_id),
-                'total_price': str(total_price),
-                'shop_id': str(shop_id) if shop_id else None,
-                'status': status,
                 'created_at': created_at
             }
 
@@ -115,7 +112,7 @@ class RabbitMQPublisher:
             )
 
             logger.info(
-                f"published order.created event | order={order_id} user={user_id} shop={shop_id}"
+                f"published order.created event | order={order_id} user={user_id}"
             )
 
             connection.close()

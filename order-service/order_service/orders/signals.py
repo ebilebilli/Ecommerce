@@ -10,7 +10,7 @@ _published_orders = set()
 
 
 @receiver(post_save, sender=Order)
-def order_post_save(sender, instance, created, **kwargs):
+def order_items_post_save(sender, instance, created, **kwargs):
     """
     Send 'order.item_variation' events grouped by shop
     when a new order is created.
@@ -62,9 +62,6 @@ def order_post_save(sender, instance, created, **kwargs):
         success = publisher.publish_order_created(
             order_id=str(instance.id),
             user_id=str(instance.user_id),
-            total_price=str(instance.total_price),
-            shop_id=str(instance.shop_id),
-            status=instance.status,
             created_at=str(instance.created_at)
         )
 
