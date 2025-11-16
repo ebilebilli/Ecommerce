@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 import logging
 
-from order_service.messaging import rabbitmq_producer
+from order_service.messaging import publisher
 from utils.shopcart_client import shopcart_client
 from utils.product_client import product_client
 from utils.shop_client import shop_client
@@ -150,8 +150,10 @@ def create_order_from_shopcart(request):
             return Response({"error": "Shop ID not found in product"}, status=status.HTTP_404_NOT_FOUND)
         
         order_item_data = {
-            'order': order.id,  # bu sətri dəyişəcəyik
-            'product_variation': item.get('product_variation'),
+            'order': order.id,
+            'product_variation': variation_id,
+            'product_id': product_id,
+            'shop_id': shop_id,
             'quantity': item.get('quantity', 1),
             'status': 1,  
             'price': 0  
@@ -166,7 +168,7 @@ def create_order_from_shopcart(request):
             return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     try:
-        success = rabbitmq_producer.publish_order_created(
+        success = publisher.publish_order_created(
             order_id=order.id,
             user_uuid=user_id,
             cart_id=cart_id
@@ -243,7 +245,7 @@ def update_order_item_status(request, pk):
     # Publish status update event for other services (notification, analytics, etc.)
     # Note: Shop-service doesn't need this event as it updates via API response
     try:
-        success = rabbitmq_producer.publish_order_item_status_updated(
+        success = publisher.publish_order_item_status_updated(
             order_item_id=item.id,
             order_id=item.order.id,
             shop_id=str(shop_id),
