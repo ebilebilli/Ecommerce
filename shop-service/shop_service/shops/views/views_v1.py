@@ -98,8 +98,8 @@ class ShopDetailWithUuidAPIView(APIView):
 class ShopCreateAPIView(APIView):
     """Create a new shop. Only authenticated users can create."""
     http_method_names = ['post']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         operation_id='shop_create',
@@ -153,8 +153,12 @@ class ShopCreateAPIView(APIView):
 class ShopManagementAPIView(APIView):
     """Update or soft-delete a shop. Only the owner can modify or delete."""
     http_method_names = ['patch', 'delete']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = ShopDetailSerializer(request.user)
+        return Response(serializer.data)
 
     @extend_schema(
         operation_id='shop_update',
@@ -279,8 +283,8 @@ class ShopBranchDetailAPIView(APIView):
 class CreateShopBranchAPIView(APIView):
     """Allows an authenticated user to create a new shop branch."""
     http_method_names =['post']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         operation_id='branch_create',
@@ -320,8 +324,8 @@ class CreateShopBranchAPIView(APIView):
 class ShopBranchManagementAPIView(APIView):
     """Allows the owner to update or soft-delete their shop branch."""
     http_method_names = ['patch', 'delete']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         operation_id='branch_update',
@@ -395,8 +399,8 @@ class CommentListByShopAPIView(APIView):
 
 class CreateShopCommentAPIView(APIView):
     """Create a shop comment."""
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         operation_id='comment_create',
@@ -429,8 +433,8 @@ class CreateShopCommentAPIView(APIView):
 class CommentManagementAPIView(APIView):
     """Update or delete a comment."""
     http_method_names = ['delete', 'patch']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         operation_id='comment_update',
@@ -506,8 +510,8 @@ class ShopMediaByShopAPIView(APIView):
 
 class CreateShopMediaAPIView(APIView):
     """Allows an authenticated user to create a new shop media."""
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         operation_id='media_create',
@@ -568,8 +572,8 @@ class CreateShopMediaAPIView(APIView):
 class DeleteShopMediaAPIView(APIView):
     """Allows the owner to delete their shop media."""
     http_method_names = ['delete']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         operation_id='media_delete',
@@ -625,8 +629,8 @@ class ShopSocialMediaDetailAPIView(APIView):
 class CreateShopSocialMediaAPIView(APIView):
     """Allows an authenticated user to create a new shop social media."""
     http_method_names = ['post']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         operation_id='social_media_create',
@@ -666,8 +670,8 @@ class CreateShopSocialMediaAPIView(APIView):
 class ShopSocialMediaManagementAPIView(APIView):
     """Allows the owner to update or delete their shop social media."""
     http_method_names = ['patch', 'delete']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         operation_id='social_media_update',
@@ -725,8 +729,8 @@ class ShopSocialMediaManagementAPIView(APIView):
 class ShopOrderItemListAPIView(APIView):
     """List all order items for a specific shop. Only shop owner can view."""
     http_method_names = ['get']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
+    permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
 
     def get(self, request, shop_slug):
@@ -751,9 +755,9 @@ class ShopOrderItemListAPIView(APIView):
 class ShopOrderItemDetailAPIView(APIView):
     """Get details of a specific order item. Only shop owner can view."""
     http_method_names = ['get']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
-
+    permission_classes = [IsAuthenticated]
+   
     def get(self, request, order_item_id):
         user = request.user
         order_item = get_object_or_404(ShopOrderItem, id=order_item_id)
@@ -768,9 +772,9 @@ class ShopOrderItemDetailAPIView(APIView):
 class ShopOrderItemStatusUpdateAPIView(APIView):
     """Update the status of an order item. Only shop owner can update."""
     http_method_names = ['patch']
-    permission_classes = [IsAuthenticated]
     authentication_classes = [GatewayHeaderAuthentication]
-
+    permission_classes = [IsAuthenticated]
+    
     @extend_schema(
         operation_id='shop_order_item_status_update',
         summary='Update order item status',
