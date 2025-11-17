@@ -223,3 +223,73 @@ ERROR 2025-11-17 07:35:30,514 user_events Connection error: [Errno -2] Name or s
 ERROR 2025-11-17 07:35:39,572 user_events Connection error: [Errno -2] Name or service not known
 ERROR 2025-11-17 07:35:48,542 user_events Connection error: [Errno -2] Name or service not known
 ERROR 2025-11-17 07:35:57,463 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:36:06,410 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:36:15,509 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:36:24,441 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:36:37,352 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:36:46,304 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:36:55,230 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:37:04,165 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:37:13,310 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:37:22,271 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:37:31,219 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:37:40,287 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:37:49,240 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:37:58,187 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:38:07,196 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:38:16,186 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:38:29,015 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:38:38,046 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:38:47,020 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:38:55,988 user_events Connection error: [Errno -2] Name or service not known
+INFO 2025-11-17 07:38:56,621 django.utils.autoreload Watching for file changes with StatReloader
+ERROR 2025-11-17 07:39:04,916 user_events Connection error: [Errno -2] Name or service not known
+ERROR 2025-11-17 07:39:10,014 user_events Connection error: 
+ERROR 2025-11-17 07:39:15,017 user_events Connection error: 
+ERROR 2025-11-17 07:39:20,024 user_events Connection error: 
+INFO 2025-11-17 07:39:22,250 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-17 07:39:25,032 user_events Connection error: 
+ERROR 2025-11-17 07:39:30,039 user_events Connection error: 
+ERROR 2025-11-17 07:39:35,047 user_events Connection error: 
+INFO 2025-11-17 07:39:38,183 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-17 07:39:40,136 user_events Connection error: 
+ERROR 2025-11-17 07:39:45,139 user_events Connection error: 
+ERROR 2025-11-17 07:39:50,146 user_events Connection error: 
+ERROR 2025-11-17 07:39:55,157 user_events Connection error: 
+ERROR 2025-11-17 07:40:00,166 user_events Connection error: 
+ERROR 2025-11-17 07:40:05,172 user_events Connection error: 
+ERROR 2025-11-17 07:40:10,269 user_events Connection error: 
+ERROR 2025-11-17 07:40:15,278 user_events Connection error: 
+ERROR 2025-11-17 07:40:20,284 user_events Connection error: 
+INFO 2025-11-17 07:40:24,208 django.server "GET /openapi.json HTTP/1.1" 200 3587
+ERROR 2025-11-17 07:40:25,291 user_events Connection error: 
+ERROR 2025-11-17 07:40:30,299 user_events Connection error: 
+ERROR 2025-11-17 07:40:35,305 user_events Connection error: 
+ERROR 2025-11-17 07:40:40,409 user_events Connection error: 
+ERROR 2025-11-17 07:40:45,417 user_events Connection error: 
+ERROR 2025-11-17 07:40:50,422 user_events Connection error: 
+ERROR 2025-11-17 07:40:55,429 user_events Connection error: 
+INFO 2025-11-17 07:41:01,356 user_events User service listening for shop.approved events…
+INFO 2025-11-17 07:41:10,385 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-17 07:41:57,316 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-17 07:42:23,805 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-17 07:42:39,968 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-17 07:43:25,976 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-17 07:44:12,198 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-17 07:44:58,261 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-17 07:45:15,573 django.server "POST /api/user/register/ HTTP/1.1" 201 241
+WARNING 2025-11-17 07:45:27,441 django.request Forbidden: /api/user/password-reset/request/
+WARNING 2025-11-17 07:45:27,442 django.server "POST /api/user/password-reset/request/ HTTP/1.1" 403 58
+INFO 2025-11-17 07:45:44,480 django.server "GET /openapi.json HTTP/1.1" 200 3587
+INFO 2025-11-17 07:45:59,154 django.utils.autoreload /app/user_service/views.py changed, reloading.
+INFO 2025-11-17 07:45:59,740 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 07:46:38,683 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 07:46:48,364 user_events User service listening for shop.approved events…
+INFO 2025-11-17 07:52:26,834 django.utils.autoreload /app/user_service/views.py changed, reloading.
+INFO 2025-11-17 07:52:27,341 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 07:52:50,972 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 07:53:01,568 user_events User service listening for shop.approved events…
+INFO 2025-11-17 07:54:36,535 django.utils.autoreload /app/user_service/views.py changed, reloading.
+INFO 2025-11-17 07:54:37,020 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 07:54:38,556 django.utils.autoreload /app/user_service/views.py changed, reloading.
+INFO 2025-11-17 07:54:39,102 django.utils.autoreload Watching for file changes with StatReloader

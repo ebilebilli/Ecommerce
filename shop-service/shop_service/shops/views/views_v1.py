@@ -156,10 +156,6 @@ class ShopManagementAPIView(APIView):
     authentication_classes = [GatewayHeaderAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        serializer = ShopDetailSerializer(request.user)
-        return Response(serializer.data)
-
     @extend_schema(
         operation_id='shop_update',
         summary='Update a shop',

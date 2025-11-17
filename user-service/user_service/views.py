@@ -91,8 +91,6 @@ class UserProfileView(APIView):
 
 # Password Reset Request
 class PasswordResetRequestView(APIView):
-    authentication_classes = [GatewayHeaderAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
