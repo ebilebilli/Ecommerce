@@ -51,22 +51,22 @@ def order_items_post_save(sender, instance, created, **kwargs):
         logger.error(f"Failed to publish order events for order={instance.id}: {e}", exc_info=True)
 
 
-@receiver(post_save, sender=Order, dispatch_uid="order_post_save_unique")
-def order_post_save(sender, instance, created, **kwargs):
+# @receiver(post_save, sender=Order, dispatch_uid="order_post_save_unique")
+# def order_post_save(sender, instance, created, **kwargs):
 
-    if created:
-        if instance.id in _published_orders:
-            logger.debug(f"order {instance.id} event already published, skipping duplicate")
-            return
+#     if created:
+#         if instance.id in _published_orders:
+#             logger.debug(f"order {instance.id} event already published, skipping duplicate")
+#             return
 
-        success = publisher.publish_order_created(
-            order_id=str(instance.id),
-            user_id=str(instance.user_id),
-            created_at=str(instance.created_at)
-        )
+#         success = publisher.publish_order_created(
+#             order_id=str(instance.id),
+#             user_id=str(instance.user_id),
+#             created_at=str(instance.created_at)
+#         )
 
-        if success:
-            _published_orders.add(instance.id)
-            logger.debug(f"published order.created event | order={instance.id}")
-        else:
-            logger.warning(f"failed to publish order.created event | order={instance.id}")
+#         if success:
+#             _published_orders.add(instance.id)
+#             logger.debug(f"published order.created event | order={instance.id}")
+#         else:
+#             logger.warning(f"failed to publish order.created event | order={instance.id}")

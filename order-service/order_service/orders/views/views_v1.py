@@ -160,12 +160,6 @@ def create_order_from_shopcart(request):
         }
 
         item_serializer = OrderItemSerializer(data=order_item_data)
-        if item_serializer.is_valid():
-            item_serializer.save()
-            # Event will be published automatically via signal
-        else:
-            logger.error(f'Order item serializer errors: {item_serializer.errors}')
-            return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         success = publisher.publish_order_created(
@@ -180,6 +174,13 @@ def create_order_from_shopcart(request):
             logger.warning(f'⚠️ Failed to publish order.created event - Order: {order.id}')
     except Exception as e:
         logger.error(f'❌ Error publishing order.created event: {e}')
+
+    if item_serializer.is_valid():
+        item_serializer.save()
+        # Event will be published automatically via signal
+    else:
+        logger.error(f'Order item serializer errors: {item_serializer.errors}')
+        return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(
         {
