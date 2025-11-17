@@ -92,6 +92,8 @@ class ShopEventConsumer:
             
             if event_type == 'shop.approved':
                 success = self.handle_shop_approved(message)
+            elif event_type == 'shop.deleted':
+                success = self.handle_shop_deleted(message)
             else:
                 logger.warning(f"Unknown event type: {event_type}")
                 success = True
@@ -136,7 +138,13 @@ class ShopEventConsumer:
                     queue=queue_name,
                     on_message_callback=self.callback
                 )
-                
+
+                channel.queue_bind(
+                    exchange='shop_events',
+                    queue=queue_name,
+                    routing_key='shop.deleted'
+                )
+
                 logger.info("User service listening for shop.approved events…")
                 channel.start_consuming()
                 
