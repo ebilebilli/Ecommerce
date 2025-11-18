@@ -16,7 +16,7 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8001', 'http://localhost:8001']
 
 # config/settings.py - ƏLAVƏ EDİN
-PRODUCT_SERVICE_URL = os.environ.get('PRODUCT_SERVICE', 'http://product-service:8000')
+PRODUCT_SERVICE_URL = os.environ.get('PRODUCT_SERVICE_URL', 'http://product-service:8000')
 
 # Installed apps
 INSTALLED_APPS = [
@@ -48,9 +48,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'config.urls'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'shop_service.authentication.GatewayHeaderAuthentication',
-    ),
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
     'DEFAULT_VERSION': 'v1',
     'ALLOWED_VERSIONS': ('v1', 'v2'),
@@ -66,6 +63,10 @@ SPECTACULAR_SETTINGS = {
     'CONTACT': {'email': 'ilham@example.com'},
     'LICENSE': {'name': 'BSD License'},
 }
+
+
+
+
 
 
 TEMPLATES = [

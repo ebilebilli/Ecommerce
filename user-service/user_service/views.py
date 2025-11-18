@@ -7,6 +7,8 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
 from Core.authentication import GatewayHeaderAuthentication
 from Core.messaging import publisher
 
@@ -91,7 +93,35 @@ class UserProfileView(APIView):
 
 # Password Reset Request
 class PasswordResetRequestView(APIView):
-
+    
+    @extend_schema(
+        operation_id='password_reset_request',
+        summary='Password Reset Request',
+        description='Şifrə bərpası üçün e-mail ünvanına link göndərir',
+        tags=['Authentication'],
+        request=PasswordResetRequestSerializer,
+        examples=[
+            OpenApiExample(
+                'Example Request',
+                value={
+                    'email': 'user@example.com'
+                },
+                request_only=True
+            )
+        ],
+        responses={
+            200: {
+                'description': 'Əgər bu e-mail ilə hesab varsa, bərpa linki göndərildi.',
+                'content': {
+                    'application/json': {
+                        'example': {
+                            'detail': 'Əgər bu e-mail ilə hesab varsa, bərpa linki göndərildi.'
+                        }
+                    }
+                }
+            }
+        }
+    )
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -293,3 +293,37 @@ INFO 2025-11-17 07:54:36,535 django.utils.autoreload /app/user_service/views.py 
 INFO 2025-11-17 07:54:37,020 django.utils.autoreload Watching for file changes with StatReloader
 INFO 2025-11-17 07:54:38,556 django.utils.autoreload /app/user_service/views.py changed, reloading.
 INFO 2025-11-17 07:54:39,102 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 07:55:10,739 django.server "GET /openapi.json HTTP/1.1" 200 3603
+INFO 2025-11-17 07:56:32,124 user_events User service listening for shop.approved events…
+INFO 2025-11-17 07:56:32,489 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 07:57:33,757 django.server "GET /openapi.json HTTP/1.1" 200 3603
+INFO 2025-11-17 07:57:41,503 django.server "GET / HTTP/1.1" 302 0
+INFO 2025-11-17 07:57:41,741 django.server "GET /admin/ HTTP/1.1" 200 9086
+INFO 2025-11-17 07:57:41,816 django.server "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-11-17 07:57:41,818 django.server "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+INFO 2025-11-17 07:57:41,819 django.server "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+INFO 2025-11-17 07:57:41,819 django.server "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2025-11-17 07:57:41,820 django.server "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+INFO 2025-11-17 07:57:41,820 django.server "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+INFO 2025-11-17 07:57:41,872 django.server "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2025-11-17 07:57:41,872 django.server "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-11-17 07:57:41,873 django.server "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+WARNING 2025-11-17 07:57:41,982 django.request Not Found: /favicon.ico
+WARNING 2025-11-17 07:57:41,983 django.server "GET /favicon.ico HTTP/1.1" 404 3032
+INFO 2025-11-17 07:57:49,884 django.server "GET /openapi.json HTTP/1.1" 200 3603
+WARNING 2025-11-17 07:57:56,856 django.request Bad Request: /api/user/password-reset/request/
+WARNING 2025-11-17 07:57:56,857 django.server "POST /api/user/password-reset/request/ HTTP/1.1" 400 37
+INFO 2025-11-17 07:58:35,841 django.server "GET /openapi.json HTTP/1.1" 200 3603
+INFO 2025-11-17 07:59:22,836 django.server "GET /openapi.json HTTP/1.1" 200 3603
+INFO 2025-11-17 08:00:03,690 django.utils.autoreload /app/user_service/views.py changed, reloading.
+INFO 2025-11-17 08:00:04,545 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 08:00:07,864 django.utils.autoreload /app/user_service/views.py changed, reloading.
+INFO 2025-11-17 08:00:08,573 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 08:00:11,096 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-11-17 08:00:15,995 django.utils.autoreload /app/user_service/views.py changed, reloading.
+INFO 2025-11-17 08:00:16,516 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 08:00:56,157 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-11-17 08:01:13,442 django.utils.autoreload /app/user_service/views.py changed, reloading.
+INFO 2025-11-17 08:01:14,160 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 08:01:37,947 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-11-17 08:01:46,185 user_events User service listening for shop.approved events…

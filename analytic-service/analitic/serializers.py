@@ -1,40 +1,110 @@
-# serializers.py - DÜZƏLDİLMİŞ VERSİYA
-from rest_framework import serializers  # ✅ ƏLAVƏ EDİN
-from .models import ShopView, ProductView, AnalyticsProduct, OrderAnalytics
+﻿# serializers.py - TAM VERSİYA
+import uuid
+from rest_framework import serializers
+from .models import ShopView, ProductView, Order, OrderItem, Shop, Product
 
-class ShopViewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ShopView
-        fields = "__all__"
+# -----------------------------
+# SHOP VIEW SERIALIZER
+# -----------------------------
+class ShopViewInputSerializer(serializers.Serializer):
+    shop_uuid = serializers.UUIDField()
+    shop_name = serializers.CharField(max_length=100)
 
+    def create(self, validated_data):
+        shop_uuid = validated_data.get("shop_uuid")
+        shop_name = validated_data.get("shop_name")
+
+        # Shop-u tap və ya yarat
+        shop, created = Shop.objects.get_or_create(
+            external_id=shop_uuid,
+            defaults={"name": shop_name}
+        )
+
+        # Əgər mövcud shop-un adı fərqlidirsə, yenilə
+        if not created and shop.name != shop_name:
+            shop.name = shop_name
+            shop.save()
+
+        # ShopView yarat
+        shop_view = ShopView.objects.create(shop=shop)
+        return shop_view
+
+# -----------------------------
+# PRODUCT VIEW SERIALIZER
+# -----------------------------
+class ProductViewInputSerializer(serializers.Serializer):
+    product_uuid = serializers.UUIDField()
+    product_name = serializers.CharField(max_length=100)
+
+    def create(self, validated_data):
+        product_uuid = validated_data.get("product_uuid")
+        product_name = validated_data.get("product_name")
+
+        # Product-u tap və ya yarat
+        product, created = Product.objects.get_or_create(
+            external_id=product_uuid,
+            defaults={"name": product_name}
+        )
+
+        # Əgər mövcud product-un adı fərqlidirsə, yenilə
+        if not created and product.name != product_name:
+            product.name = product_name
+            product.save()
+
+        # ProductView yarat
+        product_view = ProductView.objects.create(product=product)
+        return product_view
+
+# -----------------------------
+# PRODUCT VIEW SERIALIZER (READ)
+# -----------------------------
 class ProductViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductView
-        fields = "__all__"
+        fields = '__all__'
 
-class AnalyticsProductSerializer(serializers.ModelSerializer):
+# -----------------------------
+# SHOP VIEW SERIALIZER (READ)
+# -----------------------------
+class ShopViewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AnalyticsProduct
-        fields = "__all__"
+        model = ShopView
+        fields = '__all__'
 
-class OrderAnalyticsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderAnalytics
-        fields = "__all__"
+# -----------------------------
+# ORDER SERIALIZER
+# -----------------------------
+class OrderItemReceiveSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    order = serializers.UUIDField()
+    quantity = serializers.IntegerField()
+    product_variation = serializers.UUIDField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
+    base_price = serializers.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        required=False,
+        default=1.00
+    )
 
 class OrderReceiveSerializer(serializers.Serializer):
-    """Order servisindən gələn data formatı"""
-    id = serializers.IntegerField()
+    id = serializers.UUIDField()
     user_id = serializers.UUIDField()
     created_at = serializers.DateTimeField()
-    items = serializers.ListField(child=serializers.DictField())
+    items = OrderItemReceiveSerializer(many=True)
 
-    def validate_items(self, items):
-        for item in items:
-            if 'product_variation' not in item:
-                raise serializers.ValidationError("product_variation is required in items")
-            if 'quantity' not in item:
-                raise serializers.ValidationError("quantity is required in items")
-            if 'price' not in item:
-                raise serializers.ValidationError("price is required in items")
-        return items
+# -----------------------------
+# STATISTICS SERIALIZERS
+# -----------------------------
+class ProductViewStatsSerializer(serializers.Serializer):
+    total_views = serializers.IntegerField()
+    popular_products = serializers.ListField()
+
+class ShopViewStatsSerializer(serializers.Serializer):
+    total_views = serializers.IntegerField()
+    popular_shops = serializers.ListField()
+
+class OrderStatsSerializer(serializers.Serializer):
+    total_orders = serializers.IntegerField()
+    total_revenue = serializers.DecimalField(max_digits=12, decimal_places=2)
+    average_order_value = serializers.DecimalField(max_digits=10, decimal_places=2)
