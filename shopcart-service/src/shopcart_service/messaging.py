@@ -78,7 +78,7 @@ class RabbitMQConsumer:
 
     def handle_shop_approved(self, db: Session, message: dict):
         """
-        Handle shop.created event.
+        Handle shop.approved event.
         When user becomes a shop owner, delete their shopping cart.
         Sellers don't buy - they sell!
         """
@@ -87,7 +87,7 @@ class RabbitMQConsumer:
             shop_id = message.get('shop_id')
             
             if not user_uuid:
-                print(f"⚠️ Missing user_uuid in shop.created event")
+                print(f"⚠️ Missing user_uuid in shop.approved event")
                 return False
             
             # Use the dedicated CRUD function to delete cart
@@ -101,7 +101,7 @@ class RabbitMQConsumer:
             return True
                 
         except Exception as e:
-            print(f"❌ Failed to handle shop.created event: {e}")
+            print(f"❌ Failed to handle shop.approved event: {e}")
             import traceback
             traceback.print_exc()
             db.rollback()
@@ -129,7 +129,7 @@ class RabbitMQConsumer:
             elif event_type == 'order.created':
                 success = self.handle_order_created(db, message)
 
-            elif event_type == 'shop.created':
+            elif event_type == 'shop.approved':
                 success = self.handle_shop_approved(db, message)
                 
             else:
@@ -211,7 +211,7 @@ class RabbitMQConsumer:
                     on_message_callback=self.callback
                 )
                 
-                print('🎧 Waiting for messages (user.created, order.created, shop.approved). To exit press CTRL+C')
+                print('🎧 Waiting for messages (user.created, order.created, shop.created). To exit press CTRL+C')
                 channel.start_consuming()
                 
             except KeyboardInterrupt:

@@ -7,7 +7,7 @@ load_dotenv()
 SHOP_SERVICE_URL = os.getenv('SHOP_SERVICE_URL', 'http://localhost:8007')
 
 # Database configuration
-DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://user:password@localhost:5432/product_db')
+DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql+psycopg2://postgres:UniversityDB2025@db:5432/ECommerce_Product_DB')
 
 # Security
 SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-here')

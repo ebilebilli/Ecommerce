@@ -1,11 +1,14 @@
 # product_client.py
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv('')
 
 
 class ProductClient:
     def __init__(self):
-        self.base_url = "http://product-service:8000"
-
+        self.base_url = os.getenv('PRODUCT_SERVICE')
     def get_product_variation_data(self, variation_id):
         try:
             response = requests.get(

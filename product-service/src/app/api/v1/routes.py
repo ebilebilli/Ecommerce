@@ -20,8 +20,9 @@ from src.app.schemas.v1.product import ProductCreate, Product
 from src.app.schemas.v1.product_variation import ProductVariationCreate, ProductVariation
 from src.app.schemas.v1.product_image import ProductImageCreate, ProductImage
 from src.app.schemas.v1.comment import CommentCreate, Comment
-# Messaging
-from src.app.messaging import rabbitmq_publisher
+from src.app.publisher import rabbitmq_publisher
+
+
 
 router = APIRouter()
 
@@ -62,7 +63,6 @@ def delete_category(category_id: UUID, db: Session = Depends(get_db)):
     if not repo.delete(category_id):
         raise HTTPException(status_code=404, detail="Category not found")
     return {"message": "Category deleted"}
-
 
 # Endpoints for Product
 @router.post("/products/", response_model=Product)

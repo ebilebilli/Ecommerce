@@ -14,7 +14,7 @@ class JSONOpenAPI(View):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/analitic-', include('analitic.urls')),  
+    path('api/analitic-', include('analitic.urls')),  
     path('openapi.json', JSONOpenAPI.as_view()),
     path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]
