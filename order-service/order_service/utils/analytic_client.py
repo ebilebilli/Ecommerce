@@ -35,7 +35,7 @@ class AnalyticServiceClient:
             'items': list(order_items),
         }
 
-        url = f"{self.base_url}/api/orders/"
+        url = f"{self.base_url}/api/v1/analytic-order-completed"
         try:
             with httpx.Client(timeout=self.timeout, follow_redirects=True) as client:
                 response = client.post(url, json=payload)
