@@ -15,7 +15,13 @@ async def forward_request(service: str, path: str, request):
     if service not in SERVICE_URLS:
         return JSONResponse({'error': 'Unknown service'}, status_code=400)
 
-    url = f'{SERVICE_URLS[service].rstrip("/")}/{path.lstrip("/")}'
+    base_url = SERVICE_URLS[service].rstrip('/')
+    full_path = path.lstrip('/')
+    query_str = request.url.query
+    if query_str:
+        url = f"{base_url}/{full_path}?{query_str}"
+    else:
+        url = f"{base_url}/{full_path}"
     headers = _prepare_headers(request, service)
     body = await request.body()
 
