@@ -179,6 +179,7 @@ The service consumes events from the `user_events` exchange:
 - **Endpoint**: `/api/shops/{shop_id}/`
 - **Purpose**: Validates shop exists before adding to wishlist
 - **Method**: GET request with optional `X-User-ID` header
+- **Cache**: Shop list endpoint (`/api/shops/`) is cached using Django's cache framework with a 10-minute TTL (600 seconds) for improved performance
 
 ## Business Rules
 
