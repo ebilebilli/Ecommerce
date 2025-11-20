@@ -4,6 +4,7 @@ import logging
 from typing import List
 from django.conf import settings
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -59,6 +60,7 @@ __all__ = [
 ]
 
 # Shop Views
+@method_decorator(cache_page(60 * 10), name='get')
 class ShopListAPIView(APIView):
     """List all active shops with pagination."""
     http_method_names =['get']

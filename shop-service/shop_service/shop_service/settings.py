@@ -209,3 +209,11 @@ LOGGING = {
         'shop_service': {'handlers': ['file', 'console'], 'level': 'INFO', 'propagate': False},
     },
 }
+
+# Cache settings
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": BASE_DIR / "cache",
+    }
+}
