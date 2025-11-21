@@ -327,3 +327,20 @@ INFO 2025-11-17 08:01:13,442 django.utils.autoreload /app/user_service/views.py 
 INFO 2025-11-17 08:01:14,160 django.utils.autoreload Watching for file changes with StatReloader
 INFO 2025-11-17 08:01:37,947 django.utils.autoreload Watching for file changes with StatReloader
 INFO 2025-11-17 08:01:46,185 user_events User service listening for shop.approved events…
+ERROR 2025-11-21 05:42:05,324 user_events Connection error: 
+ERROR 2025-11-21 05:42:10,331 user_events Connection error: 
+ERROR 2025-11-21 05:42:15,334 user_events Connection error: 
+ERROR 2025-11-21 05:42:20,342 user_events Connection error: 
+ERROR 2025-11-21 05:42:25,345 user_events Connection error: 
+ERROR 2025-11-21 05:42:30,351 user_events Connection error: 
+ERROR 2025-11-21 05:42:37,433 user_events Connection error: 
+ERROR 2025-11-21 05:42:42,437 user_events Connection error: 
+ERROR 2025-11-21 05:42:47,445 user_events Connection error: 
+ERROR 2025-11-21 05:42:52,451 user_events Connection error: 
+ERROR 2025-11-21 05:42:57,456 user_events Connection error: 
+ERROR 2025-11-21 05:43:02,462 user_events Connection error: 
+ERROR 2025-11-21 05:43:08,614 user_events Connection error: 
+ERROR 2025-11-21 05:43:13,620 user_events Connection error: 
+ERROR 2025-11-21 05:43:18,624 user_events Connection error: 
+INFO 2025-11-21 05:43:23,638 user_events User service listening for shop.approved events…
+INFO 2025-11-21 05:45:12,350 django.utils.autoreload Watching for file changes with StatReloader

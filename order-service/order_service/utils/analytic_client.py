@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-ANALYTIC_SERVICE = os.getenv('ANALYTIC_SERVICE')
+ANALYTIC_SERVICE = os.getenv('ANALYTIC_SERVICE') or settings.SERVICE_URLS.get('analytic')
 
 
 class AnalyticServiceClient:
@@ -35,16 +35,10 @@ class AnalyticServiceClient:
             'items': list(order_items),
         }
 
-        url = f"{self.base_url}/api/orders/"
+        url = f"{self.base_url}/api/v1/analytic-order-completed"
         try:
-            headers = {
-                'Content-Type': 'application/json',
-            }
-            if order.user_id:
-                headers['X-User-ID'] = str(order.user_id)
-            
             with httpx.Client(timeout=self.timeout, follow_redirects=True) as client:
-                response = client.post(url, json=payload, headers=headers)
+                response = client.post(url, json=payload)
             
             if response.status_code == 201 or response.status_code == 200:
                 logger.info(f"Order {order.id} successfully sent to analytics.")
