@@ -249,3 +249,6 @@ class RabbitMQPublisher:
             logger.info("✅ Closed RabbitMQ connection")
         except Exception as e:
             logger.error(f"⚠️ Error closing connection: {e}")
+
+
+rabbitmq_producer = RabbitMQPublisher()
