@@ -19,7 +19,6 @@ class AnaliticService:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            print(f"Product servisine erişim hatası: {e}")
             return None
 
     def process_order_completed(self, order_data):

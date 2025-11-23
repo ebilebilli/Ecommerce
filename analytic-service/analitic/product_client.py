@@ -32,7 +32,7 @@ class ProductClient:
                 }
 
         except Exception as e:
-            print("Product service error:", e)
+            pass
 
         return None
 
