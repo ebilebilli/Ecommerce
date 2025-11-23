@@ -5,18 +5,18 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load env
-load_dotenv(dotenv_path=BASE_DIR / '.env.docker')
+load_dotenv('')
 
 # Security
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-change-this')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-change-this')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['*']
 
 # CSRF
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8001', 'http://localhost:8001']
 
 # config/settings.py - ƏLAVƏ EDİN
-PRODUCT_SERVICE_URL = os.environ.get('PRODUCT_SERVICE_URL', 'http://product-service:8000')
+PRODUCT_SERVICE_URL = os.getenv('PRODUCT_SERVICE_URL', 'http://product-service:8000')
 
 # Installed apps
 INSTALLED_APPS = [
@@ -88,21 +88,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Local Windows üçün:
-if os.environ.get("DOCKER", None) == "1":
-    DB_HOST = os.environ.get("POSTGRES_HOST", "db-analytic")  # Docker Compose konteyner adı
+if os.getenv("DOCKER", None) == "1":
+    DB_HOST = os.getenv("POSTGRES_HOST", "db")  # Docker Compose konteyner adı (docker-compose.yml-də "db")
 
 else:
-    DB_HOST = os.environ.get("POSTGRES_HOST", "127.0.0.1")  # Lokal host
+    DB_HOST = os.getenv("POSTGRES_HOST", "127.0.0.1")  # Lokal host
 
 # config/settings.py - DÜZƏLDİN
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'analytic_db'),         # ✅ DÜZGÜN
-        'USER': os.environ.get('DB_USER', 'analytic_user'),       # ✅ DÜZGÜN
-        'PASSWORD': os.environ.get('DB_PASSWORD', '12345'),       # ✅ DÜZGÜN
+        'NAME': os.getenv('DB_NAME', 'ecommerce_db'),         # ✅ docker-compose.yml ilə uyğun
+        'USER': os.getenv('DB_USER', 'ecommerce_user'),       # ✅ docker-compose.yml ilə uyğun
+        'PASSWORD': os.getenv('DB_PASSWORD', '12345'),       # ✅ docker-compose.yml ilə uyğun
         'HOST': DB_HOST,
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 

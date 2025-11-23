@@ -46,8 +46,8 @@ class ProductView(models.Model):
 # ORDER & ORDER ITEM MODELLƏRİ
 # -------------------------
 class Order(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    order_id = models.UUIDField(unique=True)
+    id = models.BigAutoField(primary_key=True)
+    order_id = models.BigIntegerField(unique=True)  # Order service-dən gələn integer id
     user_id = models.UUIDField()
     created_at = models.DateTimeField()
     is_enriched = models.BooleanField(default=False)
@@ -56,7 +56,7 @@ class Order(models.Model):
         return f"Order {self.order_id} - User {self.user_id}"
 
 class OrderItem(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.BigAutoField(primary_key=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product_variation_id = models.UUIDField()
     quantity = models.IntegerField()

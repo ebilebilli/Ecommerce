@@ -8,8 +8,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import re
+import logging
+import traceback
 from ..models import Order, OrderItem
 from ..services import AnaliticService
+
+logger = logging.getLogger(__name__)
 
 class AnalyticsViewSet(viewsets.ViewSet):
     """Analitika və statistikalar üçün ViewSet"""
@@ -40,6 +44,13 @@ class AnalyticsViewSet(viewsets.ViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
             
         except Exception as e:
+            # Log the full error with traceback
+            error_traceback = traceback.format_exc()
+            print(f"ERROR: Error processing order: {str(e)}")
+            print(f"ERROR: Traceback: {error_traceback}")
+            logger.error(f"Error processing order: {str(e)}")
+            logger.error(f"Traceback: {error_traceback}")
+            
             # Əgər xəta sifarişin artıq mövcud olması ilə bağlıdırsa, 200 qaytar
             error_message = str(e).lower()
             if 'already exists' in error_message or 'duplicate' in error_message:
