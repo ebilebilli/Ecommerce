@@ -1,4 +1,4 @@
-# EcommerceLocal - Microservices E-Commerce Platform
+# Ecommerce - Microservices E-Commerce Platform
 
 A comprehensive, production-ready e-commerce platform built with microservices architecture. This platform provides a complete solution for online shopping with shop management, product catalog, order processing, analytics, and search capabilities.
 
