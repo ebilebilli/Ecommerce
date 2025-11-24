@@ -729,3 +729,5 @@ INFO 2025-11-23 19:08:21,015 django.server "GET /openapi.json HTTP/1.1" 200 4463
 INFO 2025-11-23 19:09:06,170 django.server "GET /openapi.json HTTP/1.1" 200 4463
 INFO 2025-11-23 19:09:46,158 django.server "GET /openapi.json HTTP/1.1" 200 4463
 INFO 2025-11-23 19:10:26,289 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-11-23 19:11:06,312 django.server "GET /openapi.json HTTP/1.1" 200 4463
+ERROR 2025-11-23 19:11:29,822 user_events Connection error: (320, "CONNECTION_FORCED - broker forced connection closure with reason 'shutdown'")
