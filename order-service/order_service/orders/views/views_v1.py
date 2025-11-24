@@ -93,7 +93,6 @@ def orderitems_detail(request, pk):
     except OrderItem.DoesNotExist:
         return Response({"error": "OrderItem not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    # Ownership check - only order owner can access order items
     if str(item.order.user_id) != str(request.user.id):
         logger.warning(f"GET/PATCH/DELETE /order-items/{pk} - Permission denied for user {request.user.id}, order belongs to user {item.order.user_id}")
         return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
