@@ -35,7 +35,7 @@ def querydict_to_dict(querydict):
 
 __all__ = [
     'ShopListAPIView',
-    'ShopDetailWithSlugAPIView',
+    # 'ShopDetailWithSlugAPIView',
     'ShopDetailWithUuidAPIView',
     'ShopCreateAPIView',
     'ShopManagementAPIView',
@@ -77,14 +77,14 @@ class ShopListAPIView(APIView):
         return Response({'error': 'Shops not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
-class ShopDetailWithSlugAPIView(APIView):
-    """Retrieve details of a specific shop by slug."""
-    http_method_names =['get']
+# class ShopDetailWithSlugAPIView(APIView):
+#     """Retrieve details of a specific shop by slug."""
+#     http_method_names =['get']
 
-    def get(self, request, shop_slug):
-        shop = get_object_or_404(Shop, slug=shop_slug, is_active=True, status=Shop.APPROVED)
-        serializer = ShopDetailSerializer(shop)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+#     def get(self, request, shop_slug):
+#         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True, status=Shop.APPROVED)
+#         serializer = ShopDetailSerializer(shop)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ShopDetailWithUuidAPIView(APIView):

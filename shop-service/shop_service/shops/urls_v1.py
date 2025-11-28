@@ -14,11 +14,11 @@ urlpatterns = [
         ShopDetailWithUuidAPIView.as_view(), 
         name='shop-detail-uuid'
     ),
-    path(
-        'shops/<slug:shop_slug>/', 
-        ShopDetailWithSlugAPIView.as_view(), 
-        name='shop-detail-slug'
-    ),  
+    # path(
+    #     'shops/<slug:shop_slug>/', 
+    #     ShopDetailWithSlugAPIView.as_view(), 
+    #     name='shop-detail-slug'
+    # ),  
     path(
         'create/',
         ShopCreateAPIView.as_view(), 
