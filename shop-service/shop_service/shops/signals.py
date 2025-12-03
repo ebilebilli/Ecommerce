@@ -56,3 +56,4 @@ def shop_post_delete(sender, instance, **kwargs):
 @receiver([post_save, post_delete], sender=Shop)
 def clear_shop_cache(sender, **kwargs):
     cache.clear()
+
