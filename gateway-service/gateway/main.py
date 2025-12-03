@@ -18,6 +18,13 @@ app = FastAPI(
     swagger_ui_init_oauth=None,
 )
 
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info("=" * 50)
+    logger.info("API Gateway starting up...")
+    logger.info("=" * 50)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],

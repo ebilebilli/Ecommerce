@@ -74,6 +74,12 @@ def _prepare_headers(request, service: str):
             logger.info(f'Forwarding with X-User-ID: {user_id}')
         else:
             logger.warning('User ID not found in request.state.user')
+        
+        # Add shop_uuid to header if user is shop owner
+        shop_uuid = user.get('shop_uuid')
+        if shop_uuid:
+            headers['x-shop-id'] = str(shop_uuid)
+            logger.info(f'Forwarding with X-Shop-ID: {shop_uuid}')
     else:
         logger.warning('No user in request.state, X-User-ID not set')
 
