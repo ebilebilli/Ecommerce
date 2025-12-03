@@ -171,7 +171,7 @@ async def get_shop_uuid_by_user(user_uuid: str) -> str:
             )
         if res.status_code == 200:
             shop_data = res.json()
-            shop_uuid = shop_data.get('id')  # Shop UUID
+            shop_uuid = shop_data.get('id')
             logger.info(f"Shop UUID retrieved successfully: {shop_uuid} for user: {user_uuid}")
             return shop_uuid
         logger.warning(f"Failed to get shop UUID: status_code={res.status_code}, user={user_uuid}")
@@ -183,10 +183,8 @@ async def get_shop_uuid_by_user(user_uuid: str) -> str:
 
 async def create_tokens_with_shop(user_uuid: str) -> tuple:
     """Create access and refresh tokens, including shop_uuid if user is shop owner"""
-    logger.info(f"Creating tokens for user: {user_uuid}")
     payload = {'sub': str(user_uuid)}
     
-    # Check if user is shop owner
     user_info = await get_user_info(user_uuid)
     if user_info and user_info.get('is_shop_owner'):
         logger.info(f"User {user_uuid} is shop owner, fetching shop UUID")
@@ -233,40 +231,25 @@ async def handle_login(request):
 
 async def handle_refresh_token(request: Request):
     """Handle refresh token request and create new tokens with shop_uuid if applicable"""
-    logger.info("Refresh token request received")
     try:
         body = await request.json()
         refresh_token = body.get("refresh_token")
         
         if not refresh_token:
-            logger.warning("Refresh token request missing refresh_token")
             raise HTTPException(status_code=400, detail="Refresh token is required")
         
-        # Check if refresh token is blacklisted
         if is_token_blacklisted(refresh_token):
-            logger.warning("Refresh token is blacklisted")
             raise HTTPException(status_code=401, detail="Refresh token has been revoked")
         
-        # Decode refresh token
         try:
             payload = jwt.decode(refresh_token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
             user_uuid = payload.get('sub')
             
             if not user_uuid:
-                logger.warning("Refresh token missing user UUID")
                 raise HTTPException(status_code=400, detail="Invalid refresh token")
             
-            logger.info(f"Refresh token validated for user: {user_uuid}")
-            
-            # Blacklist old refresh token
             add_to_blacklist(refresh_token)
-            logger.info(f"Old refresh token blacklisted for user: {user_uuid}")
-            
-            # Create new tokens with shop_uuid if applicable
-            logger.info(f"Creating new tokens for user: {user_uuid}")
             access, refresh = await create_tokens_with_shop(user_uuid)
-            
-            logger.info(f"Refresh token completed successfully for user: {user_uuid}")
             return JSONResponse({
                 'access_token': access,
                 'refresh_token': refresh,
@@ -287,14 +270,13 @@ async def handle_refresh_token(request: Request):
 async def handle_logout(request: Request):
     auth_header = request.headers.get("Authorization")
     
-    # Parse body safely (optional)
     body = {}
     refresh_token = None
     try:
         body = await request.json()
         refresh_token = body.get("refresh_token")
     except Exception:
-        pass  # Body optional
+        pass
     
     if not auth_header or not auth_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authorization header missing or invalid")
