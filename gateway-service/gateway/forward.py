@@ -1,4 +1,3 @@
-# gateway/forward.py
 import httpx
 from fastapi.responses import JSONResponse, Response
 from urllib.parse import urlparse
@@ -75,7 +74,6 @@ def _prepare_headers(request, service: str):
         else:
             logger.warning('User ID not found in request.state.user')
         
-        # Add shop_uuid to header if user is shop owner
         shop_uuid = user.get('shop_uuid')
         if shop_uuid:
             headers['x-shop-id'] = str(shop_uuid)
