@@ -140,7 +140,9 @@ class ShopCreateAPIView(APIView):
             return Response({'error': 'You already have Shop'}, status=status.HTTP_400_BAD_REQUEST)
 
         data = querydict_to_dict(request.data)
-        data['user'] = str(user.id)  
+        if not data.get('profile'):
+            data['profile'] = None
+        data['user'] = str(user.id)
         serializer = ShopCreateUpdateSerializer(data=data)
         if serializer.is_valid():
             shop = serializer.save(user=user.id)  
@@ -644,15 +646,13 @@ class CreateShopSocialMediaAPIView(APIView):
     def post(self, request, shop_slug):
         user = request.user
         logger.info(f"POST /social-media/{shop_slug}/create/ - Social media creation request from user {user.id}")
-        data = querydict_to_dict(request.data)
-        data['user'] = str(user.id)
         shop = get_object_or_404(Shop, slug=shop_slug, is_active=True, status=Shop.APPROVED)
         if str(shop.user) != str(user.id):
             logger.warning(f"POST /social-media/{shop_slug}/create/ - Permission denied for user {user.id}")
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
         serializer = ShopSocialMediaSerializer(
-            data=data, context={
+            data=request.data, context={
                 'request': request,
                 'shop': shop
         })
@@ -790,6 +790,23 @@ class ShopOrderItemStatusUpdateAPIView(APIView):
         if str(order_item.shop.user) != str(request.user.id):
             logger.warning(f"PATCH /order-item/{order_item.shop.id} - Permission denied for user {user.id}")
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
+        
+        if order_item.status == ShopOrderItem.Status.DELIVERED:
+            logger.warning(f"PATCH /order-items/{order_item_id}/status/ - Attempt to update delivered order item")
+            return Response(
+                {'error': 'Cannot update order item status. Order item is already delivered and cannot be modified.'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        allowed_fields = {'status'}
+        provided_fields = set(request.data.keys())
+        extra_fields = provided_fields - allowed_fields
+        if extra_fields:
+            logger.warning(f"PATCH /order-items/{order_item_id}/status/ - Invalid fields provided: {extra_fields}")
+            return Response(
+                {'error': f'Only status field can be updated. Invalid fields: {", ".join(extra_fields)}'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
         serializer = ShopOrderItemStatusUpdateSerializer(order_item, data=request.data, partial=True)
         if serializer.is_valid():

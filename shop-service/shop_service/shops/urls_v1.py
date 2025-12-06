@@ -110,14 +110,14 @@ urlpatterns = [
     ),
     # ShopOrderItem endpoints
     path(
-        'order-items/<slug:shop_slug>/',
-        ShopOrderItemListAPIView.as_view(),
-        name='shop-order-item-list'
-    ),
-    path(
         'order-items/<int:order_item_id>/',
         ShopOrderItemDetailAPIView.as_view(),
         name='shop-order-item-detail'
+    ),
+    path(
+        'order-items/<slug:shop_slug>/',
+        ShopOrderItemListAPIView.as_view(),
+        name='shop-order-item-list'
     ),
     path(
         'order-items/<int:order_item_id>/status/',
