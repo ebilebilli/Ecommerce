@@ -791,6 +791,23 @@ class ShopOrderItemStatusUpdateAPIView(APIView):
             logger.warning(f"PATCH /order-item/{order_item.shop.id} - Permission denied for user {user.id}")
             return Response({'error': 'You do not have permission'}, status=status.HTTP_403_FORBIDDEN)
         
+        if order_item.status == ShopOrderItem.Status.DELIVERED:
+            logger.warning(f"PATCH /order-items/{order_item_id}/status/ - Attempt to update delivered order item")
+            return Response(
+                {'error': 'Cannot update order item status. Order item is already delivered and cannot be modified.'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        allowed_fields = {'status'}
+        provided_fields = set(request.data.keys())
+        extra_fields = provided_fields - allowed_fields
+        if extra_fields:
+            logger.warning(f"PATCH /order-items/{order_item_id}/status/ - Invalid fields provided: {extra_fields}")
+            return Response(
+                {'error': f'Only status field can be updated. Invalid fields: {", ".join(extra_fields)}'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
         serializer = ShopOrderItemStatusUpdateSerializer(order_item, data=request.data, partial=True)
         if serializer.is_valid():
             new_status = serializer.validated_data.get('status')
