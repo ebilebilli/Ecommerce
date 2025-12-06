@@ -47,7 +47,7 @@ class ShopDetailSerializer(serializers.ModelSerializer):
 
 
 class ShopCreateUpdateSerializer(serializers.ModelSerializer):
-    profile = serializers.ImageField(required=False)
+    profile = serializers.ImageField(required=False, allow_null=True)
     id = serializers.UUIDField(read_only=True)
     status = serializers.CharField(read_only=True)  
 
@@ -162,6 +162,8 @@ class ShopMediaSerializer(serializers.ModelSerializer):
 
 
 class ShopSocialMediaSerializer(serializers.ModelSerializer):
+    shop = serializers.PrimaryKeyRelatedField(read_only=True)
+    
     class Meta:
         model = ShopSocialMedia
         fields = '__all__'
