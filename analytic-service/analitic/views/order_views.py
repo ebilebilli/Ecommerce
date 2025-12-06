@@ -8,23 +8,32 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import re
+import logging
 from ..models import Order, OrderItem
-from ..services import AnaliticService
+from ..services.analitic_service import AnaliticService
+
+logger = logging.getLogger('analitic.views.order_views')
 
 class AnalyticsViewSet(viewsets.ViewSet):
-    """Analitika və statistikalar üçün ViewSet"""
+    """ViewSet for analytics and statistics"""
     
     @action(detail=False, methods=['post'], url_path='order-completed')
     def order_completed(self, request):
-        """Sifariş tamamlandı endpoint'i"""
+        """Order completed endpoint"""
         try:
             data = request.data
-            service = AnaliticService()
+            logger.info(f"Received order completed request: order_id={data.get('id')}, items_count={len(data.get('items', []))}")
+            logger.info(f"Order items data: {[{'id': i.get('id'), 'product_variation': i.get('product_variation')} for i in data.get('items', [])]}")
             
-            # Birbaşa servisi çağır - o özü idempotency-i idarə edir
+            service = AnaliticService()
+            logger.info(f"Calling AnaliticService.process_order_completed for order_id={data.get('id')}")
+            
+            # Call service directly - it handles idempotency itself
             order = service.process_order_completed(data)
             
-            # Servis uğurla işlədiyi üçün həmişə 201 qaytar
+            logger.info(f"Service returned order: order_id={order.order_id}, user_id={order.user_id}")
+            
+            # Always return 201 if service processed successfully
             return Response({
                 'status': 'success',
                 'message': 'Order successfully processed',
@@ -34,16 +43,18 @@ class AnalyticsViewSet(viewsets.ViewSet):
             }, status=status.HTTP_201_CREATED)
             
         except KeyError as e:
+            logger.error(f"KeyError in order_completed: {str(e)}", exc_info=True)
             return Response({
                 'status': 'error', 
                 'message': f'Missing field: {str(e)}'
             }, status=status.HTTP_400_BAD_REQUEST)
             
         except Exception as e:
-            # Əgər xəta sifarişin artıq mövcud olması ilə bağlıdırsa, 200 qaytar
+            logger.error(f"Exception in order_completed: {str(e)}", exc_info=True)
+            # If error is about order already existing, return 200
             error_message = str(e).lower()
             if 'already exists' in error_message or 'duplicate' in error_message:
-                # Sifariş ID-ni xəta mesajından çıxarmağa çalış
+                # Try to extract order ID from error message
                 order_id_match = re.search(r'order[_\s]?id[_\s]?[:=]?[_\s]?([^\s,]+)', error_message, re.IGNORECASE)
                 order_id = order_id_match.group(1) if order_id_match else 'unknown'
                 
@@ -62,14 +73,14 @@ class AnalyticsViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'], url_path='shops/(?P<shop_id>[^/.]+)/dashboard')
     def shop_dashboard(self, request, shop_id=None):
-        """Mağaza üçün dashboard statistikaları"""
+        """Dashboard statistics for shop"""
         try:
-            # Parametrləri al
+            # Get parameters
             days = int(request.GET.get('days', 30))
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
             
-            # Tarix aralığını təyin et
+            # Set date range
             if start_date and end_date:
                 start_date = datetime.fromisoformat(start_date.replace('Z', '+00:00'))
                 end_date = datetime.fromisoformat(end_date.replace('Z', '+00:00'))
@@ -77,13 +88,13 @@ class AnalyticsViewSet(viewsets.ViewSet):
                 end_date = timezone.now()
                 start_date = end_date - timedelta(days=days)
             
-            # Mağazanın satış məlumatlarını hesabla
+            # Calculate shop sales data
             shop_orders = OrderItem.objects.filter(
                 shop_id=shop_id,
                 order__created_at__range=[start_date, end_date]
             )
             
-            # Ümumi statistikalar
+            # General statistics
             total_revenue = shop_orders.aggregate(
                 total=Sum(F('price') * F('quantity'))
             )['total'] or 0
@@ -99,26 +110,26 @@ class AnalyticsViewSet(viewsets.ViewSet):
             
             average_order_value = total_revenue / total_orders if total_orders > 0 else 0
             
-            # Məhsul kateqoriyaları üzrə paylanma
+            # Product distribution by category
             products_by_category = shop_orders.values('product_title').annotate(
                 total_sold=Sum('quantity'),
                 total_revenue=Sum(F('price') * F('quantity'))
             ).order_by('-total_revenue')[:10]
             
-            # Günlük trendlər - TAM DÜZƏLDİLMİŞ HİSSƏ
+            # Daily trends
             from django.db.models.functions import TruncDate
             
-            # Günlük gəlir trendləri
+            # Daily revenue trends
             daily_revenue_trends = OrderItem.objects.filter(
                 shop_id=shop_id,
                 order__created_at__range=[start_date, end_date]
             ).annotate(
-                date=TruncDate('order__created_at')  # Order modelindən created_at istifadə et
+                date=TruncDate('order__created_at')
             ).values('date').annotate(
                 daily_revenue=Sum(F('price') * F('quantity'))
             ).order_by('date')
             
-            # Günlük sifariş sayı trendləri
+            # Daily order count trends
             daily_orders_trends = Order.objects.filter(
                 items__shop_id=shop_id,
                 created_at__range=[start_date, end_date]
@@ -128,17 +139,17 @@ class AnalyticsViewSet(viewsets.ViewSet):
                 daily_orders=Count('id', distinct=True)
             ).order_by('date')
             
-            # Günlük trendləri birləşdir
+            # Merge daily trends
             daily_trends_map = {}
             
-            # Gəlir trendlərini əlavə et
+            # Add revenue trends
             for trend in daily_revenue_trends:
                 date_str = trend['date'].isoformat()
                 if date_str not in daily_trends_map:
                     daily_trends_map[date_str] = {'date': date_str, 'daily_revenue': 0, 'daily_orders': 0}
                 daily_trends_map[date_str]['daily_revenue'] = float(trend['daily_revenue'] or 0)
             
-            # Sifariş trendlərini əlavə et
+            # Add order trends
             for trend in daily_orders_trends:
                 date_str = trend['date'].isoformat()
                 if date_str not in daily_trends_map:
@@ -185,9 +196,9 @@ class AnalyticsViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'], url_path='shops/(?P<shop_id>[^/.]+)/sales-report')
     def shop_sales_report(self, request, shop_id=None):
-        """Mağaza üçün detallı satış hesabatı"""
+        """Detailed sales report for shop"""
         try:
-            # Parametrləri al
+            # Get parameters
             time_filter = request.GET.get('time_filter', 'last_30_days')
             product_id = request.GET.get('product_id')
             sort_by = request.GET.get('sort_by', 'order_date')
@@ -195,7 +206,7 @@ class AnalyticsViewSet(viewsets.ViewSet):
             page = int(request.GET.get('page', 1))
             page_size = int(request.GET.get('page_size', 50))
             
-            # Zaman filteri
+            # Time filter
             end_date = timezone.now()
             if time_filter == 'today':
                 start_date = end_date.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -217,11 +228,11 @@ class AnalyticsViewSet(viewsets.ViewSet):
                 order__created_at__range=[start_date, end_date]
             ).select_related('order')
             
-            # Əlavə filterlər
+            # Additional filters
             if product_id:
                 order_items = order_items.filter(product_id=product_id)
             
-            # Sıralama
+            # Sorting
             if sort_by == 'order_date':
                 order_by = '-order__created_at' if order_dir == 'desc' else 'order__created_at'
             elif sort_by == 'price':
@@ -244,7 +255,7 @@ class AnalyticsViewSet(viewsets.ViewSet):
             end_index = start_index + page_size
             paginated_items = order_items[start_index:end_index]
             
-            # Nəticəni hazırla
+            # Prepare result
             result = []
             for item in paginated_items:
                 profit = float(item.price) - float(item.base_price)
@@ -267,7 +278,7 @@ class AnalyticsViewSet(viewsets.ViewSet):
                     'color': item.color
                 })
             
-            # Ümumi statistikalar
+            # General statistics
             total_stats = order_items.aggregate(
                 total_revenue=Sum(F('price') * F('quantity')),
                 total_products=Sum('quantity'),
@@ -361,20 +372,20 @@ class AnalyticsViewSet(viewsets.ViewSet):
                 'message': f'Internal server error: {str(e)}'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# FUNCTION-BASED VIEW (Mövcud - dəyişmə)
+# FUNCTION-BASED VIEW
 @csrf_exempt
 def analitic_order_completed(request):
-    """Sifariş tamamlandı üçün function-based view"""
+    """Function-based view for order completed"""
     if request.method == 'POST':
         try:
-            # JSON məlumatını oxu
+            # Read JSON data
             data = json.loads(request.body)
             service = AnaliticService()
             
-            # Birbaşa servisi çağır - o özü idempotency-i idarə edir
+            # Call service directly - it handles idempotency itself
             order = service.process_order_completed(data)
             
-            # Servis uğurla işlədiyi üçün həmişə 201 qaytar
+            # Always return 201 if service processed successfully
             return JsonResponse({
                 'status': 'success',
                 'message': 'Order successfully processed',
@@ -396,10 +407,10 @@ def analitic_order_completed(request):
             }, status=400)
             
         except Exception as e:
-            # Əgər xəta sifarişin artıq mövcud olması ilə bağlıdırsa, 200 qaytar
+            # If error is about order already existing, return 200
             error_message = str(e).lower()
             if 'already exists' in error_message or 'duplicate' in error_message:
-                # Sifariş ID-ni xəta mesajından çıxarmağa çalış
+                # Try to extract order ID from error message
                 order_id_match = re.search(r'order[_\s]?id[_\s]?[:=]?[_\s]?([^\s,]+)', error_message, re.IGNORECASE)
                 order_id = order_id_match.group(1) if order_id_match else 'unknown'
                 

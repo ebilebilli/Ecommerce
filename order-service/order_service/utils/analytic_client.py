@@ -31,12 +31,14 @@ class AnalyticServiceClient:
         # Convert items to proper format
         items_list = []
         for item in order_items:
-            items_list.append({
+            item_data = {
                 'id': str(item['id']),  # Convert integer to string
                 'quantity': item['quantity'],
                 'product_variation': item['product_variation'],
                 'price': float(item['price']) / 100.0 if item['price'] else 0.0,  # Convert from qepik to currency
-            })
+            }
+            items_list.append(item_data)
+            logger.info(f"Order item {item['id']} prepared: variation_id={item['product_variation']}")
 
         payload = {
             'id': str(order.id),  # Convert integer to string
@@ -44,6 +46,8 @@ class AnalyticServiceClient:
             'created_at': order.created_at.isoformat(),
             'items': items_list,
         }
+
+        logger.info(f"Sending order {order.id} to analytics with {len(items_list)} items (only product_variation_id, shop_id/product_id will be fetched by analytics from product service)")
 
         url = f"{self.base_url}/api/analitic-order-completed/"
         try:

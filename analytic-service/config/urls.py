@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
 from django.views import View
+from django.views.generic import RedirectView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 # ✅ JSON FORMATINDA OPENAPI
@@ -13,6 +14,7 @@ class JSONOpenAPI(View):
         return JsonResponse(response.data)
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/admin/', permanent=False), name='home'),
     path('admin/', admin.site.urls),
     path('api/analitic-', include('analitic.urls')),  
     path('openapi.json', JSONOpenAPI.as_view()),
