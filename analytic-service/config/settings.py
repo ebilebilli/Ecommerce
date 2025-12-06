@@ -124,3 +124,91 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logging settings
+LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOGGING_DIR, exist_ok=True)
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '{levelname} {asctime} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'django_file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'django.log'),
+            'formatter': 'default',
+        },
+        'analitic_file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'analitic.log'),
+            'formatter': 'default',
+        },
+        'analitic_service_file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'analitic_service.log'),
+            'formatter': 'default',
+        },
+        'analitic_views_file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'analitic_views.log'),
+            'formatter': 'default',
+        },
+        'product_client_file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'product_client.log'),
+            'formatter': 'default',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['django_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'analitic': {
+            'handlers': ['analitic_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'analitic.services': {
+            'handlers': ['analitic_service_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'analitic.services.analitic_service': {
+            'handlers': ['analitic_service_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'analitic.views': {
+            'handlers': ['analitic_views_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'analitic.views.order_views': {
+            'handlers': ['analitic_views_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'analitic.product_client': {
+            'handlers': ['product_client_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
