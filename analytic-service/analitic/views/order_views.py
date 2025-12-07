@@ -76,6 +76,13 @@ class AnalyticsViewSet(viewsets.ViewSet):
         """Dashboard statistics for shop"""
         try:
             # Get parameters
+            header_shop_id = request.headers.get('X-Shop-ID')
+            if not header_shop_id:
+                return Response({'status': 'error', 'message': 'X-Shop-ID header missing'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            if str(shop_id) != str(header_shop_id):
+                return Response({'status': 'error', 'message': 'Unauthorized for this shop'}, status=status.HTTP_403_FORBIDDEN)
+
             days = int(request.GET.get('days', 30))
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
@@ -198,6 +205,13 @@ class AnalyticsViewSet(viewsets.ViewSet):
     def shop_sales_report(self, request, shop_id=None):
         """Detailed sales report for shop"""
         try:
+            header_shop_id = request.headers.get('X-Shop-ID')
+            if not header_shop_id:
+                return Response({'status': 'error', 'message': 'X-Shop-ID header missing'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            if str(shop_id) != str(header_shop_id):
+                return Response({'status': 'error', 'message': 'Unauthorized for this shop'}, status=status.HTTP_403_FORBIDDEN)
+
             # Get parameters
             time_filter = request.GET.get('time_filter', 'last_30_days')
             product_id = request.GET.get('product_id')

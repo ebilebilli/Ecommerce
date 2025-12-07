@@ -23106,3 +23106,26 @@ INFO 2025-12-06 20:30:03,230 django.server "GET /openapi.json HTTP/1.1" 200 4463
 INFO 2025-12-06 20:30:34,717 django.server "POST /api/user/login/ HTTP/1.1" 200 74
 INFO 2025-12-06 20:30:35,712 django.server "GET /api/user/profile/ HTTP/1.1" 200 232
 INFO 2025-12-06 20:30:51,752 django.server "GET /openapi.json HTTP/1.1" 200 4463
+ERROR 2025-12-07 17:53:55,734 user_events Connection error: 
+ERROR 2025-12-07 17:54:01,003 user_events Connection error: 
+ERROR 2025-12-07 17:54:06,010 user_events Connection error: 
+ERROR 2025-12-07 17:54:11,014 user_events Connection error: 
+ERROR 2025-12-07 17:54:16,020 user_events Connection error: 
+ERROR 2025-12-07 17:54:21,167 user_events Connection error: 
+ERROR 2025-12-07 17:54:26,175 user_events Connection error: 
+ERROR 2025-12-07 17:54:31,183 user_events Connection error: 
+ERROR 2025-12-07 17:54:36,186 user_events Connection error: 
+ERROR 2025-12-07 17:54:41,194 user_events Connection error: 
+ERROR 2025-12-07 17:54:46,199 user_events Connection error: 
+ERROR 2025-12-07 17:54:51,289 user_events Connection error: 
+ERROR 2025-12-07 17:54:56,297 user_events Connection error: 
+ERROR 2025-12-07 17:55:01,304 user_events Connection error: 
+ERROR 2025-12-07 17:55:06,311 user_events Connection error: 
+ERROR 2025-12-07 17:55:11,318 user_events Connection error: 
+ERROR 2025-12-07 17:55:16,326 user_events Connection error: 
+ERROR 2025-12-07 17:55:21,440 user_events Connection error: 
+ERROR 2025-12-07 17:55:26,448 user_events Connection error: 
+ERROR 2025-12-07 17:55:31,456 user_events Connection error: 
+ERROR 2025-12-07 17:55:36,462 user_events Connection error: 
+INFO 2025-12-07 17:55:41,477 user_events User service listening for shop.approved events…
+INFO 2025-12-07 18:07:17,486 django.utils.autoreload Watching for file changes with StatReloader
