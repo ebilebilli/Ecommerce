@@ -338,6 +338,13 @@ class AnalyticsViewSet(viewsets.ViewSet):
     def shop_products_performance(self, request, shop_id=None):
         """Mağaza məhsul performansı"""
         try:
+            header_shop_id = request.headers.get('X-Shop-ID')
+            if not header_shop_id:
+                return Response({'status': 'error', 'message': 'X-Shop-ID header missing'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            if str(shop_id) != str(header_shop_id):
+                return Response({'status': 'error', 'message': 'Unauthorized for this shop'}, status=status.HTTP_403_FORBIDDEN)
+
             days = int(request.GET.get('days', 30))
             limit = int(request.GET.get('limit', 20))
             
