@@ -23106,3 +23106,72 @@ INFO 2025-12-06 20:30:03,230 django.server "GET /openapi.json HTTP/1.1" 200 4463
 INFO 2025-12-06 20:30:34,717 django.server "POST /api/user/login/ HTTP/1.1" 200 74
 INFO 2025-12-06 20:30:35,712 django.server "GET /api/user/profile/ HTTP/1.1" 200 232
 INFO 2025-12-06 20:30:51,752 django.server "GET /openapi.json HTTP/1.1" 200 4463
+ERROR 2025-12-07 17:53:55,734 user_events Connection error: 
+ERROR 2025-12-07 17:54:01,003 user_events Connection error: 
+ERROR 2025-12-07 17:54:06,010 user_events Connection error: 
+ERROR 2025-12-07 17:54:11,014 user_events Connection error: 
+ERROR 2025-12-07 17:54:16,020 user_events Connection error: 
+ERROR 2025-12-07 17:54:21,167 user_events Connection error: 
+ERROR 2025-12-07 17:54:26,175 user_events Connection error: 
+ERROR 2025-12-07 17:54:31,183 user_events Connection error: 
+ERROR 2025-12-07 17:54:36,186 user_events Connection error: 
+ERROR 2025-12-07 17:54:41,194 user_events Connection error: 
+ERROR 2025-12-07 17:54:46,199 user_events Connection error: 
+ERROR 2025-12-07 17:54:51,289 user_events Connection error: 
+ERROR 2025-12-07 17:54:56,297 user_events Connection error: 
+ERROR 2025-12-07 17:55:01,304 user_events Connection error: 
+ERROR 2025-12-07 17:55:06,311 user_events Connection error: 
+ERROR 2025-12-07 17:55:11,318 user_events Connection error: 
+ERROR 2025-12-07 17:55:16,326 user_events Connection error: 
+ERROR 2025-12-07 17:55:21,440 user_events Connection error: 
+ERROR 2025-12-07 17:55:26,448 user_events Connection error: 
+ERROR 2025-12-07 17:55:31,456 user_events Connection error: 
+ERROR 2025-12-07 17:55:36,462 user_events Connection error: 
+INFO 2025-12-07 17:55:41,477 user_events User service listening for shop.approved events…
+INFO 2025-12-07 18:07:17,486 django.utils.autoreload Watching for file changes with StatReloader
+INFO 2025-12-07 18:07:48,833 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:08:34,363 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:09:20,468 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:10:06,611 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:10:52,471 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:11:38,609 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:12:24,781 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:13:11,068 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:13:57,243 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:14:43,435 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:15:29,559 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:16:15,612 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:17:01,938 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:17:48,018 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:18:34,337 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:19:20,408 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:20:06,483 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:20:52,452 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:21:38,595 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:22:24,480 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:23:10,649 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:23:56,798 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:24:42,959 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:25:29,715 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:26:15,890 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:27:02,109 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:27:48,241 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:28:34,470 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:29:20,601 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:30:02,174 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:30:43,596 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:31:25,486 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:32:07,405 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:32:49,278 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:33:30,419 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:34:02,826 django.server "POST /api/user/login/ HTTP/1.1" 200 74
+INFO 2025-12-07 18:34:02,877 django.server "GET /api/user/profile/ HTTP/1.1" 200 235
+INFO 2025-12-07 18:34:11,854 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:34:53,335 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:35:34,772 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:36:18,521 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:36:35,948 django.server "POST /api/user/login/ HTTP/1.1" 200 75
+INFO 2025-12-07 18:36:35,991 django.server "GET /api/user/profile/ HTTP/1.1" 200 234
+INFO 2025-12-07 18:36:59,947 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:37:41,470 django.server "GET /openapi.json HTTP/1.1" 200 4463
+INFO 2025-12-07 18:38:22,775 django.server "GET /openapi.json HTTP/1.1" 200 4463
