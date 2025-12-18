@@ -42,6 +42,17 @@ services:
       - "traefik.http.routers.analytic-admin.service=analytic-web-service"
       - "traefik.http.services.analytic-web-service.loadbalancer.server.port=8000"
 
+  analytic_celery_worker:
+    build: .
+    container_name: analytic_celery_worker
+    env_file:
+      - .env
+    entrypoint: ""
+    command: celery -A config.celery_app worker --loglevel=info --concurrency=1 -Q analytics
+    networks:
+      - shared_network
+
+
 networks:
   internal_net:
     driver: bridge

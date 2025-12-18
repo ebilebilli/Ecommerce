@@ -7,14 +7,17 @@ services:
     restart: always
     depends_on:
       - db
+    env_file:
+      - .env
     environment:
       DATABASE_URL: postgresql+psycopg2://postgres:password@db:5432/mydb
     volumes:
-      - ./src:/app/src:rw
+      - ./src:/app/src
     command: >
-      sh -c ". .venv/bin/activate && alembic upgrade head && uvicorn src.app.main:app --host 0.0.0.0 --port 8000"
-    # ports:
-    #   - "8006:8000"
+      sh -c "
+      /app/.venv/bin/alembic upgrade head &&
+      /app/.venv/bin/uvicorn src.app.main:app --host 0.0.0.0 --port 8000
+      "
     networks:
       - internal_net
       - shared_network
@@ -29,40 +32,69 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # ports:
-    #   - "5437:5432"
     networks:
       - internal_net
-
 
   product_consumer:
     build: .
     container_name: product_consumer
-    entrypoint: []
-    command: [".venv/bin/python", "/app/consumer.py"]
+    restart: unless-stopped
     depends_on:
       - db
-      - product-service-web-1
+    command: ["/app/.venv/bin/python", "/app/consumer.py"]
+    volumes:
+      - ./src:/app/src
+      - ./consumer.py:/app/consumer.py
     environment:
       DATABASE_URL: postgresql+psycopg2://postgres:password@db:5432/mydb
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
       RABBITMQ_USER: admin
       RABBITMQ_PASS: admin12345
-    volumes:
-      - ./src:/app/src:rw
-      - ./consumer.py:/app/consumer.py:rw
     networks:
       - internal_net
       - shared_network
+
+  celery_worker:
+    build: .
+    container_name: product_celery_worker
     restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:password@db:5432/mydb
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+    depends_on:
+      - db
+    command: ["/app/.venv/bin/celery", "-A", "src.app.celery_app.celery", "worker", "--loglevel=info"]
+    networks:
+      - internal_net
+      - shared_network
+
+  celery_beat:
+    build: .
+    container_name: product_celery_beat
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:password@db:5432/mydb
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+    depends_on:
+      - db
+    command: ["/app/.venv/bin/celery", "-A", "src.app.celery_app.celery", "beat", "--loglevel=info"]
+    networks:
+      - internal_net
+      - shared_network
 
 networks:
   internal_net:
-  # internal: true
     driver: bridge
   shared_network:
     external: true
     name: shared_network
+
 volumes:
   postgres_data:
