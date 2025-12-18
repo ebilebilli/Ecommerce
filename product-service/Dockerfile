@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 # Copy dependency files
-COPY pyproject.toml uv.lock ./
+COPY pyproject.toml ./
 
 # Install pip and uv
 RUN pip install --no-cache-dir --upgrade pip \
@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir --upgrade pip \
 # Install project dependencies into .venv
 # Increase timeout for large package downloads
 ENV UV_HTTP_TIMEOUT=120
-RUN uv sync --frozen --no-dev
+RUN uv sync --no-dev
 
 # Copy project code
 COPY . .

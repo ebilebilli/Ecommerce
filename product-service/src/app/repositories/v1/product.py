@@ -93,7 +93,7 @@ class ProductRepository(BaseRepository[Product]):
         self.db_session.add(pc)
         self.db_session.commit()
         return True
-        
+
     def remove_category(self, product_id: UUID, category_id: UUID) -> bool:
         pc = self.db_session.query(ProductCategory).filter(
             and_(ProductCategory.product_id == product_id, ProductCategory.category_id == category_id)
